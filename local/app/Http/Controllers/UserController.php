@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Theme;
 use DB;
 use Illuminate\Support\Facades\Auth;
-use App\User;
+
 
 class UserController extends Controller
 {
