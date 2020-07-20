@@ -55,6 +55,12 @@
                         <span class="d-sm-block d-none">Items Group</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="#measurement" data-toggle="tab" class="nav-link">
+                        <span class="d-sm-none">Tab 3</span>
+                        <span class="d-sm-block d-none">Measurement</span>
+                    </a>
+                </li>
             </ul>
             <!-- end nav-tabs -->
             <!-- begin tab-content -->
@@ -209,6 +215,61 @@
                                     <button type="submit" id="btnGroupAttr" class="btn btn-sm btn-primary m-r-5 ">SAVE </button>
                                     <button type="reset" class="btn btn-sm btn-default">Cancel</button>
                                 </fieldset>
+                            </form>
+
+
+
+
+
+
+                            </div>
+                            <!-- end panel-body -->
+                        </div>
+                        <!-- end col-12 -->
+                    </div>
+                </div>
+                <!-- begin tab-pane -->
+                <div class="tab-pane fade  show" id="measurement">
+                    <div class="row">
+                        <!-- begin col-12 -->
+                        <div class="col-12">
+                            <!-- begin panel-body -->
+                            <div class="panel-body">
+
+
+                            <form method="post" id="frmSaveAttributeValue" action="{{route('saveAttributeValue')}}">
+                                @csrf
+                                <?php
+                                $dataObjArr = getUnderGroup();
+                                $dataItemAttrObjArr = getItemAttributes();
+                                ?>
+                                
+                                <div class="form-group row m-b-15">
+                                        <label class="col-form-label col-md-3">Atrribute</label>
+                                        <div class="col-md-3">
+                                            <select  class="form-control mb-3" name="attribute_id" id="attributeId">
+                                            @foreach ($dataItemAttrObjArr as $rowData)
+                                            <option value="{{$rowData->id}}">{{$rowData->attr_name}}</option>
+                                            @endforeach
+
+                                            </select>
+                                        </div>
+                                        {{-- <label class="col-form-label col-md-3">Value</label> --}}
+                                        <div class="col-md-3">
+                                            <input type="text" name="attr_name" class="form-control" id="attrName" placeholder="Color name"/>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="submit" id="btnGroupAttr" class="btn btn-sm btn-primary m-r-5 ">SAVE </button>
+                                        </div>
+                                    </div>
+
+                              
+                               
+                                {{-- <fieldset>
+
+                                    <button type="submit" id="btnGroupAttr" class="btn btn-sm btn-primary m-r-5 ">SAVE </button>
+                                    <button type="reset" class="btn btn-sm btn-default">Cancel</button>
+                                </fieldset> --}}
                             </form>
 
 

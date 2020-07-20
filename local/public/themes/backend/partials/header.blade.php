@@ -1,5 +1,5 @@
 <!-- begin #page-container -->
-<div id="page-container" class="fade page-sidebar-fixed page-header-fixed page-with-light-sidebar show">
+<div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
 
 		<!-- begin #header -->
 		<div id="header" class="header navbar-default">
