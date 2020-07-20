@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 use Theme;
 use DB;
 use Illuminate\Support\Facades\Auth;
+<<<<<<< HEAD
 
+=======
+//ajay
+>>>>>>> master
 class UserController extends Controller
 {
     public function __construct()
@@ -18,6 +22,11 @@ class UserController extends Controller
 
         $theme = Theme::uses('backend')->layout('layout');
         $data = ['data' => ''];
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> master
         return $theme->scope('admin.item_master', $data)->render();
     }
 
