@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Theme;
 use DB;
 use Illuminate\Support\Facades\Auth;
-
+//test
 
 class UserController extends Controller
 {
