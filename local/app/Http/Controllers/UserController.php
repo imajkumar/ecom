@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Theme;
 use DB;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class UserController extends Controller
 {
@@ -24,7 +25,8 @@ class UserController extends Controller
     }
     public function saveGroupAttribute(Request $request){
         
-        foreach ($request->UnderGroupAttrSelected as $key => $row) {
+        foreach ($request->UnderGroupAttrSelected as $key => $row) 
+        {
             
              DB::table('tbl_group_attribute')->insert(
             [
@@ -34,11 +36,20 @@ class UserController extends Controller
         );
 
         }
-        
-        
-       
-
     }
+
+    public function saveAttributeValue(Request $request)
+    {
+
+        $attribute = DB::table('tbl_attribute')->find($request->attribute_id);
+         DB::table($attribute->table_name)->updateOrInsert(
+            [
+                'attr_name' => ucwords($request->attr_name),
+                
+            ]
+        );
+    }
+
     public function getTreeView(Request $request){
         $dataObjArr = DB::table('tbl_group')->get();
         $folders_arr = array();

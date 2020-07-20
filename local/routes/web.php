@@ -24,6 +24,7 @@ Route::get('/master-settings', 'UserController@masterSettingsLayout')->name('mas
 
 Route::Post('/saveMasterGroup', 'UserController@saveMasterGroup')->name('saveMasterGroup'); 
 Route::Post('/saveGroupAttribute', 'UserController@saveGroupAttribute')->name('saveGroupAttribute'); 
+Route::Post('/saveAttributeValue', 'UserController@saveAttributeValue')->name('saveAttributeValue'); 
 
 
 
