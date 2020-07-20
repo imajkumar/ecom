@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use Theme;
 use DB;
 use Illuminate\Support\Facades\Auth;
-//test
-
+//ajay
 class UserController extends Controller
 {
     public function __construct()
