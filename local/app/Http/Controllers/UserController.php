@@ -13,6 +13,14 @@ class UserController extends Controller
     {
         $this->middleware('auth');
     }
+    public function itemMasterLayout()
+    { //viewLayout
+
+        $theme = Theme::uses('backend')->layout('layout');
+        $data = ['data' => ''];
+        return $theme->scope('admin.item_master', $data)->render();
+    }
+
     public function masterSettingsLayout()
     { //viewLayout
 
