@@ -6,28 +6,70 @@ use Illuminate\Http\Request;
 use Theme;
 use DB;
 use Illuminate\Support\Facades\Auth;
-<<<<<<< HEAD
+use Response;
+use Session;
 
-=======
-//ajay
->>>>>>> master
+
 class UserController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
     }
+    public function saveItem(Request $request)
+    { //viewLayout
+
+        //echo"<pre>"; print_r($request->all());exit;
+        $this->validate($request, [
+            'item_name' => 'required|string|max:120',
+            'group_id' => 'required|integer',
+            'open_qty' => 'required|integer',
+            'min_qty' => 'required|integer',
+        ],[
+            'item_name.required' => 'Item name is required.',
+            'item_name.string' => 'Item name should be string.',
+            'item_name.max' => 'Item name Should be Minimum of 120 Character.',
+            'group_id.required' => 'Group field is required.',
+            'open_qty.required' => 'Open quantity field is required.',
+            'open_qty.integer' => 'Open quantity field should be number.',
+            'min_qty.required' => 'Min quantity field is required.',
+            'min_qty.integer' => 'Min quantity field should be number.',
+        ]);
+        $user_id = Auth::user()->id;
+        $itemData = DB::table('tbl_items')->insert([
+            'item_name' => $request->item_name,
+            'group_id' => $request->group_id,
+            'open_qty' => $request->open_qty,
+            'min_qty' => $request->min_qty,
+        ]);     
+        $request->session()->flash('message', 'New customer added successfully.');
+        $request->session()->flash('message-type', 'success');
+
+        if($itemData){
+            return Response::json(array('status' => 'success', 'msg' => 'Item details save successfull.'));
+        }else{
+            return Response::json(array('status' => 'wrong', 'msg' => 'Something is wrong try again'));
+        }
+
+    }
+
     public function itemMasterLayout()
     { //viewLayout
 
         $theme = Theme::uses('backend')->layout('layout');
+        $dataObjArr = DB::table('tbl_items')->leftJoin('tbl_group', function($join) {
+            $join->on('tbl_items.group_id', '=', 'tbl_group.g_id');
+          })->get();
+        //dd($dataObjArr);
+        //$data = ['data' => ''];
+        return $theme->scope('admin.item_master', compact('dataObjArr'))->render();
+    }
+
+    public function addGalleryImage()
+    { 
+        $theme = Theme::uses('backend')->layout('layout');
         $data = ['data' => ''];
-<<<<<<< HEAD
-=======
-
-
->>>>>>> master
-        return $theme->scope('admin.item_master', $data)->render();
+        return $theme->scope('admin.add_gallery', $data)->render();
     }
 
     public function masterSettingsLayout()

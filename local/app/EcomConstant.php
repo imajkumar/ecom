@@ -14,4 +14,3 @@ define('FRONT', BASE_URL.'local/public/themes/default/assets/');
 define('BACKEND', BASE_URL.'assets/');
 
 define('WEB_TITLE', 'Bartanwaale.com');
-

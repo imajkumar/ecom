@@ -56,6 +56,22 @@
 	<link href="{{ BACKEND.'plugins/jstree/dist/themes/default/style.min.css'}}" rel="stylesheet" />
 
 	<!-- ================== END PAGE LEVEL STYLE ================== -->
+
+	<!-- ================== BEGIN PAGE gallery upload CSS STYLE ================== -->
+	<link href="{{asset('assets/plugins/blueimp-gallery/css/blueimp-gallery.min.css" rel="stylesheet')}}" />
+	<link href="{{asset('assets/plugins/blueimp-file-upload/css/jquery.fileupload.css" rel="stylesheet')}}" />
+	<link href="{{asset('assets/plugins/blueimp-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet')}}" />
+
+	<!-- ================== END PAGE gallery upload CSS STYLE ================== -->
+
+	<link href="{{asset('assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" />
+	<link href="{{asset('assets/plugins/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css')}}" rel="stylesheet" />
+    
+    <!-- ================== BEGIN PAGE GALLERY ================== -->
+	<link href="{{asset('assets/plugins/lightbox2/dist/css/lightbox.css')}}" rel="stylesheet" />
+	<!-- ================== END PAGE GALLERY ================== -->
+
+	
 </head>
 
 <body>
@@ -81,6 +97,30 @@
 	<script src="{{ BACKEND.'js/app.min.js'}}"></script>
 	<script src="{{ BACKEND.'js/theme/apple.min.js'}}"></script>
 	<!-- ================== END BASE JS ================== -->
+
+	{{-- gallery --}}
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+	<script src="{{asset('assets/plugins/blueimp-file-upload/js/vendor/jquery.ui.widget.js')}}"></script>
+	<script src="{{asset('assets/plugins/blueimp-tmpl/js/tmpl.js')}}"></script>
+	<script src="{{asset('assets/plugins/blueimp-load-image/js/load-image.all.min.js')}}"></script>
+	<script src="{{asset('assets/plugins/blueimp-canvas-to-blob/js/canvas-to-blob.js')}}"></script>
+	<script src="{{asset('assets/plugins/blueimp-gallery/js/jquery.blueimp-gallery.min.js')}}"></script>
+	<script src="{{asset('assets/plugins/blueimp-file-upload/js/jquery.iframe-transport.js')}}"></script>
+	<script src="{{asset('assets/plugins/blueimp-file-upload/js/jquery.fileupload.js')}}"></script>
+	<script src="{{asset('assets/plugins/blueimp-file-upload/js/jquery.fileupload-process.js')}}"></script>
+	<script src="{{asset('assets/plugins/blueimp-file-upload/js/jquery.fileupload-image.js')}}"></script>
+	<script src="{{asset('assets/plugins/blueimp-file-upload/js/jquery.fileupload-audio.js')}}"></script>
+	<script src="{{asset('assets/plugins/blueimp-file-upload/js/jquery.fileupload-video.js')}}"></script>
+	<script src="{{asset('assets/plugins/blueimp-file-upload/js/jquery.fileupload-validate.js')}}"></script>
+	<script src="{{asset('assets/plugins/blueimp-file-upload/js/jquery.fileupload-ui.js')}}"></script>
+	<!--[if (gte IE 8)&(lt IE 10)]>
+		<script src="assets/plugins/jquery-file-upload/js/cors/jquery.xdr-transport.js')}}"></script>
+	<![endif]-->
+	<script src="{{asset('assets/js/demo/form-multiple-upload.demo.js')}}"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+    {{-- end gallery --}}
+
+
 	<script type="text/javascript">
 		BASE_URL = $('meta[name="BASE_URL"]').attr('content');
 		UID = $('meta[name="UUID"]').attr('content');
@@ -99,6 +139,17 @@
 	<script src="{{ BACKEND.'plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js'}}"></script>
 	<script src="{{ BACKEND.'plugins/jstree/dist/jstree.min.js'}}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.5/jquery.jqgrid.min.js"></script>
+
+	<script src="{{asset('assets/plugins/datatables.net/js/jquery.dataTables.min.js')}}')}}"></script>
+	<script src="{{asset('assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js')}}')}}"></script>
+	<script src="{{asset('assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js')}}')}}"></script>
+    <script src="{{asset('assets/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js')}}')}}"></script>
+    
+    <!-- ================== BEGIN PAGE GALLERY JS ================== -->
+	<script src="{{asset('assets/plugins/isotope-layout/dist/isotope.pkgd.min.js')}}"></script>
+	<script src="{{asset('assets/plugins/lightbox2/dist/js/lightbox.min.js')}}"></script>
+	<script src="{{asset('assets/js/demo/gallery.demo.js')}}"></script>
+	<!-- ================== END PAGE GALLERY JS ================== -->
 	<script>
     //<![CDATA[
     $(function () {

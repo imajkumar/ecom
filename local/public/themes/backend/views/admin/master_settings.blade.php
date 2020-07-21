@@ -201,6 +201,7 @@
                                         <div class="col-md-9">
                                             <select multiple class="form-control mb-3 primaryGroup" name="UnderGroupAttrSelected[]" id="UnderGroupAttrSelected">
                                             @foreach ($dataItemAttrObjArr as $rowData)
+                                            {{-- <input type="checkbox" class="form-control" name="UnderGroupAttrSelected[]" value="{{$rowData->attr_name}}" id="UnderGroupAttrSelected"> --}}
                                             <option value="{{$rowData->id}}">{{$rowData->attr_name}}</option>
                                             @endforeach
 
@@ -216,18 +217,12 @@
                                     <button type="reset" class="btn btn-sm btn-default">Cancel</button>
                                 </fieldset>
                             </form>
-
-
-
-
-
-
-                            </div>
-                            <!-- end panel-body -->
                         </div>
-                        <!-- end col-12 -->
+                    <!-- end panel-body -->
                     </div>
+                        <!-- end col-12 -->
                 </div>
+            </div>
                 <!-- begin tab-pane -->
                 <div class="tab-pane fade  show" id="measurement">
                     <div class="row">

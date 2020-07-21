@@ -53,13 +53,13 @@
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
 						<li class="dropdown dropdown-hover">
-							<a href="#" data-toggle="dropdown"><img src="../assets/img/flag/flag-english.png" class="flag-img" alt="" /> English <b class="caret"></b></a>
+							<a href="#" data-toggle="dropdown"><img src="{{FRONT.'img/flag/flag-english.png'}}" class="flag-img" alt="" /> English <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="#" class="dropdown-item"><img src="../assets/img/flag/flag-english.png" class="flag-img" alt="" /> English</a></li>
-								<li><a href="#" class="dropdown-item"><img src="../assets/img/flag/flag-german.png" class="flag-img" alt="" /> German</a></li>
-								<li><a href="#" class="dropdown-item"><img src="../assets/img/flag/flag-spanish.png" class="flag-img" alt="" /> Spanish</a></li>
-								<li><a href="#" class="dropdown-item"><img src="../assets/img/flag/flag-french.png" class="flag-img" alt="" /> French</a></li>
-								<li><a href="#" class="dropdown-item"><img src="../assets/img/flag/flag-chinese.png" class="flag-img" alt="" /> Chinese</a></li>
+								<li><a href="#" class="dropdown-item"><img src="{{FRONT.'img/flag/flag-english.png'}}" class="flag-img" alt="" /> English</a></li>
+								<li><a href="#" class="dropdown-item"><img src="{{FRONT.'img/flag/flag-german.png'}}" class="flag-img" alt="" /> German</a></li>
+								<li><a href="#" class="dropdown-item"><img src="{{FRONT.'img/flag/flag-spanish.png'}}" class="flag-img" alt="" /> Spanish</a></li>
+								<li><a href="#" class="dropdown-item"><img src="{{FRONT.'img/flag/flag-french.png'}}" class="flag-img" alt="" /> French</a></li>
+								<li><a href="#" class="dropdown-item"><img src="{{FRONT.'img/flag/flag-chinese.png'}}" class="flag-img" alt="" /> Chinese</a></li>
 							</ul>
 						</li>
 						<li><a href="#">Customer Care</a></li>
@@ -176,13 +176,13 @@
 												</div>
 												<h4 class="title">Shop By Brand</h4>
 												<ul class="dropdown-brand-list m-b-0">
-													<li><a href="product.html"><img src="../assets/img/brand/brand-apple.png" alt="" /></a></li>
-													<li><a href="product.html"><img src="../assets/img/brand/brand-samsung.png" alt="" /></a></li>
-													<li><a href="product.html"><img src="../assets/img/brand/brand-htc.png" alt="" /></a></li>
-													<li><a href="product.html"><img src="../assets/img/brand/brand-microsoft.png" alt="" /></a></li>
-													<li><a href="product.html"><img src="../assets/img/brand/brand-nokia.png" alt="" /></a></li>
-													<li><a href="product.html"><img src="../assets/img/brand/brand-blackberry.png" alt="" /></a></li>
-													<li><a href="product.html"><img src="../assets/img/brand/brand-sony.png" alt="" /></a></li>
+													<li><a href="product.html"><img src="{{FRONT.'img/brand/brand-apple.png'}}" alt="" /></a></li>
+													<li><a href="product.html"><img src="{{FRONT.'img/brand/brand-samsung.png'}}" alt="" /></a></li>
+													<li><a href="product.html"><img src="{{FRONT.'img/brand/brand-htc.png'}}" alt="" /></a></li>
+													<li><a href="product.html"><img src="{{FRONT.'img/brand/brand-microsoft.png'}}" alt="" /></a></li>
+													<li><a href="product.html"><img src="{{FRONT.'img/brand/brand-nokia.png'}}" alt="" /></a></li>
+													<li><a href="product.html"><img src="{{FRONT.'img/brand/brand-blackberry.png'}}" alt="" /></a></li>
+													<li><a href="product.html"><img src="{{FRONT.'img/brand/brand-sony.png'}}" alt="" /></a></li>
 												</ul>
 											</div>
 											<!-- END dropdown-menu-content -->
@@ -267,7 +267,7 @@
 									<div class="cart-body">
 										<ul class="cart-item">
 											<li>
-												<div class="cart-item-image"><img src="../assets/img/product/product-ipad.jpg" alt="" /></div>
+												<div class="cart-item-image"><img src="{{FRONT.'img/product/product-ipad.jpg'}}" alt="" /></div>
 												<div class="cart-item-info">
 													<h4>iPad Pro Wi-Fi 128GB - Silver</h4>
 													<p class="price">$699.00</p>
@@ -277,7 +277,7 @@
 												</div>
 											</li>
 											<li>
-												<div class="cart-item-image"><img src="../assets/img/product/product-imac.jpg" alt="" /></div>
+												<div class="cart-item-image"><img src="{{FRONT.'img/product/product-imac.jpg'}}" alt="" /></div>
 												<div class="cart-item-info">
 													<h4>21.5-inch iMac</h4>
 													<p class="price">$1299.00</p>
@@ -287,7 +287,7 @@
 												</div>
 											</li>
 											<li>
-												<div class="cart-item-image"><img src="../assets/img/product/product-iphone.png" alt="" /></div>
+												<div class="cart-item-image"><img src="{{FRONT.'img/product/product-iphone.png'}}" alt="" /></div>
 												<div class="cart-item-info">
 													<h4>iPhone 6s 16GB - Silver</h4>
 													<p class="price">$649.00</p>
@@ -313,7 +313,7 @@
 							<li class="divider"></li>
 							<li>
 								<a href="{{route('login')}}">
-									<img src="../assets/img/user/user-1.jpg" class="user-img" alt="" /> 
+									<img src="{{FRONT.'img/user/user-1.jpg'}}" class="user-img" alt="" /> 
 									<span class="d-none d-xl-inline">Login / Register</span>
 								</a>
 							</li>
@@ -334,9 +334,9 @@
 				<!-- BEGIN carousel-inner -->
 				<div class="carousel-inner">
 					<!-- BEGIN item -->
-					<div class="carousel-item active" data-paroller="true" data-paroller-factor="0.3" data-paroller-factor-sm="0.01" data-paroller-factor-xs="0.01" style="background: url(../assets/img/slider/slider-1-cover.jpg) center 0 / cover no-repeat;">
+					<div class="carousel-item active" data-paroller="true" data-paroller-factor="0.3" data-paroller-factor-sm="0.01" data-paroller-factor-xs="0.01" style="background: url('{{FRONT.'img/slider/slider-1-cover.jpg'}}') center 0 / cover no-repeat;">
 						<div class="container">
-							<img src="../assets/img/slider/slider-1-product.png" class="product-img right bottom fadeInRight animated" alt="" />
+							<img src="{{FRONT.'img/slider/slider-1-product.png'}}" class="product-img right bottom fadeInRight animated" alt="" />
 						</div>
 						<div class="carousel-caption carousel-caption-left">
 							<div class="container">
@@ -349,9 +349,9 @@
 					</div>
 					<!-- END item -->
 					<!-- BEGIN item -->
-					<div class="carousel-item" data-paroller="true" data-paroller-factor="-0.3" data-paroller-factor-sm="0.01" data-paroller-factor-xs="0.01" style="background: url(../assets/img/slider/slider-2-cover.jpg) center 0 / cover no-repeat;">
+					<div class="carousel-item" data-paroller="true" data-paroller-factor="-0.3" data-paroller-factor-sm="0.01" data-paroller-factor-xs="0.01" style="background: url('{{FRONT.'img/slider/slider-2-cover.jpg'}}') center 0 / cover no-repeat;">
 						<div class="container">
-							<img src="../assets/img/slider/slider-2-product.png" class="product-img left bottom fadeInLeft animated" alt="" />
+							<img src="{{FRONT.'img/slider/slider-2-product.png'}}" class="product-img left bottom fadeInLeft animated" alt="" />
 						</div>
 						<div class="carousel-caption carousel-caption-right">
 							<div class="container">
@@ -364,7 +364,7 @@
 					</div>
 					<!-- END item -->
 					<!-- BEGIN item -->
-					<div class="carousel-item" data-paroller="true" data-paroller-factor="-0.3" data-paroller-factor-sm="0.01" data-paroller-factor-xs="0.01" style="background: url(../assets/img/slider/slider-3-cover.jpg) center 0 / cover no-repeat;">
+					<div class="carousel-item" data-paroller="true" data-paroller-factor="-0.3" data-paroller-factor-sm="0.01" data-paroller-factor-xs="0.01" style="background: url('{{FRONT.'img/slider/slider-3-cover.jpg'}}') center 0 / cover no-repeat;">
 						<div class="carousel-caption">
 							<div class="container">
 								<h3 class="title m-b-5 fadeInDownBig animated">Macbook Air</h3>
@@ -406,7 +406,7 @@
 						<!-- BEGIN promotion -->
 						<div class="promotion promotion-lg bg-black-darker">
 							<div class="promotion-image text-right promotion-image-overflow-bottom">
-								<img src="../assets/img/product/product-iphone-se.png" alt="" />
+								<img src="{{FRONT.'img/product/product-iphone-se.png'}}" alt="" />
 							</div>
 							<div class="promotion-caption promotion-caption-inverse">
 								<h4 class="promotion-title">iPhone SE</h4>
@@ -423,7 +423,7 @@
 						<!-- BEGIN promotion -->
 						<div class="promotion bg-blue">
 							<div class="promotion-image promotion-image-overflow-bottom promotion-image-overflow-top">
-								<img src="../assets/img/product/product-apple-watch-sm.png" alt="" />
+								<img src="{{FRONT.'img/product/product-apple-watch-sm.png'}}" alt="" />
 							</div>
 							<div class="promotion-caption promotion-caption-inverse text-right">
 								<h4 class="promotion-title">Apple Watch</h4>
@@ -436,7 +436,7 @@
 						<!-- BEGIN promotion -->
 						<div class="promotion bg-silver-lighter">
 							<div class="promotion-image text-center promotion-image-overflow-bottom">
-								<img src="../assets/img/product/product-mac-mini.png" alt="" />
+								<img src="{{FRONT.'img/product/product-mac-mini.png'}}" alt="" />
 							</div>
 							<div class="promotion-caption text-center">
 								<h4 class="promotion-title">Mac Mini</h4>
@@ -453,7 +453,7 @@
 						<!-- BEGIN promotion -->
 						<div class="promotion bg-silver-lighter">
 							<div class="promotion-image promotion-image-overflow-right promotion-image-overflow-bottom text-right">
-								<img src="../assets/img/product/product-mac-accessories.png" alt="" />
+								<img src="{{FRONT.'img/product/product-mac-accessories.png'}}" alt="" />
 							</div>
 							<div class="promotion-caption text-center">
 								<h4 class="promotion-title">Apple Accessories</h4>
@@ -466,7 +466,7 @@
 						<!-- BEGIN promotion -->
 						<div class="promotion bg-black">
 							<div class="promotion-image text-right">
-								<img src="../assets/img/product/product-mac-pro.png" alt="" />
+								<img src="{{FRONT.'img/product/product-mac-pro.png'}}" alt="" />
 							</div>
 							<div class="promotion-caption promotion-caption-inverse">
 								<h4 class="promotion-title">Mac Pro</h4>
@@ -504,7 +504,7 @@
 						<!-- BEGIN item -->
 						<div class="item item-thumbnail">
 							<a href="product_detail.html" class="item-image">
-								<img src="../assets/img/product/product-iphone.png" alt="" />
+								<img src="{{FRONT.'img/product/product-iphone.png'}}" alt="" />
 								<div class="discount">15% OFF</div>
 							</a>
 							<div class="item-info">
@@ -524,7 +524,7 @@
 						<!-- BEGIN item -->
 						<div class="item item-thumbnail">
 							<a href="product_detail.html" class="item-image">
-								<img src="../assets/img/product/product-ipad-pro.png" alt=""  />
+								<img src="{{FRONT.'img/product/product-ipad-pro.png'}}" alt=""  />
 								<div class="discount">32% OFF</div>
 							</a>
 							<div class="item-info">
@@ -544,7 +544,7 @@
 						<!-- BEGIN item -->
 						<div class="item item-thumbnail">
 							<a href="product_detail.html" class="item-image">
-								<img src="../assets/img/product/product-imac.png" alt="" />
+								<img src="{{FRONT.'img/product/product-imac.png'}}" alt="" />
 								<div class="discount">20% OFF</div>
 							</a>
 							<div class="item-info">
@@ -564,7 +564,7 @@
 						<!-- BEGIN item -->
 						<div class="item item-thumbnail">
 							<a href="product_detail.html" class="item-image">
-								<img src="../assets/img/product/product-apple-watch.png" alt="" />
+								<img src="{{FRONT.'img/product/product-apple-watch.png'}}" alt="" />
 								<div class="discount">13% OFF</div>
 							</a>
 							<div class="item-info">
@@ -584,7 +584,7 @@
 						<!-- BEGIN item -->
 						<div class="item item-thumbnail">
 							<a href="product_detail.html" class="item-image">
-								<img src="../assets/img/product/product-macbook-pro.png" alt="" />
+								<img src="{{FRONT.'img/product/product-macbook-pro.png'}}" alt="" />
 								<div class="discount">30% OFF</div>
 							</a>
 							<div class="item-info">
@@ -604,7 +604,7 @@
 						<!-- BEGIN item -->
 						<div class="item item-thumbnail">
 							<a href="product_detail.html" class="item-image">
-								<img src="../assets/img/product/product-apple-tv.png" alt="" />
+								<img src="{{FRONT.'img/product/product-apple-tv.png'}}" alt="" />
 								<div class="discount">40% OFF</div>
 							</a>
 							<div class="item-info">
@@ -664,7 +664,7 @@
 						<a href="#" class="category-item full">
 							<div class="item">
 								<div class="item-cover">
-									<img src="../assets/img/product/product-samsung-s7-edge.jpg" alt="" />
+									<img src="{{FRONT.'img/product/product-samsung-s7-edge.jpg'}}" alt="" />
 								</div>
 								<div class="item-info bottom">
 									<h4 class="item-title">Samsung Galaxy s7 Edge + Geat 360 + Gear VR</h4>
@@ -681,7 +681,7 @@
 								<!-- BEGIN item -->
 								<div class="item item-thumbnail">
 									<a href="product_detail.html" class="item-image">
-										<img src="../assets/img/product/product-iphone.png" alt="" />
+										<img src="{{FRONT.'img/product/product-iphone.png'}}" alt="" />
 										<div class="discount">15% OFF</div>
 									</a>
 									<div class="item-info">
@@ -697,7 +697,7 @@
 								<!-- BEGIN item -->
 								<div class="item item-thumbnail">
 									<a href="product_detail.html" class="item-image">
-										<img src="../assets/img/product/product-samsung-note5.png" alt="" />
+										<img src="{{FRONT.'img/product/product-samsung-note5.png'}}" alt="" />
 										<div class="discount">32% OFF</div>
 									</a>
 									<div class="item-info">
@@ -713,7 +713,7 @@
 								<!-- BEGIN item -->
 								<div class="item item-thumbnail">
 									<a href="product_detail.html" class="item-image">
-										<img src="../assets/img/product/product-iphone-se.png" alt="" />
+										<img src="{{FRONT.'img/product/product-iphone-se.png'}}" alt="" />
 										<div class="discount">20% OFF</div>
 									</a>
 									<div class="item-info">
@@ -733,7 +733,7 @@
 								<!-- BEGIN item -->
 								<div class="item item-thumbnail">
 									<a href="product_detail.html" class="item-image">
-										<img src="../assets/img/product/product-zenfone2.png" alt="" />
+										<img src="{{FRONT.'img/product/product-zenfone2.png'}}" alt="" />
 										<div class="discount">15% OFF</div>
 									</a>
 									<div class="item-info">
@@ -749,7 +749,7 @@
 								<!-- BEGIN item -->
 								<div class="item item-thumbnail">
 									<a href="product_detail.html" class="item-image">
-										<img src="../assets/img/product/product-xperia-z.png" alt="" />
+										<img src="{{FRONT.'img/product/product-xperia-z.png'}}" alt="" />
 										<div class="discount">32% OFF</div>
 									</a>
 									<div class="item-info">
@@ -765,7 +765,7 @@
 								<!-- BEGIN item -->
 								<div class="item item-thumbnail">
 									<a href="product_detail.html" class="item-image">
-										<img src="../assets/img/product/product-lumia-532.png" alt="" />
+										<img src="{{FRONT.'img/product/product-lumia-532.png'}}" alt="" />
 										<div class="discount">20% OFF</div>
 									</a>
 									<div class="item-info">
@@ -823,7 +823,7 @@
 						<a href="#" class="category-item full">
 							<div class="item">
 								<div class="item-cover">
-									<img src="../assets/img/product/product-huawei-mediapad.jpg" alt="" />
+									<img src="{{FRONT.'img/product/product-huawei-mediapad.jpg'}}" alt="" />
 								</div>
 								<div class="item-info bottom">
 									<h4 class="item-title">Huawei MediaPad T1 7.0</h4>
@@ -840,7 +840,7 @@
 								<!-- BEGIN item -->
 								<div class="item item-thumbnail">
 									<a href="product_detail.html" class="item-image">
-										<img src="../assets/img/product/product-ipad-pro.png" alt="" />
+										<img src="{{FRONT.'img/product/product-ipad-pro.png'}}" alt="" />
 										<div class="discount">15% OFF</div>
 									</a>
 									<div class="item-info">
@@ -856,7 +856,7 @@
 								<!-- BEGIN item -->
 								<div class="item item-thumbnail">
 									<a href="product_detail.html" class="item-image">
-										<img src="../assets/img/product/product-galaxy-tab2.png" alt="" />
+										<img src="{{FRONT.'img/product/product-galaxy-tab2.png'}}" alt="" />
 										<div class="discount">32% OFF</div>
 									</a>
 									<div class="item-info">
@@ -872,7 +872,7 @@
 								<!-- BEGIN item -->
 								<div class="item item-thumbnail">
 									<a href="product_detail.html" class="item-image">
-										<img src="../assets/img/product/product-galaxy-taba.png" alt="" />
+										<img src="{{FRONT.'img/product/product-galaxy-taba.png'}}" alt="" />
 										<div class="discount">20% OFF</div>
 									</a>
 									<div class="item-info">
@@ -892,7 +892,7 @@
 								<!-- BEGIN item -->
 								<div class="item item-thumbnail">
 									<a href="product_detail.html" class="item-image">
-										<img src="../assets/img/product/product-hp-spectrex2.png" alt="" />
+										<img src="{{FRONT.'img/product/product-hp-spectrex2.png'}}" alt="" />
 										<div class="discount">15% OFF</div>
 									</a>
 									<div class="item-info">
@@ -908,7 +908,7 @@
 								<!-- BEGIN item -->
 								<div class="item item-thumbnail">
 									<a href="product_detail.html" class="item-image">
-										<img src="../assets/img/product/product-xperia-z2.png" alt="" />
+										<img src="{{FRONT.'img/product/product-xperia-z2.png'}}" alt="" />
 										<div class="discount">32% OFF</div>
 									</a>
 									<div class="item-info">
@@ -924,7 +924,7 @@
 								<!-- BEGIN item -->
 								<div class="item item-thumbnail">
 									<a href="product_detail.html" class="item-image">
-										<img src="../assets/img/product/product-ipad-air.png" alt="" />
+										<img src="{{FRONT.'img/product/product-ipad-air.png'}}" alt="" />
 										<div class="discount">20% OFF</div>
 									</a>
 									<div class="item-info">
@@ -1094,7 +1094,7 @@
 						<ul class="list-unstyled list-product mb-lg-4 mb-0">
 							<li>
 								<div class="image">
-									<img src="../assets/img/product/product-iphone-6s.jpg" alt="" />
+									<img src="{{FRONT.'img/product/product-iphone-6s.jpg'}}" alt="" />
 								</div>
 								<div class="info">
 									<h4 class="info-title">Iphone 6s</h4>
@@ -1103,7 +1103,7 @@
 							</li>
 							<li>
 								<div class="image">
-									<img src="../assets/img/product/product-galaxy-s6.jpg" alt="" />
+									<img src="{{FRONT.'img/product/product-galaxy-s6.jpg'}}" alt="" />
 								</div>
 								<div class="info">
 									<h4 class="info-title">Samsung Galaxy s7</h4>
@@ -1112,7 +1112,7 @@
 							</li>
 							<li>
 								<div class="image">
-									<img src="../assets/img/product/product-ipad-pro.jpg" alt="" />
+									<img src="{{FRONT.'img/product/product-ipad-pro.jpg'}}" alt="" />
 								</div>
 								<div class="info">
 									<h4 class="info-title">Ipad Pro</h4>
@@ -1121,7 +1121,7 @@
 							</li>
 							<li>
 								<div class="image">
-									<img src="../assets/img/product/product-galaxy-note5.jpg" alt="" />
+									<img src="{{FRONT.'img/product/product-galaxy-note5.jpg'}}" alt="" />
 								</div>
 								<div class="info">
 									<h4 class="info-title">Samsung Galaxy Note 5</h4>
@@ -1157,7 +1157,7 @@
 			<!-- BEGIN container -->
 			<div class="container">
 				<div class="payment-method">
-					<img src="../assets/img/payment/payment-method.png" alt="" />
+					<img src="{{FRONT.'img/payment/payment-method.png'}}" alt="" />
 				</div>
 				<div class="copyright">
 					Copyright &copy; 2019 SeanTheme. All rights reserved.
