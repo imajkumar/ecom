@@ -199,13 +199,16 @@
                                 <div class="form-group row m-b-15">
                                         <label class="col-form-label col-md-3">Atrribute</label>
                                         <div class="col-md-9">
-                                            <select multiple class="form-control mb-3 primaryGroup" name="UnderGroupAttrSelected[]" id="UnderGroupAttrSelected">
+                                            {{-- <select multiple class="form-control mb-3 primaryGroup" name="UnderGroupAttrSelected[]" id="UnderGroupAttrSelected"> --}}
                                             @foreach ($dataItemAttrObjArr as $rowData)
-                                            {{-- <input type="checkbox" class="form-control" name="UnderGroupAttrSelected[]" value="{{$rowData->attr_name}}" id="UnderGroupAttrSelected"> --}}
-                                            <option value="{{$rowData->id}}">{{$rowData->attr_name}}</option>
+                                            
+                                            <label class="col-form-label">{{$rowData->attr_name}}</label>
+                                            <input type="checkbox" class="form-control" name="UnderGroupAttrSelected[]" value="{{$rowData->id}}" id="UnderGroupAttrSelected" style="margin-top: -31px;
+                                            margin-left: -105px;">
+                                            {{-- <option value="{{$rowData->id}}">{{$rowData->attr_name}}</option> --}}
                                             @endforeach
 
-                                            </select>
+                                            {{-- </select> --}}
                                         </div>
                                     </div>
 

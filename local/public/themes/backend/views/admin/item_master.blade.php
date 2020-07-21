@@ -10,6 +10,7 @@
     <!-- end breadcrumb -->
     <!-- begin page-header -->
     <h1 class="page-header">Master <small>Settings</small></h1>
+   
     <!-- end page-header -->
 
     <!-- begin row -->
