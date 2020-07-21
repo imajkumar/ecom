@@ -16,7 +16,9 @@
     <!-- end page-header -->
     
     <!-- begin form-file-upload -->
-    <form id="fileupload" action="../assets/global/plugins/jquery-file-upload/server/php/" method="POST" enctype="multipart/form-data">
+<form id="fileupload" action="{{route('uploadGalleryImage')}}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="item_id" value="{{$item_id}}"/>
         <!-- begin panel -->
         <div class="panel panel-inverse">
             <!-- begin panel-heading -->
@@ -32,7 +34,7 @@
             <!-- end panel-heading -->
             <!-- begin panel-body -->
             <div class="panel-body">			
-                <div class="note note-yellow m-b-15">
+                {{-- <div class="note note-yellow m-b-15">
                     <div class="note-icon f-s-20">
                         <i class="fa fa-lightbulb fa-2x"></i>
                     </div>
@@ -44,7 +46,7 @@
                             <li>Uploaded files will be deleted automatically after <strong>5 minutes</strong> (demo setting).</li>
                         </ul>
                     </div>
-                </div>
+                </div> --}}
                 <div class="row fileupload-buttonbar">
                     <div class="col-xl-7">
                         <span class="btn btn-primary fileinput-button m-r-3">

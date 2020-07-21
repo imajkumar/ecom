@@ -28,6 +28,7 @@ Route::Post('/saveMasterGroup', 'UserController@saveMasterGroup')->name('saveMas
 Route::Post('/saveGroupAttribute', 'UserController@saveGroupAttribute')->name('saveGroupAttribute'); 
 Route::Post('/saveAttributeValue', 'UserController@saveAttributeValue')->name('saveAttributeValue'); 
 
-Route::get('/add-gallery-image', 'UserController@addGalleryImage')->name('addGalleryImage');
+Route::get('/add-gallery-image/{item_id}', 'UserController@addGalleryImage')->name('addGalleryImage');
+Route::post('/uploadGalleryImage', 'UserController@uploadGalleryImage')->name('uploadGalleryImage');
 
 Route::Post('/getTreeView', 'UserController@getTreeView')->name('getTreeView'); 

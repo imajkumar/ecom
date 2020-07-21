@@ -7,7 +7,7 @@ use Theme;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Response;
-use Session;
+
 
 
 class UserController extends Controller
@@ -15,6 +15,38 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function uploadGalleryImage(Request $request)
+    {
+       $photos = $request->file('files');
+        // $manufacture_logo = '';
+        // if ($file = $request->hasFile('m_Logo')) {
+        //     $file = $request->file('m_Logo');
+        //     $fileName = time() . $file->getClientOriginalName();
+        //     $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'frontand/manufacture/logo';
+        //     $file->move($destinationPath, $fileName);
+        //     $manufacture_logo = $fileName;
+        // }
+        $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'gallery/item';
+        for ($i = 0; $i < count($photos); $i++) {
+            $photo = $photos[$i];
+            $name = sha1(date('YmdHis') . microtime());
+            $image_name = $name . '.' . $photo->getClientOriginalExtension();
+            $photo->move($destinationPath, $image_name);
+            $user_id = Auth::user()->id;
+            $itemData = DB::table('tbl_item_gallery')->insert([
+                'item_id' => $request->item_id,
+                'img_name' => $image_name,
+                'alt_tag' => $photo->getClientOriginalName(),
+                'created_by' => $user_id,
+                'created_by' => $user_id,
+            ]); 
+        }
+        return Response::json([
+            'message' => 'Image saved Successfully'
+        ], 200);
+
     }
     public function saveItem(Request $request)
     { //viewLayout
@@ -65,10 +97,10 @@ class UserController extends Controller
         return $theme->scope('admin.item_master', compact('dataObjArr'))->render();
     }
 
-    public function addGalleryImage()
+    public function addGalleryImage($item_id)
     { 
         $theme = Theme::uses('backend')->layout('layout');
-        $data = ['data' => ''];
+        $data = ['item_id' => $item_id];
         return $theme->scope('admin.add_gallery', $data)->render();
     }
 

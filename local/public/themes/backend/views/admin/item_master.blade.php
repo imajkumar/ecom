@@ -105,10 +105,10 @@
                         <tbody>
                             <?php $i=1; foreach($dataObjArr as $itemData){?>
                             <tr class="odd gradeX">
-                            <td width="1%" class="f-s-600 text-inverse">{{$i++}}</td>
+                                <td width="1%" class="f-s-600 text-inverse">{{$i++}}</td>
                                 
-                                <td><a href="{{route('addGalleryImage')}}">Add image</a></td>
-                            <td>{{$itemData->item_name}}</td>
+                                <td><a href="{{route('addGalleryImage', $itemData->item_id)}}">Add image</a></td>
+                                <td>{{$itemData->item_name}}</td>
                                 <td>{{$itemData->g_name}}</td>
                                 <td>{{$itemData->open_qty}}</td>
                                 <td>{{$itemData->min_qty}}</td>
