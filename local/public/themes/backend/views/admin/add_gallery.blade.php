@@ -6,13 +6,13 @@
 <div id="content" class="content">
     <!-- begin breadcrumb -->
     <ol class="breadcrumb float-xl-right">
-        <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
-        <li class="breadcrumb-item"><a href="javascript:;">Form Stuff</a></li>
-        <li class="breadcrumb-item active">Multiple File Upload</li>
+        <li class="breadcrumb-item"><a href="javascript:;">Dashbord</a></li>
+        {{-- <li class="breadcrumb-item"><a href="javascript:;">Form Stuff</a></li> --}}
+        <li class="breadcrumb-item active">Gallery</li>
     </ol>
     <!-- end breadcrumb -->
     <!-- begin page-header -->
-    <h1 class="page-header">Multiple File Upload <small>header small text goes here...</small></h1>
+    <h1 class="page-header">Gallery <small>images</small></h1>
     <!-- end page-header -->
     
     <!-- begin form-file-upload -->
@@ -23,7 +23,7 @@
         <div class="panel panel-inverse">
             <!-- begin panel-heading -->
             <div class="panel-heading">
-                <h4 class="panel-title">jQuery File Upload</h4>
+                <h4 class="panel-title">Image Upload</h4>
                 <div class="panel-heading-btn">
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
