@@ -8,7 +8,7 @@
     </ol>
     <!-- end breadcrumb -->
     <!-- begin page-header -->
-    <h1 class="page-header">Master <small>Settings</small></h1>
+    <h1 class="page-header">MASTER <small>SETTING</small></h1>
     <!-- end page-header -->
 
     <!-- begin row -->
@@ -18,7 +18,7 @@
             <!-- begin panel -->
             <div class="panel panel-inverse" data-sortable-id="tree-view-1">
                 <div class="panel-heading">
-                    <h4 class="panel-title">Group Tree</h4>
+                    <h4 class="panel-title">GROUP TREE</h4>
                     <div class="panel-heading-btn">
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
@@ -40,25 +40,25 @@
                 <li class="nav-item">
                     <a href="#default-tab-1" data-toggle="tab" class="nav-link active">
                         <span class="d-sm-none">Tab 1</span>
-                        <span class="d-sm-block d-none">Items List</span>
+                        <span class="d-sm-block d-none">ITEM LIST</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#default-tab-2" data-toggle="tab" class="nav-link">
                         <span class="d-sm-none">Tab 2</span>
-                        <span class="d-sm-block d-none">Group</span>
+                        <span class="d-sm-block d-none">GROUP</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#default-tab-3" data-toggle="tab" class="nav-link">
                         <span class="d-sm-none">Tab 3</span>
-                        <span class="d-sm-block d-none">Items Group</span>
+                        <span class="d-sm-block d-none">ITEM GROUP</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#measurement" data-toggle="tab" class="nav-link">
                         <span class="d-sm-none">Tab 3</span>
-                        <span class="d-sm-block d-none">Measurement</span>
+                        <span class="d-sm-block d-none">MEASUREMENT</span>
                     </a>
                 </li>
             </ul>
@@ -91,73 +91,89 @@
                                 <!-- end panel-heading -->
                                 <!-- begin panel-body -->
                                 <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-4 col-sm-8">
 
+                                            <div class="form-group row m-b-15">
+                                                <label class="col-form-label col-md-12 col-sm-4">Group</label>
+                                                <div class="col-md-12 col-sm-8">
+                                                    <input type="text" name="group_name" id="group_name" class="form-control m-b-5" placeholder="Enter group" />
+        
+                                                </div>
+                                            </div>
+                                            <?php
+                                            $dataObjArr = getUnderGroup();
+                                            ?>
+                                            <div class="form-group row m-b-15">
+                                                <label class="col-form-label col-md-12 col-sm-4">Under Group</label>
+                                                <div class="col-md-12 col-sm-8">
+                                                    <select class="form-control mb-3" id="UnderGroup" disabled>
+                                                        @foreach ($dataObjArr as $rowData)
+                                                        <option value="{{$rowData->g_id}}">{{$rowData->g_name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
 
-                                    <div class="form-group row m-b-15">
-                                        <label class="col-form-label col-md-3">Group</label>
-                                        <div class="col-md-9">
-                                            <input type="text" name="group_name" id="group_name" class="form-control m-b-5" placeholder="Enter group" />
+                                            
+                                        </div>
+
+                                        <div class="col-md-4 col-sm-8">
+                                            <div class="form-group row m-b-15">
+                                                <label class="col-md-12 col-sm-4 col-form-label">Alias</label>
+                                                <div class="col-md-12 col-sm-8">
+                                                    <input type="text" name="alias_name" id="alias_name" class="form-control m-b-5" placeholder="Enter Alias" />
+        
+                                                </div>
+                                            </div>
+                                            <div class="form-group row m-b-15">
+                                                <label class="col-md-12 col-sm-4 col-form-label">HSN</label>
+                                                <div class="col-md-12 col-sm-8">
+                                                    <input type="text" id="hsn" class="form-control m-b-5" placeholder="Enter HSN" />
+        
+                                                </div>
+                                            </div>
+                                            
+
 
                                         </div>
-                                    </div>
-                                    <div class="form-group row m-b-15">
-                                        <label class="col-form-label col-md-3">Alias</label>
-                                        <div class="col-md-9">
-                                            <input type="text" name="alias_name" id="alias_name" class="form-control m-b-5" placeholder="Enter Alias" />
+                                        
+                                        <div class="col-md-4 col-sm-8">
+
+                                            <div class="form-group row m-b-15">
+                                                <label class="col-md-12 col-sm-4 col-form-label">Primay Group (Y/N)</label>
+                                                <div class="col-md-12 col-sm-8">
+                                                    <select class="form-control mb-3 primaryGroup" id="primaryGroup">
+                                                        <option selected="selected" value="0">NO</option>
+                                                        <option value="1">YES</option>
+        
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row m-b-15">
+                                                <label class="col-md-12 col-sm-4 col-form-label">TAX CATEGORY</label>
+                                                <div class="col-md-12 col-sm-8">
+                                                    <select class="form-control mb-3" id="taxCategory">
+                                                        <option selected="selected" value="">-NA-</option>
+                                                        <option value="AF">GST 15%</option>
+                                                        <option value="AL">CGST 10%</option>
+        
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
+
 
                                         </div>
-                                    </div>
-                                    <div class="form-group row m-b-15">
-                                        <label class="col-form-label col-md-3">Primay Group (Y/N)</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control mb-3 primaryGroup" id="primaryGroup">
-                                                <option selected="selected" value="0">NO</option>
-                                                <option value="1">YES</option>
 
-                                            </select>
-                                        </div>
                                     </div>
-                                    <?php
-                                    $dataObjArr = getUnderGroup();
-                                    ?>
-                                    <div class="form-group row m-b-15">
-                                        <label class="col-form-label col-md-3">Under Group</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control mb-3" id="UnderGroup" disabled>
-                                                @foreach ($dataObjArr as $rowData)
-                                                <option value="{{$rowData->g_id}}">{{$rowData->g_name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row m-b-15">
-                                        <label class="col-form-label col-md-3">HSN</label>
-                                        <div class="col-md-9">
-                                            <input type="text" id="hsn" class="form-control m-b-5" placeholder="Enter HSN" />
 
-                                        </div>
-                                    </div>
-                                    <div class="form-group row m-b-15">
-                                        <label class="col-form-label col-md-3">TAX CATEGORY</label>
-                                        <div class="col-md-9">
-                                            <select class="form-control mb-3" id="taxCategory">
-                                                <option selected="selected" value="">-NA-</option>
-                                                <option value="AF">GST 15%</option>
-                                                <option value="AL">CGST 10%</option>
-
-                                            </select>
-                                        </div>
-                                    </div>
                                     <fieldset>
 
                                         <button type="button" id="btnGroup" class="btn btn-sm btn-primary m-r-5 ">SAVE</button>
                                         <button type="reset" class="btn btn-sm btn-default">Cancel</button>
                                     </fieldset>
-
-
-
-
-
 
                                 </div>
                                 <!-- end panel-body -->

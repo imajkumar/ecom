@@ -108,6 +108,8 @@ $(document).ready(function() {
     });
 
     $(document).ready(function() {
+
+
         $('#submitItemBtn').click(function() {
 
             // let name= $('input[name="name"]').val();
@@ -142,6 +144,34 @@ $(document).ready(function() {
                                 $('#errorMsg').html('');
 
                             }, 10000);
+
+                            $.ajax({
+                                type: 'GET',
+                                url: BASE_URL + '/getItembyAjax',
+                                success: function(res) {
+                                    console.log(res);
+                                    $('#itemDataAppend').empty();
+                                    let html = '';
+                                    $.each(res['dataForTable'], function(ind, itemData) {
+                                        console.log(itemData['item_name']);
+                                        html += `<tr class="odd gradeX">
+                                                <td width="1%" class="f-s-600 text-inverse">${ind+1}</td>
+                                                <td>
+                                                <img src="${(itemData['img_name']) ? BASE_URL+'/gallery/'+itemData['img_name']: BASE_URL+'/assets/img/product/default.jpg'}" width="50px" height="50px"/>
+                                               
+                                                <a href="${BASE_URL+'/add-gallery-image/'+itemData['item_id']}">Add image</a></td>
+                                                <td>${itemData['item_name']}</td>
+                                                <td>${itemData['g_name']}</td>
+                                                <td>${itemData['open_qty']}</td>
+                                                <td>${itemData['min_qty']}</td>
+                                            </tr>`;
+                                    });
+
+                                    $('#itemDataAppend').append(html);
+                                }
+                            });
+
+
                         } else {
 
                             $('#errorMsg').css("display", "block");

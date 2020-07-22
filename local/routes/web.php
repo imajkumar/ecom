@@ -23,6 +23,7 @@ Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 Route::get('/master-settings', 'UserController@masterSettingsLayout')->name('masterSettingsLayout');
 Route::get('/item-master', 'UserController@itemMasterLayout')->name('itemMasterLayout');
 Route::post('/saveItem', 'UserController@saveItem')->name('saveItem');
+Route::get('/getItembyAjax', 'UserController@getItembyAjax')->name('getItembyAjax');
 
 Route::Post('/saveMasterGroup', 'UserController@saveMasterGroup')->name('saveMasterGroup'); 
 Route::Post('/saveGroupAttribute', 'UserController@saveGroupAttribute')->name('saveGroupAttribute'); 

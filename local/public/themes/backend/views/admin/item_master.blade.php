@@ -9,7 +9,7 @@
     </ol>
     <!-- end breadcrumb -->
     <!-- begin page-header -->
-    <h1 class="page-header">Item <small>Master</small></h1>
+    <h1 class="page-header">ITEM <small>MASTER</small></h1>
 
     <!-- end page-header -->
 
@@ -40,7 +40,7 @@
         <div class="col-xl-12">
             <div class="panel panel-inverse" data-sortable-id="tree-view-1">
                 <div class="panel-heading">
-                    <h4 class="panel-title">Item Setting</h4>
+                    <h4 class="panel-title">ITEM SETTING</h4>
                     <div class="panel-heading-btn">
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
@@ -55,31 +55,31 @@
                             <li class="nav-item">
                                 <a href="#default-tab-1" data-toggle="tab" class="nav-link active">
                                     <span class="d-sm-none">Tab 1</span>
-                                    <span class="d-sm-block d-none">Items List</span>
+                                    <span class="d-sm-block d-none">ITEM LIST</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#addItem" data-toggle="tab" class="nav-link">
                                     <span class="d-sm-none">Tab 2</span>
-                                    <span class="d-sm-block d-none">Add Item</span>
+                                    <span class="d-sm-block d-none">ADD ITEM</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#purchasetab" data-toggle="tab" class="nav-link">
                                     <span class="d-sm-none">Tab 3</span>
-                                    <span class="d-sm-block d-none">Purchase</span>
+                                    <span class="d-sm-block d-none">PURCHASE</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#salestab" data-toggle="tab" class="nav-link">
                                     <span class="d-sm-none">Tab 3</span>
-                                    <span class="d-sm-block d-none">Sales</span>
+                                    <span class="d-sm-block d-none">SALES</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#gallerytab" data-toggle="tab" class="nav-link">
                                     <span class="d-sm-none">Tab 3</span>
-                                    <span class="d-sm-block d-none">Gallery</span>
+                                    <span class="d-sm-block d-none">GALLERY</span>
                                 </a>
                             </li>
                         </ul>
@@ -116,13 +116,18 @@
 
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="itemDataAppend">
                                     <?php $i = 1;
                                     foreach ($dataObjArr as $itemData) { ?>
                                         <tr class="odd gradeX">
                                             <td width="1%" class="f-s-600 text-inverse">{{$i++}}</td>
 
-                                            <td><a href="{{route('addGalleryImage', $itemData->item_id)}}">Add image</a></td>
+                                            <td>@if($itemData->img_name)
+                                            <img src="{{BASE_URL.ITEM_IMG_PATH.'/'.$itemData->img_name}}" width="50px" height="50px"/>
+                                            @else
+                                            <img src="{{BACKEND.'img/product/default.jpg'}}" width="50px" height="50px"/>
+                                            @endif
+                                            <a href="{{route('addGalleryImage', $itemData->item_id)}}">Add image</a></td>
                                             <td>{{$itemData->item_name}}</td>
                                             <td>{{$itemData->g_name}}</td>
                                             <td>{{$itemData->open_qty}}</td>
@@ -158,7 +163,7 @@
                                         <form class="form-horizontal" id="saveItemMaster" data-parsley-validate="true" name="demo-form" novalidate="">
                                             @csrf
                                             <div class="row">
-                                                <div class="col-md-3 col-sm-8">
+                                                <div class="col-md-4 col-sm-8">
 
                                                     <div class="form-group row m-b-15">
                                                         <label class="col-md-12 col-sm-4 col-form-label" for="name">Name * :</label>
@@ -166,112 +171,87 @@
                                                             <input class="form-control" type="text" id="name" name="item_name" placeholder="Required" data-parsley-required="true">
                                                         </div>
                                                     </div>
-
-
-                                                </div>
-                                                <div class="col-md-3 col-sm-8">
-                                                <div class="form-group row m-b-15">
-                                                <label class="col-md-12 col-sm-4 col-form-label" for="description">Description * :</label>
-                                                <div class="col-md-12 col-sm-8">
-                                                    <input class="form-control" type="text" id="description" name="description" placeholder="Description" data-parsley-required="true">
-                                                </div>
-                                            </div>
-
-
-                                                </div>
-                                                <div class="col-md-3 col-sm-8">
-                                                <div class="form-group row m-b-15">
-                                                <label class="col-md-12 col-sm-4 col-form-label" for="group">Group :</label>
-                                                <div class="col-md-12 col-sm-8">
-                                                    <select class="form-control" id="group" name="group_id" data-parsley-required="true" placeholder="Group">
-                                                        @foreach($dataObjArr as $groupData)
-                                                        <option value="{{$groupData->g_id}}">{{$groupData->g_name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row m-b-15">
-                                                <label class="col-md-12 col-sm-4 col-form-label" for="name">Name * :</label>
-                                                <div class="col-md-12 col-sm-8">
-                                                    <input class="form-control" type="text" id="name" name="item_name" placeholder="Required" data-parsley-required="true">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row m-b-15">
-                                                <label class="col-md-3 col-sm-4 col-form-label" for="description">Description * :</label>
-                                                <div class="col-md-3 col-sm-8">
-                                                    <input class="form-control" type="text" id="description" name="description" placeholder="Description" data-parsley-required="true">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row m-b-15">
-                                                <label class="col-md-3 col-sm-4 col-form-label" for="group">Group :</label>
-                                                <div class="col-md-3 col-sm-8">
-                                                    <select class="form-control" id="group" name="group_id" data-parsley-required="true" placeholder="Group">
-                                                        @foreach($dataObjArr as $groupData)
-                                                        <option value="{{$groupData->g_id}}">{{$groupData->g_name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row m-b-15">
-                                                <label class="col-md-4 col-sm-4 col-form-label" for="code">Code :</label>
-                                                <div class="col-md-8 col-sm-8">
-                                                    <input type="text" class="form-control" id="code" name="code" placeholder="code" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group row m-b-15">
-                                                <label class="col-md-4 col-sm-4 col-form-label" for="message">HSN :</label>
-                                                <div class="col-md-8 col-sm-8">
-                                                    <input class="form-control" type="text" id="hsn" name="hsn" placeholder="HSN">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row m-b-15">
-                                                <label class="col-md-4 col-sm-4 col-form-label" for="status">Status :</label>
-                                                <div class="col-md-8 col-sm-8">
-                                                    <select class="form-control" id="status" name="status" placeholder="Status">
-                                                        <option value="1">Active</option>
-                                                        <option value="0">Deactive</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <h2>Stock Details</h2>
-                                            <div class="form-group row m-b-15">
-                                                <label class="col-md-4 col-sm-4 col-form-label" for="openingqty">Openinig Qty:</label>
-                                                <div class="col-md-8 col-sm-8">
-                                                    <input class="form-control" type="text" id="openingqty" name="open_qty" placeholder="Opening qty">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row m-b-15">
-                                                <label class="col-md-4 col-sm-4 col-form-label" for="openingqty">Stock Unit:</label>
-                                                <div class="col-md-8 col-sm-8">
-                                                    <select class="form-control" id="openingqty" name="openingqty" placeholder="Opening qty">
-                                                        <option>select</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row m-b-15">
-                                                <label class="col-md-4 col-sm-4 col-form-label" for="openingvalue">Openinig value:</label>
-                                                <div class="col-md-8 col-sm-8">
-                                                    <input class="form-control" type="text" id="openingvalue" name="openingvalue" placeholder="Opening value">
-
-                                                </div>
-                                            </div>
-                                            <div class="form-group row m-b-15">
-                                                <label class="col-md-4 col-sm-4 col-form-label" for="minimumqty">Minimum Qty:</label>
-                                                <div class="col-md-8 col-sm-8">
-                                                    <input class="form-control" type="text" id="minimumqty" name="min_qty" placeholder="Minimum Qty">
-
-                                                </div>
-                                            </div>
-                                            {{-- <div class="form-group row m-b-0">
-                                                    <label class="col-md-4 col-sm-4 col-form-label">&nbsp;</label>
-                                                    <div class="col-md-8 col-sm-8">
-                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="code">Code :</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <input type="text" class="form-control" id="code" name="code" placeholder="code" />
+                                                        </div>
                                                     </div>
-                                                </div> --}}
 
-                                    </div>
+                                                    {{-- <h2>Stock Details</h2> --}}
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="openingqty">Openinig Qty:</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <input class="form-control" type="text" id="openingqty" name="open_qty" placeholder="Opening qty">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="minimumqty">Minimum Qty:</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <input class="form-control" type="text" id="minimumqty" name="min_qty" placeholder="Minimum Qty">
+        
+                                                        </div>
+                                                    </div>
+                                           
+
+                                                </div>
+                                                <div class="col-md-4 col-sm-8">
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="description">Description * :</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <input class="form-control" type="text" id="description" name="description" placeholder="Description" data-parsley-required="true">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="message">HSN :</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <input class="form-control" type="text" id="hsn" name="hsn" placeholder="HSN">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="openingqty">Stock Unit:</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <select class="form-control" id="openingqty" name="openingqty" placeholder="Opening qty">
+                                                                <option>select</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    
+
+                                                </div>
+                                                <div class="col-md-4 col-sm-8">
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="group">Group :</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <select class="form-control" id="group" name="group_id" data-parsley-required="true" placeholder="Group">
+                                                                @foreach($dataObjArr as $groupData)
+                                                                <option value="{{$groupData->g_id}}">{{$groupData->g_name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="status">Status :</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <select class="form-control" id="status" name="status" placeholder="Status">
+                                                                <option value="1">Active</option>
+                                                                <option value="0">Deactive</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="openingvalue">Openinig value:</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <input class="form-control" type="text" id="openingvalue" name="openingvalue" placeholder="Opening value">
+        
+                                                        </div>
+                                                    </div>
+                                                    
+
+
+                                                </div>
+                                            </div>
+                                       </div>
                                     <!-- end panel-body -->
 
 
@@ -286,43 +266,61 @@
                         <!-- begin tab-pane -->
                         <div class="tab-pane fade  show" id="purchasetab">
                             <div class="row">
+                                
+                                   
+                                {{-- </div> --}}
                                 <!-- begin col-12 -->
                                 <div class="col-12">
                                     <!-- begin panel-body -->
                                     <div class="panel-body">
-
-                                        <div class="form-group row m-b-15">
-                                            <label class="col-md-4 col-sm-4 col-form-label" for="rate">Rate * :</label>
-                                            <div class="col-md-8 col-sm-8">
-                                                <input class="form-control" type="text" id="rate" name="rate" placeholder="Rate" data-parsley-required="true">
+                                        <div class="row">
+                                        <div class="col-md-4 col-sm-8">
+                                            <div class="form-group row m-b-15">
+                                                <label class="col-md-12 col-sm-4 col-form-label" for="rate">Rate * :</label>
+                                                <div class="col-md-12 col-sm-8">
+                                                    <input class="form-control" type="text" id="rate" name="rate" placeholder="Rate" data-parsley-required="true">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row m-b-15">
-                                            <label class="col-md-4 col-sm-4 col-form-label" for="unit">Unit * :</label>
-                                            <div class="col-md-8 col-sm-8">
-                                                <input class="form-control" type="text" id="unit" name="unit" placeholder="Unit" data-parsley-required="true">
+                                            
+                                            <div class="form-group row m-b-15">
+                                                <label class="col-md-12 col-sm-4 col-form-label" for="taxregister">Column In Tax Register :</label>
+                                                <div class="col-md-12 col-sm-8">
+                                                    <select class="form-control" id="taxregister" name="taxregister">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
                                             </div>
+                                            
                                         </div>
-                                        <div class="form-group row m-b-15">
-                                            <label class="col-md-4 col-sm-4 col-form-label" for="account">Account :</label>
-                                            <div class="col-md-8 col-sm-8">
-                                                <input class="form-control" type="text" id="account" name="account" placeholder="Account">
+                                        <div class="col-md-4 col-sm-8">
+                                            
+                                            <div class="form-group row m-b-15">
+                                                <label class="col-md-12 col-sm-4 col-form-label" for="unit">Unit * :</label>
+                                                <div class="col-md-12 col-sm-8">
+                                                    <input class="form-control" type="text" id="unit" name="unit" placeholder="Unit" data-parsley-required="true">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row m-b-15">
-                                            <label class="col-md-4 col-sm-4 col-form-label" for="taxregister">Column In Tax Register :</label>
-                                            <div class="col-md-8 col-sm-8">
-                                                <select class="form-control" id="taxregister" name="taxregister">
-                                                    <option></option>
-                                                </select>
+                                            <div class="form-group row m-b-15">
+                                                <label class="col-md-12 col-sm-4 col-form-label" for="punit_sunit">Purchase unit - Sale unit :</label>
+                                                <div class="col-md-12 col-sm-8">
+                                                    <input class="form-control" type="text" id="punit_sunit" name="punit_sunit" placeholder="1.00">
+                                                </div>
                                             </div>
+    
                                         </div>
-                                        <div class="form-group row m-b-15">
-                                            <label class="col-md-4 col-sm-4 col-form-label" for="punit_sunit">Purchase unit - Sale unit :</label>
-                                            <div class="col-md-8 col-sm-8">
-                                                <input class="form-control" type="text" id="punit_sunit" name="punit_sunit" placeholder="1.00">
+                                        <div class="col-md-4 col-sm-8">
+                                            
+                                            <div class="form-group row m-b-15">
+                                                <label class="col-md-12 col-sm-4 col-form-label" for="account">Account :</label>
+                                                <div class="col-md-12 col-sm-8">
+                                                    <input class="form-control" type="text" id="account" name="account" placeholder="Account">
+                                                </div>
                                             </div>
+                                            
+    
+    
                                         </div>
+                                    </div>
 
 
                                     </div>
@@ -339,44 +337,62 @@
                                     <!-- begin panel-body -->
                                     <div class="panel-body">
 
-                                        <div class="form-group row m-b-15">
-                                            <label class="col-md-4 col-sm-4 col-form-label" for="rate">Rate * :</label>
-                                            <div class="col-md-8 col-sm-8">
-                                                <input class="form-control" type="text" id="rate" name="rate" placeholder="Rate" data-parsley-required="true">
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-8">
+                                                <div class="form-group row m-b-15">
+                                                    <label class="col-md-12 col-sm-4 col-form-label" for="rate">Rate * :</label>
+                                                    <div class="col-md-12 col-sm-8">
+                                                        <input class="form-control" type="text" id="rate" name="rate" placeholder="Rate" data-parsley-required="true">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row m-b-15">
+                                                    <label class="col-md-12 col-sm-4 col-form-label" for="taxregister">Column In Tax Register :</label>
+                                                    <div class="col-md-12 col-sm-8">
+                                                        <select class="form-control" id="taxregister" name="taxregister">
+                                                            <option></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-md-4 col-sm-8">
+                                                
+                                                <div class="form-group row m-b-15">
+                                                    <label class="col-md-12 col-sm-4 col-form-label" for="unit">Unit * :</label>
+                                                    <div class="col-md-12 col-sm-8">
+                                                        <input class="form-control" type="text" id="unit" name="unit" placeholder="Unit" data-parsley-required="true">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row m-b-15">
+                                                    <label class="col-md-12 col-sm-4 col-form-label" for="punit_sunit">Purchase unit - Sale unit :</label>
+                                                    <div class="col-md-12 col-sm-8">
+                                                        <input class="form-control" type="text" id="punit_sunit" name="punit_sunit" placeholder="1.00">
+                                                    </div>
+                                                </div>
+        
+                                            </div>
+                                            <div class="col-md-4 col-sm-8">
+                                                
+                                                <div class="form-group row m-b-15">
+                                                    <label class="col-md-12 col-sm-4 col-form-label" for="account">Account :</label>
+                                                    <div class="col-md-12 col-sm-8">
+                                                        <input class="form-control" type="text" id="account" name="account" placeholder="Account">
+                                                    </div>
+                                                </div>
+                                                
+        
+        
                                             </div>
                                         </div>
-                                        <div class="form-group row m-b-15">
-                                            <label class="col-md-4 col-sm-4 col-form-label" for="unit">Unit * :</label>
-                                            <div class="col-md-8 col-sm-8">
-                                                <input class="form-control" type="text" id="unit" name="unit" placeholder="Unit" data-parsley-required="true">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row m-b-15">
-                                            <label class="col-md-4 col-sm-4 col-form-label" for="account">Account :</label>
-                                            <div class="col-md-8 col-sm-8">
-                                                <input class="form-control" type="text" id="account" name="account" placeholder="Account">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row m-b-15">
-                                            <label class="col-md-4 col-sm-4 col-form-label" for="taxregister">Column In Tax Register :</label>
-                                            <div class="col-md-8 col-sm-8">
-                                                <select class="form-control" id="taxregister" name="taxregister">
-                                                    <option></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row m-b-15">
-                                            <label class="col-md-4 col-sm-4 col-form-label" for="punit_sunit">Purchase unit - Sale unit :</label>
-                                            <div class="col-md-8 col-sm-8">
-                                                <input class="form-control" type="text" id="punit_sunit" name="punit_sunit" placeholder="1.00">
-                                            </div>
-                                        </div>
-
                                     </div>
                                     <!-- end panel-body -->
                                 </div>
                             </div>
-
+                            <fieldset>
+                                <button type="button" id="submitItemBtn" class="btn btn-sm btn-primary m-r-5 ">SAVE </button>
+                                <button type="reset" class="btn btn-sm btn-default">Cancel</button>
+                            </fieldset>
                             <!-- end col-12 -->
                         </div>
 
@@ -406,10 +422,11 @@
                                         <!-- begin #gallery -->
                                         <div id="gallery" class="gallery">
                                             <!-- begin image -->
+                                            @foreach($galleryImages as $galleryImage)
                                             <div class="image gallery-group-1">
                                                 <div class="image-inner">
-                                                    <a href="{{asset('assets/img/gallery/gallery-1.jpg')}}" data-lightbox="gallery-group-1">
-                                                        <div class="img" style="background-image: url({{asset('assets/img/gallery/gallery-1.jpg')}})"></div>
+                                                    <a href="{{BASE_URL.ITEM_IMG_PATH.'/'.$galleryImage->img_name}}" data-lightbox="gallery-group-1">
+                                                        <div class="img" style="background-image: url({{BASE_URL.ITEM_IMG_PATH.'/'.$galleryImage->img_name}})"></div>
                                                     </a>
                                                     <p class="image-caption">
                                                         #1382 - 3D Arch
@@ -432,6 +449,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            @endforeach
                                             <!-- end image -->
                                             <!-- begin image -->
                                             <div class="image gallery-group-1">
@@ -687,21 +705,22 @@
                                             <!-- end image -->
                                         </div>
                                         <!-- end #gallery -->
-
+                                       
                                     </div>
+                                    
                                     <!-- end panel-body -->
                                 </div>
+                                
                             </div>
 
                             <!-- end col-12 -->
+                            
                         </div>
+                        
                     </div>
                     <!-- end tab-pane -->
 
-                    <fieldset>
-                        <button type="button" id="submitItemBtn" class="btn btn-sm btn-primary m-r-5 ">SAVE </button>
-                        <button type="reset" class="btn btn-sm btn-default">Cancel</button>
-                    </fieldset>
+                    
                     </form>
 
                 </div>

@@ -81,10 +81,30 @@ class UserController extends Controller
         $theme = Theme::uses('backend')->layout('layout');
         $dataObjArr = DB::table('tbl_items')->leftJoin('tbl_group', function ($join) {
             $join->on('tbl_items.group_id', '=', 'tbl_group.g_id');
-        })->get();
+        })->leftJoin('tbl_item_gallery', function ($join) {
+            $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
+        })->select('tbl_items.*','tbl_group.g_id','tbl_group.g_name','tbl_item_gallery.img_name')
+        ->get();
+        $galleryImages = DB::table('tbl_item_gallery')->get();
         //dd($dataObjArr);
         //$data = ['data' => ''];
-        return $theme->scope('admin.item_master', compact('dataObjArr'))->render();
+        return $theme->scope('admin.item_master', compact('dataObjArr','galleryImages'))->render();
+    }
+
+    public function getItembyAjax()
+    { 
+        $dataObjArr = DB::table('tbl_items')->leftJoin('tbl_group', function ($join) {
+            $join->on('tbl_items.group_id', '=', 'tbl_group.g_id');
+        })->leftJoin('tbl_item_gallery', function ($join) {
+            $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
+        })->select('tbl_items.*','tbl_group.g_id','tbl_group.g_name','tbl_item_gallery.img_name')
+        ->get();
+        $galleryImages = DB::table('tbl_item_gallery')->get();
+        return Response::json(array(
+            'status' => 'success',
+            'dataForTable' => $dataObjArr, 
+            'galleryImages' => $galleryImages
+        ));
     }
 
     public function addGalleryImage($item_id)
