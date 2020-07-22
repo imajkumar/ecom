@@ -23,8 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-       
-        return $this->FrontEnd();
+     
+       return $this->FrontEnd();
 
     }
     public function FrontEnd(){

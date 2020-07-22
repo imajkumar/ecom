@@ -314,7 +314,7 @@
 							<li>
 								<a href="{{route('login')}}">
 									<img src="{{FRONT.'img/user/user-1.jpg'}}" class="user-img" alt="" /> 
-									<span class="d-none d-xl-inline">Login / Register</span>
+									<span class="d-none d-xl-inline">Login</span>
 								</a>
 							</li>
 						</ul>

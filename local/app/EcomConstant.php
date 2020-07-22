@@ -11,6 +11,12 @@ define('UPLOADS', BASE_URL.'uploads/');
 //Front Assest Path
 define('FRONT', BASE_URL.'local/public/themes/default/assets/');
 
+
+
+define('ITEM_IMG_PATH','gallery' );
+
+
+
 define('BACKEND', BASE_URL.'assets/');
 
 define('WEB_TITLE', 'Bartanwaale.com');
