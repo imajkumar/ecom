@@ -79,7 +79,7 @@
                             <li class="nav-item">
                                 <a href="#gallerytab" data-toggle="tab" class="nav-link">
                                     <span class="d-sm-none">Tab 3</span>
-                                    <span class="d-sm-block d-none">GALLERY</span>
+                                    <span class="d-sm-block d-none">IMAGE</span>
                                 </a>
                             </li>
                         </ul>
@@ -112,6 +112,7 @@
                                         <th class="text-nowrap">Group name</th>
                                         <th class="text-nowrap">Open quantity</th>
                                         <th class="text-nowrap">Min quantity</th>
+                                        <th class="text-nowrap">Action</th>
 
 
                                     </tr>
@@ -122,7 +123,7 @@
                                         <tr class="odd gradeX">
                                             <td width="1%" class="f-s-600 text-inverse">{{$i++}}</td>
 
-                                            <td>@if($itemData->img_name)
+                                            <td>@if($itemData->img_name && $itemData->default==1)
                                             <img src="{{BASE_URL.ITEM_IMG_PATH.'/'.$itemData->img_name}}" width="50px" height="50px"/>
                                             @else
                                             <img src="{{BACKEND.'img/product/default.jpg'}}" width="50px" height="50px"/>
@@ -132,6 +133,7 @@
                                             <td>{{$itemData->g_name}}</td>
                                             <td>{{$itemData->open_qty}}</td>
                                             <td>{{$itemData->min_qty}}</td>
+                                            <td><a class="btn btn-primary" href="{{route('itemEditLayout',$itemData->item_id)}}">Edit</a></td>
                                         </tr>
                                     <?php } ?>
 
@@ -389,10 +391,10 @@
                                     <!-- end panel-body -->
                                 </div>
                             </div>
-                            <fieldset>
+                            {{-- <fieldset>
                                 <button type="button" id="submitItemBtn" class="btn btn-sm btn-primary m-r-5 ">SAVE </button>
                                 <button type="reset" class="btn btn-sm btn-default">Cancel</button>
-                            </fieldset>
+                            </fieldset> --}}
                             <!-- end col-12 -->
                         </div>
 
@@ -403,312 +405,101 @@
                                 <!-- begin col-12 -->
                                 <div class="col-12">
                                     <!-- begin panel-body -->
-                                    <div class="panel-body">
+                                    
 
-                                        <!-- begin page-header -->
-                                        <h1 class="page-header">Gallery <small>header small text goes here...</small></h1>
-                                        <!-- end page-header -->
-                                        <!-- begin #options -->
-                                        <div id="options" class="m-b-10">
-                                            <span class="gallery-option-set" id="filter" data-option-key="filter">
-                                                <a href="#show-all" class="btn btn-default btn-xs active" data-option-value="*">Show All</a>
-                                                <a href="#gallery-group-1" class="btn btn-default btn-xs" data-option-value=".gallery-group-1">Gallery Group 1</a>
-                                                <a href="#gallery-group-2" class="btn btn-default btn-xs" data-option-value=".gallery-group-2">Gallery Group 2</a>
-                                                <a href="#gallery-group-3" class="btn btn-default btn-xs" data-option-value=".gallery-group-3">Gallery Group 3</a>
-                                                <a href="#gallery-group-4" class="btn btn-default btn-xs" data-option-value=".gallery-group-4">Gallery Group 4</a>
-                                            </span>
-                                        </div>
-                                        <!-- end #options -->
-                                        <!-- begin #gallery -->
-                                        <div id="gallery" class="gallery">
-                                            <!-- begin image -->
-                                            @foreach($galleryImages as $galleryImage)
-                                            <div class="image gallery-group-1">
-                                                <div class="image-inner">
-                                                    <a href="{{BASE_URL.ITEM_IMG_PATH.'/'.$galleryImage->img_name}}" data-lightbox="gallery-group-1">
-                                                        <div class="img" style="background-image: url({{BASE_URL.ITEM_IMG_PATH.'/'.$galleryImage->img_name}})"></div>
-                                                    </a>
-                                                    <p class="image-caption">
-                                                        #1382 - 3D Arch
-                                                    </p>
-                                                </div>
-                                                <div class="image-info">
-                                                    <h5 class="title">Lorem ipsum dolor sit amet</h5>
-                                                    <div class="pull-right">
-                                                        <small>by</small> <a href="javascript:;">Sean Ngu</a>
-                                                    </div>
-                                                    <div class="rating">
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                    </div>
-                                                    <div class="desc">
-                                                        Nunc velit urna, aliquam at interdum sit amet, lacinia sit amet ligula. Quisque et erat eros. Aenean auctor metus in tortor placerat, non luctus justo blandit.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @endforeach
-                                            <!-- end image -->
-                                            <!-- begin image -->
-                                            <div class="image gallery-group-1">
-                                                <div class="image-inner">
-                                                    <a href="{{asset('assets/img/gallery/gallery-2.jpg')}}" data-lightbox="gallery-group-1">
-                                                        <div class="img" style="background-image: url({{asset('assets/img/gallery/gallery-2.jpg')}})"></div>
-                                                    </a>
-                                                    <p class="image-caption">
-                                                        #2343 - Madness Arch
-                                                    </p>
-                                                </div>
-                                                <div class="image-info">
-                                                    <h5 class="title">Fusce aliquet ac quam at tincidunt</h5>
-                                                    <div class="pull-right">
-                                                        <small>by</small> <a href="javascript:;">Camryn Wong</a>
-                                                    </div>
-                                                    <div class="rating">
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                    </div>
-                                                    <div class="desc">
-                                                        Fusce eu rutrum nisi, ut pretium mi. Sed mollis nisi sed auctor molestie. Vestibulum dictum pharetra leo sed euismod.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- end image -->
-                                            <!-- begin image -->
-                                            <div class="image gallery-group-1">
-                                                <div class="image-inner">
-                                                    <a href="{{asset('assets/img/gallery/gallery-3.jpg')}}" data-lightbox="gallery-group-1">
-                                                        <div class="img" style="background-image: url({{asset('assets/img/gallery/gallery-3.jpg')}})"></div>
-                                                    </a>
-                                                    <p class="image-caption">
-                                                        #3452 - Scottwills Arch
-                                                    </p>
-                                                </div>
-                                                <div class="image-info">
-                                                    <h5 class="title">Etiam lobortis egestas nisl</h5>
-                                                    <div class="pull-right">
-                                                        <small>by</small> <a href="javascript:;">Lelouch Wong</a>
-                                                    </div>
-                                                    <div class="rating">
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                    </div>
-                                                    <div class="desc">
-                                                        Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus eget ultricies arcu.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- end image -->
-                                            <!-- begin image -->
-                                            <div class="image gallery-group-2">
-                                                <div class="image-inner">
-                                                    <a href="{{asset('assets/img/gallery/gallery-4.jpg')}}" data-lightbox="gallery-group-2">
-                                                        <div class="img" style="background-image: url({{asset('assets/img/gallery/gallery-4.jpg')}})"></div>
-                                                    </a>
-                                                    <p class="image-caption">
-                                                        #4123 - Scottwills Pinecone
-                                                    </p>
-                                                </div>
-                                                <div class="image-info">
-                                                    <h5 class="title">Donec mi quis volutpat ornare</h5>
-                                                    <div class="pull-right">
-                                                        <small>by</small> <a href="javascript:;">Richard Leong</a>
-                                                    </div>
-                                                    <div class="rating">
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                    </div>
-                                                    <div class="desc">
-                                                        Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut et augue luctus libero dignissim sodales, sapien consequat lacinia fringilla.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- end image -->
-                                            <!-- begin image -->
-                                            <div class="image gallery-group-2">
-                                                <div class="image-inner">
-                                                    <a href="{{asset('assets/img/gallery/gallery-5.jpg')}}" data-lightbox="gallery-group-2">
-                                                        <div class="img" style="background-image: url({{asset('assets/img/gallery/gallery-5.jpg')}})"></div>
-                                                    </a>
-                                                    <p class="image-caption">
-                                                        #9200 Kariminal Rider
-                                                    </p>
-                                                </div>
-                                                <div class="image-info">
-                                                    <h5 class="title">Donec pretium volutpat ornare</h5>
-                                                    <div class="pull-right">
-                                                        <small>by</small> <a href="javascript:;">Derrick Wong</a>
-                                                    </div>
-                                                    <div class="rating">
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star"></span>
-                                                    </div>
-                                                    <div class="desc">
-                                                        Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut et augue luctus libero, feugiat sapien consequat lacinia fringilla.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- end image -->
-                                            <!-- begin image -->
-                                            <div class="image gallery-group-3">
-                                                <div class="image-inner">
-                                                    <a href="{{asset('assets/img/gallery/gallery-6.jpg')}}" data-lightbox="gallery-group-3">
-                                                        <div class="img" style="background-image: url({{asset('assets/img/gallery/gallery-6.jpg')}})"></div>
-                                                    </a>
-                                                    <p class="image-caption">
-                                                        #1832 Scottwills Autumn
-                                                    </p>
-                                                </div>
-                                                <div class="image-info">
-                                                    <h5 class="title">Mi quis volutpat ornare sodales</h5>
-                                                    <div class="pull-right">
-                                                        <small>by</small> <a href="javascript:;">Apple Tong</a>
-                                                    </div>
-                                                    <div class="rating">
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                    </div>
-                                                    <div class="desc">
-                                                        Ut et augue luctus libero dignissim sodales. Fusce feugiat sapien consequat lacinia fringilla. Vivamus eget ultricies arcu.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- end image -->
-                                            <!-- begin image -->
-                                            <div class="image gallery-group-3">
-                                                <div class="image-inner">
-                                                    <a href="{{asset('assets/img/gallery/gallery-7.jpg')}}" data-lightbox="gallery-group-3">
-                                                        <div class="img" style="background-image: url({{asset('assets/img/gallery/gallery-7.jpg')}})"></div>
-                                                    </a>
-                                                    <p class="image-caption">
-                                                        #0229 Scottwills Autumn 2
-                                                    </p>
-                                                </div>
-                                                <div class="image-info">
-                                                    <h5 class="title">Vestibulum ante ipsum primis</h5>
-                                                    <div class="pull-right">
-                                                        <small>by</small> <a href="javascript:;">Thomas Wong</a>
-                                                    </div>
-                                                    <div class="rating">
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                    </div>
-                                                    <div class="desc">
-                                                        Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut et augue luctus libero dignissim sodales, sapien consequat lacinia fringilla.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- end image -->
-                                            <!-- begin image -->
-                                            <div class="image gallery-group-4">
-                                                <div class="image-inner">
-                                                    <a href="{{asset('assets/img/gallery/gallery-8.jpg')}}" data-lightbox="gallery-group-4">
-                                                        <div class="img" style="background-image: url({{asset('assets/img/gallery/gallery-8.jpg')}})"></div>
-                                                    </a>
-                                                    <p class="image-caption">
-                                                        #5721 Scottwills Snow
-                                                    </p>
-                                                </div>
-                                                <div class="image-info">
-                                                    <h5 class="title">Nunc eget hendrerit nisi sodales</h5>
-                                                    <div class="pull-right">
-                                                        <small>by</small> <a href="javascript:;">Andy Wong</a>
-                                                    </div>
-                                                    <div class="rating">
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                    </div>
-                                                    <div class="desc">
-                                                        Ut et augue nisi sodales luctus libero dignissim sodales. Fusce feugiat nisi sodales sapien consequat lacinia fringilla.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- end image -->
-                                            <!-- begin image -->
-                                            <div class="image gallery-group-4">
-                                                <div class="image-inner">
-                                                    <a href="{{asset('assets/img/gallery/gallery-9.jpg')}}" data-lightbox="gallery-group-4">
-                                                        <div class="img" style="background-image: url({{asset('assets/img/gallery/gallery-9.jpg')}})"></div>
-                                                    </a>
-                                                    <p class="image-caption">
-                                                        #9921 Scottwills Riverbank
-                                                    </p>
-                                                </div>
-                                                <div class="image-info">
-                                                    <h5 class="title">Nunc eget hendrerit nisi dignissim</h5>
-                                                    <div class="pull-right">
-                                                        <small>by</small> <a href="javascript:;">William Tan</a>
-                                                    </div>
-                                                    <div class="rating">
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                    </div>
-                                                    <div class="desc">
-                                                        Ut et augue luctus libero dignissim sodales. Fusce feugiat sapien consequat libero dignissim lacinia fringilla.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- end image -->
-                                            <!-- begin image -->
-                                            <div class="image gallery-group-4">
-                                                <div class="image-inner">
-                                                    <a href="{{asset('assets/img/gallery/gallery-10.jpg')}}" data-lightbox="gallery-group-4">
-                                                        <div class="img" style="background-image: url({{asset('assets/img/gallery/gallery-10.jpg')}}" alt="" />
-                                                    </a>
-                                                    <p class="image-caption">
-                                                        #6436 Scottwills Buss
-                                                    </p>
-                                                </div>
-                                                <div class="image-info">
-                                                    <h5 class="title">Sed mollis nisi sed auctor</h5>
-                                                    <div class="pull-right">
-                                                        <small>by</small> <a href="javascript:;">David King</a>
-                                                    </div>
-                                                    <div class="rating">
-                                                        <span class="star active"></span>
-                                                        <span class="star active"></span>
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                        <span class="star"></span>
-                                                    </div>
-                                                    <div class="desc">
-                                                        Vestibulum dictum pharetra leo sed euismod. Lorem ipsum dolor sit amet, consectetur adipiscing feugiat sapien elit.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- end image -->
-                                        </div>
-                                        <!-- end #gallery -->
-                                       
-                                    </div>
                                     
                                     <!-- end panel-body -->
+                                    <form id="fileupload" action="{{route('uploadGalleryImage')}}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        {{-- <input type="hidden" name="item_id" value="{{$item_id}}"/> --}}
+                                        <!-- begin panel -->
+                                        <div class="panel panel-inverse">
+                                            <!-- begin panel-heading -->
+                                            {{-- <div class="panel-heading">
+                                                <h4 class="panel-title">Image Upload</h4>
+                                                <div class="panel-heading-btn">
+                                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
+                                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                                                </div>
+                                            </div> --}}
+                                            <!-- end panel-heading -->
+                                            <!-- begin panel-body -->
+                                            <div class="panel-body">			
+                                                {{-- <div class="note note-yellow m-b-15">
+                                                    <div class="note-icon f-s-20">
+                                                        <i class="fa fa-lightbulb fa-2x"></i>
+                                                    </div>
+                                                    <div class="note-content">
+                                                        <h4 class="m-t-5 m-b-5 p-b-2">Demo Notes</h4>
+                                                        <ul class="m-b-5 p-l-25">
+                                                            <li>The maximum file size for uploads in this demo is <strong>5 MB</strong> (default file size is unlimited).</li>
+                                                            <li>Only image files (<strong>JPG, GIF, PNG</strong>) are allowed in this demo (by default there is no file type restriction).</li>
+                                                            <li>Uploaded files will be deleted automatically after <strong>5 minutes</strong> (demo setting).</li>
+                                                        </ul>
+                                                    </div>
+                                                </div> --}}
+                                                <div class="row fileupload-buttonbar">
+                                                    <div class="col-xl-7">
+                                                        <span class="btn btn-primary fileinput-button m-r-3">
+                                                            <i class="fa fa-fw fa-plus"></i>
+                                                            <span>Add files...</span>
+                                                            <input type="file" name="files[]" multiple>
+                                                        </span>
+                                                        <button type="submit" class="btn btn-primary start m-r-3">
+                                                            <i class="fa fa-fw fa-upload"></i>
+                                                            <span>Start upload</span>
+                                                        </button>
+                                                        <button type="reset" class="btn btn-default cancel m-r-3">
+                                                            <i class="fa fa-fw fa-ban"></i>
+                                                            <span>Cancel upload</span>
+                                                        </button>
+                                                        <button type="button" class="btn btn-default delete m-r-3">
+                                                            <i class="fa fa-fw fa-trash"></i>
+                                                            <span>Delete</span>
+                                                        </button>
+                                                        <!-- The global file processing state -->
+                                                        <span class="fileupload-process"></span>
+                                                    </div>
+                                                    <!-- The global progress state -->
+                                                    <div class="col-xl-5 fileupload-progress fade d-none d-xl-block">
+                                                        <!-- The global progress bar -->
+                                                        <div class="progress progress-striped active m-b-0">
+                                                            <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                                                        </div>
+                                                        <!-- The extended global progress state -->
+                                                        <div class="progress-extended">&nbsp;</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- end panel-body -->
+                                            <!-- begin table -->
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-condensed text-nowrap mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="10%">PREVIEW</th>
+                                                            <th>FILE INFO</th>
+                                                            <th>UPLOAD PROGRESS</th>
+                                                            <th width="1%"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="files">
+                                                        <tr data-id="empty">
+                                                            <td colspan="4" class="text-center text-muted p-t-30 p-b-30">
+                                                                <div class="m-b-10"><i class="fa fa-file fa-3x"></i></div>
+                                                                <div>No file selected</div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- end table -->
+                                        </div>
+                                        <!-- end panel -->
+                                    </form>
+                                    <!-- end form-file-upload -->
                                 </div>
                                 
                             </div>
@@ -721,14 +512,17 @@
                     <!-- end tab-pane -->
 
                     
-                    </form>
 
                 </div>
                 <!-- end col-8 -->
 
-
+                
             </div>
-
+            <fieldset>
+                <button type="button" id="submitItemBtn" class="btn btn-sm btn-primary m-r-5 ">SAVE </button>
+                <button type="reset" class="btn btn-sm btn-default">Cancel</button>
+            </fieldset>
+            </form>
 
         </div>
     </div>

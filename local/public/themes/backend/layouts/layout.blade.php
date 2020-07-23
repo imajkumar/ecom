@@ -32,7 +32,7 @@
 
 <head>
 	<meta charset="utf-8" />
-	<title>Color Admin | Dashboard</title>
+	<title>Bartanwale Admin | Dashboard</title>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
@@ -69,7 +69,9 @@
     
     <!-- ================== BEGIN PAGE GALLERY ================== -->
 	<link href="{{asset('assets/plugins/lightbox2/dist/css/lightbox.css')}}" rel="stylesheet" />
+	<link href="{{ BACKEND.'plugins/simple-line-icons/css/simple-line-icons.css'}}" rel="stylesheet" />
 	<!-- ================== END PAGE GALLERY ================== -->
+	<link href="{{BACKEND.'plugins/smartwizard/dist/css/smart_wizard.cs'}}s" rel="stylesheet" />
 
 	
 </head>
@@ -150,6 +152,8 @@
 	<script src="{{asset('assets/plugins/lightbox2/dist/js/lightbox.min.js')}}"></script>
 	<script src="{{asset('assets/js/demo/gallery.demo.js')}}"></script>
 	<!-- ================== END PAGE GALLERY JS ================== -->
+	<script src="{{BACKEND.'plugins/smartwizard/dist/js/jquery.smartWizard.js'}}"></script>
+	<script src="{{BACKEND.'js/demo/form-wizards.demo.js'}}"></script>
 	<script>
     //<![CDATA[
     $(function () {

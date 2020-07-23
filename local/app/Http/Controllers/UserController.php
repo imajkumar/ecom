@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Http\Request;
 use Theme;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Response;
+use Session;
 
 class UserController extends Controller
 {
@@ -22,7 +24,9 @@ class UserController extends Controller
         $destinationPath = ITEM_IMG_PATH;
         for ($i = 0; $i < count($photos); $i++) {
             $photo = $photos[$i];
-            $name = sha1(date('YmdHis') . microtime());
+            //$name = sha1(date('YmdHis') . microtime());
+            $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $photo->getClientOriginalName()).'_'.$i;
+            
             $image_name = $name . '.' . $photo->getClientOriginalExtension();
             $photo->move($destinationPath, $image_name);
             
@@ -31,7 +35,8 @@ class UserController extends Controller
                 'item_id' => $request->item_id,
                 'img_name' => $image_name,
                 'alt_tag' => $photo->getClientOriginalName(),
-                'created_by' => $user_id
+                'created_by' => $user_id,
+                
 
             ]);
         }
@@ -39,10 +44,37 @@ class UserController extends Controller
             'message' => 'Image saved Successfully'
         ], 200);
     }
-    public function saveItem(Request $request)
-    { //viewLayout
 
-        //echo"<pre>"; print_r($request->all());exit;
+    public function saveAttribute(Request $request)
+    { 
+        $this->validate($request, [
+            'attr_name' => 'required|string|unique:tbl_attribute|max:120',
+        ], [
+            'attr_name.required' => 'Attribute name is required.',
+            'attr_name.string' => 'Attribute name should be string.',
+            'attr_name.max' => 'Attribute name Should be Minimum of 120 Character.',
+        ]);
+        $attrTable = 'tbl_'.strtolower(trim($request->attr_name));
+        $itemData = DB::table('tbl_attribute')->insert([
+            'attr_name' => ucfirst($request->attr_name),
+            'table_name' => $attrTable,
+            
+        ]);
+        if ($itemData) {
+            Schema::create($attrTable, function($table)
+            {           
+                $table->increments('id');
+                $table->string('attr_name');
+                $table->integer('is_active')->default(1);
+            });
+            return Response::json(array('status' => 'success', 'msg' => 'New Attribute added successfully.'));
+        } else {
+            return Response::json(array('status' => 'wrong', 'msg' => 'Something is wrong try again'));
+        }
+    }
+
+    public function saveItem(Request $request)
+    { 
         $this->validate($request, [
             'item_name' => 'required|string|max:120',
             'group_id' => 'required|integer',
@@ -65,29 +97,104 @@ class UserController extends Controller
             'open_qty' => $request->open_qty,
             'min_qty' => $request->min_qty,
         ]);
-        $request->session()->flash('message', 'New customer added successfully.');
+        $request->session()->flash('message', 'New Item added successfully.');
         $request->session()->flash('message-type', 'success');
 
         if ($itemData) {
             return Response::json(array('status' => 'success', 'msg' => 'Item details save successfull.'));
         } else {
-            return Response::json(array('status' => 'wrong', 'msg' => 'Something is wrong try again'));
+            return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again'));
+        }
+    }
+
+    public function deleteItemImgByAjax(Request $request)
+    { 
+       $itemData = DB::table('tbl_item_gallery')->where('id', $request->imgId)
+        ->where('item_id', $request->itemId)->delete();
+        if ($itemData) {
+            return Response::json(array('status' => 'success', 'msg' => 'Item image deleted successfull.'));
+        } else {
+            return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again'));
+        }
+    }
+
+    public function addPrimaryImgByAjax(Request $request)
+    { 
+        DB::table('tbl_item_gallery')->where('item_id', $request->itemId)->update(['default'=> 0]);
+
+       $itemData = DB::table('tbl_item_gallery')->where('id', $request->imgId)
+        ->where('item_id', $request->itemId)->update(['default'=> $request->defaultVal]);
+        if ($itemData) {
+            return Response::json(array('status' => 'success', 'msg' => 'Item image have been changed successfull.'));
+        } else {
+            return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again'));
+        }
+    }
+
+    public function updateItem(Request $request, $item_id)
+    {  
+        $this->validate($request, [
+            'item_name' => 'required|string|max:120',
+            'group_id' => 'required|integer',
+            'open_qty' => 'required|integer',
+            'min_qty' => 'required|integer',
+        ], [
+            'item_name.required' => 'Item name is required.',
+            'item_name.string' => 'Item name should be string.',
+            'item_name.max' => 'Item name Should be Minimum of 120 Character.',
+            'group_id.required' => 'Group field is required.',
+            'open_qty.required' => 'Open quantity field is required.',
+            'open_qty.integer' => 'Open quantity field should be number.',
+            'min_qty.required' => 'Min quantity field is required.',
+            'min_qty.integer' => 'Min quantity field should be number.',
+        ]);
+        $user_id = Auth::user()->id;
+        $itemData = DB::table('tbl_items')->where('item_id', $item_id)->update([
+            'item_name' => $request->item_name,
+            'group_id' => $request->group_id,
+            'open_qty' => $request->open_qty,
+            'min_qty' => $request->min_qty,
+        ]);
+        
+        
+        if ($itemData) {
+            $request->session()->flash('message', 'Item updated successfully.');
+            $request->session()->flash('message-type', 'success');
+            
+            return redirect()->route('itemEditLayout', $item_id);
+            //return Response::json(array('status' => 'success', 'msg' => 'Item details updated successfull.'));
+        } else {
+            $request->session()->flash('message', 'Something is wrong try again.');
+            $request->session()->flash('message-type', 'warning');
+            return redirect()->route('itemEditLayout', $item_id);
+            //return Response::json(array('status' => 'wrong', 'msg' => 'Something is wrong try again'));
         }
     }
 
     public function itemMasterLayout()
     { //viewLayout
-
+        DB::enableQueryLog();
         $theme = Theme::uses('backend')->layout('layout');
         $dataObjArr = DB::table('tbl_items')->leftJoin('tbl_group', function ($join) {
             $join->on('tbl_items.group_id', '=', 'tbl_group.g_id');
         })->leftJoin('tbl_item_gallery', function ($join) {
             $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
-        })->select('tbl_items.*','tbl_group.g_id','tbl_group.g_name','tbl_item_gallery.img_name')
+            $join->DISTINCT('tbl_items.item_id');
+            $join->orderBy('tbl_items.item_id','DESC');
+            $join->where('tbl_item_gallery.default',1);
+            // SELECT DISTINCT(column_name) FROM table_name ORDER BY column_name DESC limit 2,1;
+            // $join->orderBy('tbl_items.item_id','DESC');
+             $join->limit(2,1);
+        })
+        //->orderBy('DESC')
+        
+        ->select('tbl_items.*','tbl_group.g_id','tbl_group.g_name','tbl_item_gallery.img_name','tbl_item_gallery.default')
         ->get();
-        $galleryImages = DB::table('tbl_item_gallery')->get();
-        //dd($dataObjArr);
-        //$data = ['data' => ''];
+        //echo"<pre>"; print_r(DB::getQueryLog());exit;
+        $galleryImages = DB::table('tbl_item_gallery')->rightJoin('tbl_items', function ($join) {
+            $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
+        })->get();
+
         return $theme->scope('admin.item_master', compact('dataObjArr','galleryImages'))->render();
     }
 
@@ -95,9 +202,13 @@ class UserController extends Controller
     { 
         $dataObjArr = DB::table('tbl_items')->leftJoin('tbl_group', function ($join) {
             $join->on('tbl_items.group_id', '=', 'tbl_group.g_id');
+
         })->leftJoin('tbl_item_gallery', function ($join) {
+
             $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
-        })->select('tbl_items.*','tbl_group.g_id','tbl_group.g_name','tbl_item_gallery.img_name')
+            $join->where('tbl_item_gallery.default',1);
+
+        })->select('tbl_items.*','tbl_group.g_id','tbl_group.g_name','tbl_item_gallery.img_name','tbl_item_gallery.default')
         ->get();
         $galleryImages = DB::table('tbl_item_gallery')->get();
         return Response::json(array(
@@ -123,6 +234,43 @@ class UserController extends Controller
 
         return $theme->scope('admin.master_settings', $data)->render();
     }
+
+    public function customerListLayout()
+    { 
+        $theme = Theme::uses('backend')->layout('layout');
+        $dataObjArr = ['data' => ''];
+
+        return $theme->scope('admin.custom_list', $dataObjArr)->render();
+    }
+
+    public function addNewCustomerLayout()
+    { 
+        $theme = Theme::uses('backend')->layout('layout');
+        $dataObjArr = ['data' => ''];
+
+        return $theme->scope('admin.custom_add', $dataObjArr)->render();
+    }
+
+    public function itemEditLayout($item_id)
+    { 
+        $theme = Theme::uses('backend')->layout('layout');
+        $item = DB::table('tbl_items')->leftJoin('tbl_group', function ($join) {
+            $join->on('tbl_items.group_id', '=', 'tbl_group.g_id');
+            
+        })->select('tbl_items.*','tbl_group.g_id','tbl_group.g_name')
+        ->where('tbl_items.item_id', '=', $item_id)
+        ->first();
+
+        $itemImages = DB::table('tbl_items')->leftJoin('tbl_item_gallery', function ($join) {
+            $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
+           
+        })->select('tbl_items.*','tbl_item_gallery.img_name','tbl_item_gallery.id','tbl_item_gallery.default')
+        ->where('tbl_items.item_id', '=', $item_id)
+        ->get();
+
+        return $theme->scope('admin.item_edit', compact('item','itemImages'))->render();
+    }
+
     public function saveGroupAttribute(Request $request)
     {
 

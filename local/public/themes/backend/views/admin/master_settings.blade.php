@@ -35,7 +35,18 @@
         <!-- end col-4 -->
         <!-- begin col-8 -->
         <div class="col-xl-8">
-            <!-- begin nav-tabs -->
+            <div class="panel panel-inverse" data-sortable-id="tree-view-1">
+                <div class="panel-heading">
+                    <h4 class="panel-title">GROUP TREE</h4>
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+
+                    </div>
+                </div>
+                <div class="panel-body" style="background-color: #e4e7e8;">
+                     <!-- begin nav-tabs -->
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a href="#default-tab-1" data-toggle="tab" class="nav-link active">
@@ -67,7 +78,7 @@
             <div class="tab-content">
                 <!-- begin tab-pane -->
                 <div class="tab-pane fade active show" id="default-tab-1">
-                    <table id="grid1"></table>
+                    {{-- <table id="grid1"></table> --}}
 
 
                 </div>
@@ -138,7 +149,7 @@
 
 
                                         </div>
-                                        
+
                                         <div class="col-md-4 col-sm-8">
 
                                             <div class="form-group row m-b-15">
@@ -219,8 +230,8 @@
                                             @foreach ($dataItemAttrObjArr as $rowData)
                                             
                                             <label class="col-form-label">{{$rowData->attr_name}}</label>
-                                            <input type="checkbox" class="form-control" name="UnderGroupAttrSelected[]" value="{{$rowData->id}}" id="UnderGroupAttrSelected" style="margin-top: -31px;
-                                            margin-left: -105px;">
+                                            <input type="checkbox" class="form-check-input" name="UnderGroupAttrSelected[]" value="{{$rowData->id}}" id="UnderGroupAttrSelected" style="margin-top: 11px;
+                                            margin-left: 122px;"><br>
                                             {{-- <option value="{{$rowData->id}}">{{$rowData->attr_name}}</option> --}}
                                             @endforeach
 
@@ -274,10 +285,11 @@
                                         </div>
                                         <div class="col-md-3">
                                             <button type="submit" id="btnGroupAttr" class="btn btn-sm btn-primary m-r-5 ">SAVE </button>
+                                            <button type="button" class="btn btn-sm btn-primary m-r-5" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add new</button>
+                                            
                                         </div>
                                     </div>
-
-                              
+                                     
                                
                                 {{-- <fieldset>
 
@@ -301,8 +313,46 @@
 
 
             </div>
+                </div>
+            </div>
+           
             <!-- end col-8 -->
         </div>
         <!-- end row -->
     </div>
     <!-- end #content -->
+</div>
+
+
+    {{-- model --}}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add New Attribute</h4>
+              <button type="button" onclick="javascript:window.location.reload()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              
+            </div>
+            <div class="modal-body">
+              <form id="formAttribute" method="post">
+                  @csrf
+                  <div id="errorModelMsg" class="alert alert-block" style="display:none"></div>
+                <div class="form-group">
+                  <label for="attrName" class="control-label">Attribute name:</label>
+                  <input type="text" class="form-control" name="attr_name" id="attrName">
+                </div>
+                {{-- <div class="form-group">
+                  <label for="message-text" class="control-label">Message:</label>
+                  <textarea class="form-control" id="message-text"></textarea>
+                </div> --}}
+              </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="saveAttribute" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-default" onclick="javascript:window.location.reload()" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{-- model --}}
+     

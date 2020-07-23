@@ -50,6 +50,14 @@
 							
 						</ul>
 					</li>
+                    <li class="">
+						<a href="{{route('customerListLayout')}}">
+							
+							<i class="icon-user"></i>
+							<span>Customer </span>
+						</a>
+						
+					</li>
 				
 					<!-- begin sidebar minify button -->
 					<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="ion-ios-arrow-back"></i> <span>Collapse</span></a></li>

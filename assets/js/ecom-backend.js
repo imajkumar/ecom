@@ -149,15 +149,15 @@ $(document).ready(function() {
                                 type: 'GET',
                                 url: BASE_URL + '/getItembyAjax',
                                 success: function(res) {
-                                    console.log(res);
+                                    //console.log(res);
                                     $('#itemDataAppend').empty();
                                     let html = '';
                                     $.each(res['dataForTable'], function(ind, itemData) {
-                                        console.log(itemData['item_name']);
+                                        // console.log(itemData['item_name']);
                                         html += `<tr class="odd gradeX">
                                                 <td width="1%" class="f-s-600 text-inverse">${ind+1}</td>
                                                 <td>
-                                                <img src="${(itemData['img_name']) ? BASE_URL+'/gallery/'+itemData['img_name']: BASE_URL+'/assets/img/product/default.jpg'}" width="50px" height="50px"/>
+                                                <img src="${(itemData['img_name'] && itemData['default']==1) ? BASE_URL+'/gallery/'+itemData['img_name']: BASE_URL+'/assets/img/product/default.jpg'}" width="50px" height="50px"/>
                                                
                                                 <a href="${BASE_URL+'/add-gallery-image/'+itemData['item_id']}">Add image</a></td>
                                                 <td>${itemData['item_name']}</td>
@@ -218,6 +218,291 @@ $(document).ready(function() {
         });
 
     });
+
+    $('#saveAttribute').click(function() {
+
+        $('#errorModelMsg').html('');
+        $.ajax({
+                type: 'POST',
+                url: BASE_URL + '/saveAttribute',
+                data: $('#formAttribute').serialize(),
+
+                success: function(responce) {
+                    //console.log(responce);
+                    // return false;
+                    if (responce['status'] == 'success') {
+                        $('#formAttribute')[0].reset();
+                        $('#errorModelMsg').css("display", "block");
+                        $('#errorModelMsg').removeClass('alert-warning');
+                        $('#errorModelMsg').addClass('alert-success');
+                        $('#errorModelMsg').html(`<strong>${responce['msg']}</strong>`);
+
+                        setInterval(function() {
+                            $('#errorModelMsg').css("display", "none");
+                            $('#errorModelMsg').html('');
+
+                        }, 10000);
+
+                    } else {
+
+                        $('#errorModelMsg').css("display", "block");
+                        $('#errorModelMsg').removeClass('alert-success');
+                        $('#errorModelMsg').addClass('alert-warning');
+                        $('#errorModelMsg').html(`<strong>${responce['msg']}</strong>`);
+                        setInterval(function() {
+                            $('#errorModelMsg').css("display", "none");
+
+                            $('#errorModelMsg').html('');
+                        }, 10000);
+
+                    }
+                },
+                error: function(xhr, status, error) {
+                    //let errorMsg = '';
+                    //alert('empty');
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+                    $('#errorModelMsg').css("display", "block");
+                    $('#errorModelMsg').removeClass('alert-success');
+                    $('#errorModelMsg').addClass('alert-warning');
+                    $('#errorModelMsg').html(errorHtml);
+
+                    setInterval(function() {
+                        $('#errorModelMsg').css("display", "none");
+                        $('#errorModelMsg').html('');
+                    }, 10000);
+                    // $('#errorMsg').css("display", "block");
+                    // $('#errorMsg').addClass('alert-warning');
+                    // $('#errorMsg').append(errorHtml);
+                }
+
+            })
+            //alert('submitBtn');
+            // $('#exampleModal').on('hidden.bs.modal', function() {
+            //     alert();
+            //     document.location.reload();
+            //     //location.reload();
+            // });
+    });
+
+    $('.deleteItemImgBtn').click(function() {
+        // let city= $('input[name="city"]').val();
+        let del = $(this).attr('value');
+        let delItem = del.split('_');
+        let itemId = delItem['0'];
+        let imgId = delItem['1'];
+        //return false;
+        $.ajax({
+                type: 'POST',
+                url: BASE_URL + '/deleteItemImgByAjax',
+                data: {
+                    '_token': $('meta[name="csrf-token"]').attr('content'),
+                    'itemId': itemId,
+                    'imgId': imgId,
+                },
+                success: function(responce) {
+                    //console.log(responce);
+                    // return false;
+                    if (responce['status'] == 'success') {
+                        $('#errorModelMsg').css("display", "block");
+                        $('#errorModelMsg').removeClass('alert-warning');
+                        $('#errorModelMsg').addClass('alert-success');
+                        $('#errorModelMsg').html(`<strong>${responce['msg']}</strong>`);
+                        $('html,body').animate({
+                            scrollTop: $("#content").offset().top
+                        }, 100);
+                        setInterval(function() {
+                            $('#errorModelMsg').css("display", "none");
+                            $('#errorModelMsg').html('');
+
+                        }, 10000);
+                        document.location.reload();
+
+                    } else {
+                        $('#errorModelMsg').css("display", "block");
+                        $('#errorModelMsg').removeClass('alert-success');
+                        $('#errorModelMsg').addClass('alert-warning');
+                        $('#errorModelMsg').html(`<strong>${responce['msg']}</strong>`);
+                        $('html,body').animate({
+                            scrollTop: $("#content").offset().top
+                        }, 100);
+                        setInterval(function() {
+                            $('#errorModelMsg').css("display", "none");
+
+                            $('#errorModelMsg').html('');
+                        }, 10000);
+
+                    }
+                },
+                error: function(xhr, status, error) {
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+                    $('#errorModelMsg').css("display", "block");
+                    $('#errorModelMsg').removeClass('alert-success');
+                    $('#errorModelMsg').addClass('alert-warning');
+                    $('#errorModelMsg').html(errorHtml);
+                    $('html,body').animate({
+                        scrollTop: $("#content").offset().top
+                    }, 100);
+                    setInterval(function() {
+                        $('#errorModelMsg').css("display", "none");
+                        $('#errorModelMsg').html('');
+                    }, 10000);
+
+                }
+
+            })
+            //alert('submitBtn');
+            // $('#exampleModal').on('hidden.bs.modal', function() {
+            //     alert();
+            //     document.location.reload();
+            //     //location.reload();
+            // });
+    });
+
+    $('.defaultImg').change(function() {
+        if ($(this).prop('checked')) {
+            let del = $(this).attr('value');
+            let delItem = del.split('_');
+            itemId = delItem['0'];
+            imgId = delItem['1'];
+            //return false;
+
+            $.ajax({
+                type: 'POST',
+                url: BASE_URL + '/addPrimaryImgByAjax',
+                data: {
+                    '_token': $('meta[name="csrf-token"]').attr('content'),
+                    'itemId': itemId,
+                    'imgId': imgId,
+                    'defaultVal': 1,
+                },
+                success: function(responce) {
+                    //console.log(responce);
+                    // return false;
+                    if (responce['status'] == 'success') {
+                        $('#errorModelMsg').css("display", "block");
+                        $('#errorModelMsg').removeClass('alert-warning');
+                        $('#errorModelMsg').addClass('alert-success');
+                        $('#errorModelMsg').html(`<strong>${responce['msg']}</strong>`);
+                        $('html,body').animate({
+                            scrollTop: $("#content").offset().top
+                        }, 100);
+                        setInterval(function() {
+                            $('#errorModelMsg').css("display", "none");
+                            $('#errorModelMsg').html('');
+
+                        }, 10000);
+                        document.location.reload();
+
+                    } else {
+                        $('#errorModelMsg').css("display", "block");
+                        $('#errorModelMsg').removeClass('alert-success');
+                        $('#errorModelMsg').addClass('alert-warning');
+                        $('#errorModelMsg').html(`<strong>${responce['msg']}</strong>`);
+                        $('html,body').animate({
+                            scrollTop: $("#content").offset().top
+                        }, 100);
+                        setInterval(function() {
+                            $('#errorModelMsg').css("display", "none");
+
+                            $('#errorModelMsg').html('');
+                        }, 10000);
+
+                    }
+                },
+                error: function(xhr, status, error) {
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+                    $('#errorModelMsg').css("display", "block");
+                    $('#errorModelMsg').removeClass('alert-success');
+                    $('#errorModelMsg').addClass('alert-warning');
+                    $('#errorModelMsg').html(errorHtml);
+                    $('html,body').animate({
+                        scrollTop: $("#content").offset().top
+                    }, 100);
+                    setInterval(function() {
+                        $('#errorModelMsg').css("display", "none");
+                        $('#errorModelMsg').html('');
+                    }, 10000);
+
+                }
+
+            });
+
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: BASE_URL + '/addPrimaryImgByAjax',
+                data: {
+                    '_token': $('meta[name="csrf-token"]').attr('content'),
+                    'itemId': itemId,
+                    'imgId': imgId,
+                    'defaultVal': 0,
+                },
+                success: function(responce) {
+                    //console.log(responce);
+                    // return false;
+                    if (responce['status'] == 'success') {
+                        $('#errorModelMsg').css("display", "block");
+                        $('#errorModelMsg').removeClass('alert-warning');
+                        $('#errorModelMsg').addClass('alert-success');
+                        $('#errorModelMsg').html(`<strong>${responce['msg']}</strong>`);
+                        $('html,body').animate({
+                            scrollTop: $("#content").offset().top
+                        }, 100);
+                        setInterval(function() {
+                            $('#errorModelMsg').css("display", "none");
+                            $('#errorModelMsg').html('');
+
+                        }, 10000);
+                        //document.location.reload();
+
+                    } else {
+                        $('#errorModelMsg').css("display", "block");
+                        $('#errorModelMsg').removeClass('alert-success');
+                        $('#errorModelMsg').addClass('alert-warning');
+                        $('#errorModelMsg').html(`<strong>${responce['msg']}</strong>`);
+                        $('html,body').animate({
+                            scrollTop: $("#content").offset().top
+                        }, 100);
+                        setInterval(function() {
+                            $('#errorModelMsg').css("display", "none");
+
+                            $('#errorModelMsg').html('');
+                        }, 10000);
+
+                    }
+                },
+                error: function(xhr, status, error) {
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+                    $('#errorModelMsg').css("display", "block");
+                    $('#errorModelMsg').removeClass('alert-success');
+                    $('#errorModelMsg').addClass('alert-warning');
+                    $('#errorModelMsg').html(errorHtml);
+                    $('html,body').animate({
+                        scrollTop: $("#content").offset().top
+                    }, 100);
+                    setInterval(function() {
+                        $('#errorModelMsg').css("display", "none");
+                        $('#errorModelMsg').html('');
+                    }, 10000);
+
+                }
+
+            });
+        }
+    });
+
 
 
 });

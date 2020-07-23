@@ -98,7 +98,7 @@
 						<a href="index.html">
 							<span class="brand-logo"></span>
 							<span class="brand-text">
-								<span class="text-primary">Color</span>Admin
+								<span class="text-primary">Bartanwale</span>Admin
 								<small>e-commerce frontend theme</small>
 							</span>
 						</a>
