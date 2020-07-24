@@ -36,8 +36,6 @@ class UserController extends Controller
                 'img_name' => $image_name,
                 'alt_tag' => $photo->getClientOriginalName(),
                 'created_by' => $user_id,
-                
-
             ]);
         }
         return Response::json([
@@ -120,8 +118,9 @@ class UserController extends Controller
 
     public function addPrimaryImgByAjax(Request $request)
     { 
-        DB::table('tbl_item_gallery')->where('item_id', $request->itemId)->update(['default'=> 0]);
-
+        if($request->defaultVal == 1){
+            $removeAnyPrimary =  DB::table('tbl_item_gallery')->where('item_id', $request->itemId)->update(['default'=> 0]);
+        }
        $itemData = DB::table('tbl_item_gallery')->where('id', $request->imgId)
         ->where('item_id', $request->itemId)->update(['default'=> $request->defaultVal]);
         if ($itemData) {
@@ -196,6 +195,33 @@ class UserController extends Controller
         })->get();
 
         return $theme->scope('admin.item_master', compact('dataObjArr','galleryImages'))->render();
+    }
+    
+    public function itemListLayout()
+    { //viewLayout
+        DB::enableQueryLog();
+        $theme = Theme::uses('backend')->layout('layout');
+        $dataObjArr = DB::table('tbl_items')->leftJoin('tbl_group', function ($join) {
+            $join->on('tbl_items.group_id', '=', 'tbl_group.g_id');
+        })->leftJoin('tbl_item_gallery', function ($join) {
+            $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
+            $join->DISTINCT('tbl_items.item_id');
+            $join->orderBy('tbl_items.item_id','DESC');
+            $join->where('tbl_item_gallery.default',1);
+            // SELECT DISTINCT(column_name) FROM table_name ORDER BY column_name DESC limit 2,1;
+            // $join->orderBy('tbl_items.item_id','DESC');
+             $join->limit(2,1);
+        })
+        //->orderBy('DESC')
+        
+        ->select('tbl_items.*','tbl_group.g_id','tbl_group.g_name','tbl_item_gallery.img_name','tbl_item_gallery.default')
+        ->get();
+        //echo"<pre>"; print_r(DB::getQueryLog());exit;
+        $galleryImages = DB::table('tbl_item_gallery')->rightJoin('tbl_items', function ($join) {
+            $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
+        })->get();
+
+        return $theme->scope('admin.item_list', compact('dataObjArr','galleryImages'))->render();
     }
 
     public function getItembyAjax()

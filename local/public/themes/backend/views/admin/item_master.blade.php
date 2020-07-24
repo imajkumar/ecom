@@ -52,14 +52,9 @@
                     <div class="col-xl-12" style="background-color: #e4e7e8;">
                         <!-- begin nav-tabs -->
                         <ul class="nav nav-tabs">
+                            
                             <li class="nav-item">
-                                <a href="#default-tab-1" data-toggle="tab" class="nav-link active">
-                                    <span class="d-sm-none">Tab 1</span>
-                                    <span class="d-sm-block d-none">ITEM LIST</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#addItem" data-toggle="tab" class="nav-link">
+                                <a href="#addItem" data-toggle="tab" class="nav-link active">
                                     <span class="d-sm-none">Tab 2</span>
                                     <span class="d-sm-block d-none">ADD ITEM</span>
                                 </a>
@@ -99,52 +94,10 @@
                     <div class="tab-content">
 
                         <!-- begin tab-pane -->
-                        <div class="tab-pane fade active show" id="default-tab-1">
-
-                            {{-- <table id="grid1"></table> --}}
-                            <table id="data-table-default" class="table table-striped table-bordered table-td-valign-middle">
-                                <thead>
-                                    <tr>
-                                        <th width="1%"></th>
-
-                                        <th class="text-nowrap">Image</th>
-                                        <th class="text-nowrap">Item name</th>
-                                        <th class="text-nowrap">Group name</th>
-                                        <th class="text-nowrap">Open quantity</th>
-                                        <th class="text-nowrap">Min quantity</th>
-                                        <th class="text-nowrap">Action</th>
-
-
-                                    </tr>
-                                </thead>
-                                <tbody id="itemDataAppend">
-                                    <?php $i = 1;
-                                    foreach ($dataObjArr as $itemData) { ?>
-                                        <tr class="odd gradeX">
-                                            <td width="1%" class="f-s-600 text-inverse">{{$i++}}</td>
-
-                                            <td>@if($itemData->img_name && $itemData->default==1)
-                                            <img src="{{BASE_URL.ITEM_IMG_PATH.'/'.$itemData->img_name}}" width="50px" height="50px"/>
-                                            @else
-                                            <img src="{{BACKEND.'img/product/default.jpg'}}" width="50px" height="50px"/>
-                                            @endif
-                                            <a href="{{route('addGalleryImage', $itemData->item_id)}}">Add image</a></td>
-                                            <td>{{$itemData->item_name}}</td>
-                                            <td>{{$itemData->g_name}}</td>
-                                            <td>{{$itemData->open_qty}}</td>
-                                            <td>{{$itemData->min_qty}}</td>
-                                            <td><a class="btn btn-primary" href="{{route('itemEditLayout',$itemData->item_id)}}">Edit</a></td>
-                                        </tr>
-                                    <?php } ?>
-
-                                </tbody>
-                            </table>
-
-
-                        </div>
+                        
                         <!-- end tab-pane -->
                         <!-- begin tab-pane -->
-                        <div class="tab-pane fade  show" id="addItem">
+                        <div class="tab-pane fade active show" id="addItem">
                             <!-- begin row -->
                             <div class="row">
                                 <!-- begin col-12 -->

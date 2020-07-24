@@ -5,11 +5,11 @@
     <ol class="breadcrumb float-xl-right">
         <li class="breadcrumb-item"><a href="javascript:;">Dashboar</a></li>
         <li class="breadcrumb-item"><a href="javascript:;">Settings</a></li>
-        <li class="breadcrumb-item active">Item Master</li>
+        <li class="breadcrumb-item active">Item Edit</li>
     </ol>
     <!-- end breadcrumb -->
     <!-- begin page-header -->
-    <h1 class="page-header">ITEM <small>MASTER</small></h1>
+    <h1 class="page-header">ITEM <small>EDIT</small></h1>
     @if(Session::has('message-type'))
     
         <div class="alert alert-{{ Session::get('message-type') }}"> 
@@ -49,7 +49,7 @@
         <div class="col-xl-12">
             <div class="panel panel-inverse" data-sortable-id="tree-view-1">
                 <div class="panel-heading">
-                    <h4 class="panel-title">ITEM SETTING</h4>
+                    <h4 class="panel-title">ITEM EDIT</h4>
                     <div class="panel-heading-btn">
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
@@ -64,13 +64,13 @@
                             <li class="nav-item">
                                 <a href="#default-tab-1" data-toggle="tab" class="nav-link active">
                                     <span class="d-sm-none">Tab 1</span>
-                                    <span class="d-sm-block d-none">ITEM LIST</span>
+                                    <span class="d-sm-block d-none">ITEM DETAIL</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#addItem" data-toggle="tab" class="nav-link">
                                     <span class="d-sm-none">Tab 2</span>
-                                    <span class="d-sm-block d-none">ADD ITEM</span>
+                                    <span class="d-sm-block d-none">EDIT ITEM</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -112,7 +112,7 @@
                         <div class="tab-pane fade active show" id="default-tab-1">
 
                             {{-- <table id="grid1"></table> --}}
-                            <table id="data-table-default" class="table table-striped table-bordered table-td-valign-middle">
+                            <table id="data-table-default_no" class="table table-striped table-bordered table-td-valign-middle">
                                 <thead>
                                     <tr>
                                         <th width="1%"></th>

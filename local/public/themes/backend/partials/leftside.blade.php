@@ -46,7 +46,7 @@
 						<ul class="sub-menu">
 							
 							<li><a href="{{route('masterSettingsLayout')}}">Master Setup</a></li>
-							<li><a href="{{route('itemMasterLayout')}}">Item Master</a></li>
+							<li><a href="{{route('itemListLayout')}}">Item Master</a></li>
 							
 						</ul>
 					</li>

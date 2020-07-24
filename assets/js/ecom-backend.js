@@ -293,6 +293,9 @@ $(document).ready(function() {
         let delItem = del.split('_');
         let itemId = delItem['0'];
         let imgId = delItem['1'];
+        if (!confirm('Are you sure you want to delete this image?')) {
+            return false;
+        }
         //return false;
         $.ajax({
                 type: 'POST',
@@ -365,11 +368,15 @@ $(document).ready(function() {
     });
 
     $('.defaultImg').change(function() {
+        let del = $(this).attr('value');
+        let delItem = del.split('_');
+        itemId = delItem['0'];
+        imgId = delItem['1'];
         if ($(this).prop('checked')) {
-            let del = $(this).attr('value');
-            let delItem = del.split('_');
-            itemId = delItem['0'];
-            imgId = delItem['1'];
+            if (!confirm('Are you sure you want to make primary this image?')) {
+                return false;
+            }
+
             //return false;
 
             $.ajax({
@@ -437,6 +444,11 @@ $(document).ready(function() {
             });
 
         } else {
+            if (!confirm('Are you sure you want to remove primary this image?')) {
+                return false;
+                // $(this).prop("checked", "true")
+            }
+
             $.ajax({
                 type: 'POST',
                 url: BASE_URL + '/addPrimaryImgByAjax',
@@ -462,7 +474,7 @@ $(document).ready(function() {
                             $('#errorModelMsg').html('');
 
                         }, 10000);
-                        //document.location.reload();
+                        document.location.reload();
 
                     } else {
                         $('#errorModelMsg').css("display", "block");
