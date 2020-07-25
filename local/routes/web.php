@@ -42,3 +42,10 @@ Route::Post('/getTreeView', 'UserController@getTreeView')->name('getTreeView');
 Route::Post('/saveAttribute', 'UserController@saveAttribute')->name('saveAttribute'); 
 Route::get('/customer-list', 'UserController@customerListLayout')->name('customerListLayout'); 
 Route::get('/add-new-customer', 'UserController@addNewCustomerLayout')->name('addNewCustomerLayout'); 
+
+Route::get('/banners', 'UserController@bannerListLayout')->name('bannerListLayout'); 
+Route::get('/add-banner', 'UserController@addBannerLayout')->name('addBannerLayout');
+Route::post('/save-banner', 'UserController@saveBanner')->name('saveBanner');
+Route::get('/edit-banner/{id}', 'UserController@editBannerLayout')->name('editBannerLayout');
+Route::post('/update-banner/{id}', 'UserController@updateBanner')->name('updateBanner');
+Route::get('/delete-banner/{id}', 'UserController@deleteBanner')->name('deleteBanner');

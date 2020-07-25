@@ -58,10 +58,11 @@
                     <div class="tab-content">
 
                         <!-- begin tab-pane -->
+                        <div id="Grid"></div>
                         
 
                             {{-- <table id="grid1"></table> --}}
-                            <table id="data-table-default" class="table table-striped table-bordered table-td-valign-middle">
+                            {{-- <table id="data-table-default" class="table table-striped table-bordered table-td-valign-middle">
                                 <thead>
                                     <tr>
                                         <th width="1%"></th>
@@ -87,7 +88,7 @@
                                     
 
                                 </tbody>
-                            </table>
+                            </table> --}}
 
 
                         

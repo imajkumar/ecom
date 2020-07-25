@@ -73,7 +73,7 @@
 	<!-- ================== END PAGE GALLERY ================== -->
 	<link href="{{BACKEND.'plugins/smartwizard/dist/css/smart_wizard.cs'}}s" rel="stylesheet" />
 
-	
+	<link rel="stylesheet" href="http://cdn.syncfusion.com/13.2.0.29/js/web/flat-azure/ej.web.all.min.css" />
 </head>
 
 <body>
@@ -99,7 +99,7 @@
 	<script src="{{ BACKEND.'js/app.min.js'}}"></script>
 	<script src="{{ BACKEND.'js/theme/apple.min.js'}}"></script>
 	<!-- ================== END BASE JS ================== -->
-
+	
 	{{-- gallery --}}
     <!-- ================== BEGIN PAGE LEVEL JS ================== -->
 	<script src="{{asset('assets/plugins/blueimp-file-upload/js/vendor/jquery.ui.widget.js')}}"></script>
@@ -161,6 +161,8 @@
 	<!-- ================== END PAGE GALLERY JS ================== -->
 	<script src="{{BACKEND.'plugins/smartwizard/dist/js/jquery.smartWizard.js'}}"></script>
 	<script src="{{BACKEND.'js/demo/form-wizards.demo.js'}}"></script>
+
+	
 	<script>
     //<![CDATA[
     $(function () {

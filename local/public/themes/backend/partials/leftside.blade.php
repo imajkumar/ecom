@@ -58,6 +58,19 @@
 						</a>
 						
 					</li>
+					<li class="has-sub active">
+						<a href="javascript:;">
+							<b class="caret"></b>
+							<i class="fa fa-cogs"></i>
+							<span>CMS </span>
+						</a>
+						<ul class="sub-menu">
+							
+							<li><a href="{{route('bannerListLayout')}}">Banners</a></li>
+							{{-- <li><a href="{{route('itemListLayout')}}">Item Master</a></li> --}}
+							
+						</ul>
+					</li>
 				
 					<!-- begin sidebar minify button -->
 					<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="ion-ios-arrow-back"></i> <span>Collapse</span></a></li>

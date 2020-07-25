@@ -9,12 +9,132 @@ use DB;
 use Illuminate\Support\Facades\Auth;
 use Response;
 use Session;
+use File;
 
 class UserController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function bannerListLayout()
+    {
+        $theme = Theme::uses('backend')->layout('layout');
+        $bannerLists = DB::table('tbl_banners')->leftjoin('tbl_banner_size', function($join){
+            $join->on('tbl_banners.size','=','tbl_banner_size.id');
+            
+        })
+        ->select('tbl_banner_size.id as banner_size_id','tbl_banner_size.banner_size','tbl_banners.*')
+        ->get();
+        //dd($bannerLists);
+        return $theme->scope('admin.banner.banner_list', compact('bannerLists'))->render();
+    }
+
+    public function addBannerLayout()
+    {
+        $theme = Theme::uses('backend')->layout('layout');
+        $bannerSizes = DB::table('tbl_banner_size')->get();
+        return $theme->scope('admin.banner.banner_add', compact('bannerSizes'))->render();
+    }
+
+    public function editBannerLayout($id)
+    {
+        $theme = Theme::uses('backend')->layout('layout');
+        $bannerSizes = DB::table('tbl_banner_size')->get();
+        $banner = DB::table('tbl_banners')->where('id', $id)->first();
+        return $theme->scope('admin.banner.banner_edit', compact('bannerSizes','banner'))->render();
+    }
+
+    public function saveBanner(Request $request)
+    {
+        $this->validate($request, [
+            'banner' => 'required|image',
+            'size' => 'required',
+            //'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+        $banner = $request->file('banner');
+        
+        $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $banner->getClientOriginalName());
+        $destinationPath = ITEM_IMG_PATH;
+        $image_name = 'banner_'.date('mdis').$name;
+        $banner->move($destinationPath, $image_name);
+
+        $user_id = Auth::user()->id;
+        $bannerData = DB::table('tbl_banners')->insert([
+            'banner' => $image_name,
+            'size' => $request->size,
+            'created_by' => $user_id
+        ]);
+
+        if($bannerData){
+            $request->session()->flash('message', 'Banner save successfully.');
+            $request->session()->flash('message-type', 'success');
+            return redirect()->route('bannerListLayout');
+        }else{
+            $request->session()->flash('message', 'Something is wrong try again.');
+            $request->session()->flash('message-type', 'warning');
+            return redirect()->route('addBannerLayout');
+        }
+        
+    }
+
+    public function updateBanner(Request $request, $id)
+    {
+        $this->validate($request, [
+            //'banner' => 'required|image',
+            'size' => 'required',
+        ]);
+        
+        if ($request->hasFile('banner')) {
+            $banner = $request->file('banner');
+            $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $banner->getClientOriginalName());
+            $destinationPath = ITEM_IMG_PATH;
+            $image_name = 'banner_'.date('mdis').$name;
+            $banner->move($destinationPath, $image_name);
+            if (File::exists($destinationPath.'/'.$request->input('old_banner'))) {
+				File::delete($destinationPath.'/'.$request->input('old_banner'));
+			}
+		} else {
+			$image_name = $request->input('old_banner');
+        }
+        $user_id = Auth::user()->id;
+        $data = [
+            'banner' => $image_name,
+            'size' => $request->size,
+            'created_by' => $user_id
+        ];
+        
+        $bannerData = DB::table('tbl_banners')->where('id', $id)->update($data);
+
+        if($bannerData){
+            $request->session()->flash('message', 'Banner updated successfully.');
+            $request->session()->flash('message-type', 'success');
+            return redirect()->route('bannerListLayout');
+        }else{
+            $request->session()->flash('message', 'Something is wrong try again.');
+            $request->session()->flash('message-type', 'warning');
+            return redirect()->route('editBannerLayout', $id);
+        }
+    }
+
+    public function deleteBanner($id)
+    {
+        $bannerimg = DB::table('tbl_banners')->where('id', $id)->first();
+        $bannerImgForDel = $bannerimg->banner;
+        $banner = DB::table('tbl_banners')->where('id', $id)->delete();
+        if ($banner) {
+            $destinationPath = ITEM_IMG_PATH;
+            if (File::exists($destinationPath.'/'.$bannerImgForDel)) {
+                File::delete($destinationPath.'/'.$bannerImgForDel);
+            }
+                return redirect()->route('bannerListLayout')
+                        ->with(['message' =>'Banner deleted successfully.','message-type' => 'success']);
+        } else {
+            
+                return redirect()->route('bannerListLayout')
+                    ->with(['message' =>'Something is wrong try again.','message-type' => 'warning']);
+            }
     }
 
     public function uploadGalleryImage(Request $request)  //item gallary uploads
@@ -67,7 +187,7 @@ class UserController extends Controller
             });
             return Response::json(array('status' => 'success', 'msg' => 'New Attribute added successfully.'));
         } else {
-            return Response::json(array('status' => 'wrong', 'msg' => 'Something is wrong try again'));
+            return Response::json(array('status' => 'wrong', 'msg' => 'Something is wrong try again.'));
         }
     }
 

@@ -4,13 +4,22 @@
     <!-- begin breadcrumb -->
     <ol class="breadcrumb float-xl-right">
         <li class="breadcrumb-item"><a href="javascript:;">Dashboar</a></li>
-        <li class="breadcrumb-item"><a href="javascript:;">Settings</a></li>
-        <li class="breadcrumb-item active">Items</li>
+        {{-- <li class="breadcrumb-item"><a href="javascript:;">Settings</a></li> --}}
+        <li class="breadcrumb-item active">Banners</li>
     </ol>
     <!-- end breadcrumb -->
     <!-- begin page-header -->
     
-    <h1 class="page-header">ITEM <small>LIST</small></h1>
+    <h1 class="page-header">BANNER <small>LIST</small></h1>
+    @if(Session::has('message-type'))
+    
+        <div class="alert alert-{{ Session::get('message-type') }}"> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        {{ Session::get('message') }}
+        </div>
+    @endif
 
     <!-- end page-header -->
 
@@ -44,9 +53,9 @@
             
             <div class="panel panel-inverse" data-sortable-id="tree-view-1">
                 <div class="panel-heading">
-                    <h4 class="panel-title">ITEMS</h4>
+                    <h4 class="panel-title">BANNERS</h4>
                     <div class="panel-heading-btn">
-                        <a class="btn btn-primary pull-right" href="{{route('itemMasterLayout')}}">Add New</a>
+                        <a class="btn btn-primary pull-right" href="{{route('addBannerLayout')}}" style="background-color:#0f0f0f;border: none;">Add New</a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
@@ -58,6 +67,7 @@
                     <div class="tab-content">
 
                         <!-- begin tab-pane -->
+                        {{-- <div id="Grid"></div> --}}
                         
 
                             {{-- <table id="grid1"></table> --}}
@@ -65,40 +75,35 @@
                                 <thead>
                                     <tr>
                                         <th width="1%"></th>
-
-                                        <th class="text-nowrap">Image</th>
-                                        <th class="text-nowrap">Item name</th>
-                                        <th class="text-nowrap">Group name</th>
-                                        <th class="text-nowrap">Open quantity</th>
-                                        <th class="text-nowrap">Min quantity</th>
+                                        <th class="text-nowrap">Banner</th>
+                                        <th class="text-nowrap">Size</th>
+                                        <th class="text-nowrap">Created Date</th>
                                         <th class="text-nowrap">Action</th>
+                                        {{-- <th class="text-nowrap">Created By</th> --}}
 
 
                                     </tr>
                                 </thead>
-                                <tbody id="itemDataAppend">
-                                    <?php $i = 1;
-                                    foreach ($dataObjArr as $itemData) { ?>
-                                        <tr class="odd gradeX">
-                                            <td width="1%" class="f-s-600 text-inverse">{{$i++}}</td>
-
-                                            <td>@if($itemData->img_name && $itemData->default==1)
-                                            <img src="{{BASE_URL.ITEM_IMG_PATH.'/'.$itemData->img_name}}" width="50px" height="50px"/>
-                                            @else
-                                            <img src="{{BACKEND.'img/product/default.jpg'}}" width="50px" height="50px"/>
-                                            @endif
-                                            <a href="{{route('addGalleryImage', $itemData->item_id)}}">Add image</a></td>
-                                            <td>{{$itemData->item_name}}</td>
-                                            <td>{{$itemData->g_name}}</td>
-                                            <td>{{$itemData->open_qty}}</td>
-                                            <td>{{$itemData->min_qty}}</td>
-                                            <td><a class="btn btn-primary" href="{{route('itemEditLayout',$itemData->item_id)}}">Edit</a></td>
-                                        </tr>
-                                    <?php } ?>
+                                <tbody>
+                                    @php
+                                        $i=1;
+                                    @endphp
+                                    @foreach($bannerLists as $bannerList)
+                                    <tr>
+                                        <td>{{$i++}}</td>
+                                        <td> <img id="output" src="{{($bannerList->banner)? BASE_URL.ITEM_IMG_PATH.'/'.$bannerList->banner : BACKEND.'img/product/default.jpg'}}"
+                                            width="60px" height="40px"/></td>
+                                        <td>{{$bannerList->banner_size}}</td>
+                                        <td>{{date('d-m-y', strtotime($bannerList->created_at))}}</td>
+                                        <td><a href="{{route('editBannerLayout', $bannerList->id)}}" class="btn btn-primary">Edit</a>
+                                        
+                                            
+                                            <a href="{{route('deleteBanner', $bannerList->id)}}" class="btn btn-danger">Delete</a></td>
+                                    </tr>
+                                    @endforeach
 
                                 </tbody>
                             </table>
-
 
 
                         
