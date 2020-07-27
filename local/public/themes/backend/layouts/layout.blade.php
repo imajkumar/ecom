@@ -89,6 +89,34 @@
 	@content()
 	@partial('footer')
 
+
+
+
+	
+    {{-- start model add item image--}}
+    <div class="modal fade" id="addItemImageByModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Image</h4>
+              <button type="button" onclick="javascript:window.location.reload()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              
+            </div>
+            <div class="modal-body">
+              <form id="formAttribute" method="post">
+                  @csrf
+                  
+              </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="saveAttribute" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-default" onclick="javascript:window.location.reload()" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+	  {{-- end model add item image --}}
+	  
 	<!-- begin scroll to top btn -->
 	<a href="javascript:;" class="btn btn-icon btn-circle btn-primary btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
 	<!-- end scroll to top btn -->

@@ -5,12 +5,12 @@
     <ol class="breadcrumb float-xl-right">
         <li class="breadcrumb-item"><a href="javascript:;">Dashboar</a></li>
         {{-- <li class="breadcrumb-item"><a href="javascript:;">Settings</a></li> --}}
-        <li class="breadcrumb-item active">Banners</li>
+        <li class="breadcrumb-item active">Brands</li>
     </ol>
     <!-- end breadcrumb -->
     <!-- begin page-header -->
     
-    <h1 class="page-header">BANNER <small>LIST</small></h1>
+    <h1 class="page-header">BRAND <small>LIST</small></h1>
     @if(Session::has('message-type'))
     
         <div class="alert alert-{{ Session::get('message-type') }}"> 
@@ -29,9 +29,9 @@
         <div class="col-xl-12">
             <div class="panel panel-inverse" data-sortable-id="tree-view-1">
                 <div class="panel-heading">
-                    <h4 class="panel-title">BANNERS</h4>
+                    <h4 class="panel-title">BRANDS</h4>
                     <div class="panel-heading-btn">
-                        <a class="btn btn-primary pull-right" href="{{route('addBannerLayout')}}" style="background-color:#0f0f0f;border: none;">Add New</a>
+                        <a class="btn btn-primary pull-right" href="{{route('addBrandLayout')}}" style="background-color:#0f0f0f;border: none;">Add New</a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
@@ -46,8 +46,9 @@
                                 <thead>
                                     <tr>
                                         <th width="1%"></th>
-                                        <th class="text-nowrap">Banner</th>
-                                        <th class="text-nowrap">Size</th>
+                                        <th class="text-nowrap">Image</th>
+                                        <th class="text-nowrap">Brand</th>
+                                        <th class="text-nowrap">Description</th>
                                         <th class="text-nowrap">Created Date</th>
                                         <th class="text-nowrap">Action</th>
                                     </tr>
@@ -56,16 +57,17 @@
                                     @php
                                         $i=1;
                                     @endphp
-                                    @foreach($bannerLists as $bannerList)
+                                    @foreach($brandLists as $brandList)
                                     <tr>
                                         <td>{{$i++}}</td>
-                                        <td> <img id="output" src="{{($bannerList->banner)? BASE_URL.ITEM_IMG_PATH.'/'.$bannerList->banner : BACKEND.'img/product/default.jpg'}}"
+                                        <td> <img id="output" src="{{($brandList->brand_img)? BASE_URL.ITEM_IMG_PATH.'/'.$brandList->brand_img : BACKEND.'img/product/default.jpg'}}"
                                             width="60px" height="40px"/></td>
-                                        <td>{{$bannerList->banner_size}}</td>
-                                        <td>{{date('d-m-Y', strtotime($bannerList->created_at))}}</td>
+                                        <td>{{$brandList->name}}</td>
+                                        <td>{{$brandList->description}}</td>
+                                        <td>{{date('d-m-Y', strtotime($brandList->created_at))}}</td>
                                         <td>
-                                            <a href="{{route('editBannerLayout', $bannerList->id)}}" class="btn btn-primary">Edit</a>
-                                            <a href="{{route('deleteBanner', $bannerList->id)}}" class="btn btn-danger">Delete</a>
+                                            <a href="{{route('editBrandLayout', $brandList->id)}}" class="btn btn-primary">Edit</a>
+                                            <a href="{{route('deleteBrand', $brandList->id)}}" class="btn btn-danger">Delete</a>
                                         </td>
                                     </tr>
                                     @endforeach

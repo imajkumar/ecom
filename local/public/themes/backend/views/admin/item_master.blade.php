@@ -127,6 +127,18 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="salePrice">Sale price :</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <input type="text" class="form-control" id="salePrice" name="sale_price" placeholder="Sale price" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="regularPrice">Reguler price :</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <input type="text" class="form-control" id="regularPrice" name="regular_price" placeholder="Regular price" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row m-b-15">
                                                         <label class="col-md-12 col-sm-4 col-form-label" for="code">Code :</label>
                                                         <div class="col-md-12 col-sm-8">
                                                             <input type="text" class="form-control" id="code" name="code" placeholder="code" />
@@ -140,13 +152,7 @@
                                                             <input class="form-control" type="text" id="openingqty" name="open_qty" placeholder="Opening qty">
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row m-b-15">
-                                                        <label class="col-md-12 col-sm-4 col-form-label" for="minimumqty">Minimum Qty:</label>
-                                                        <div class="col-md-12 col-sm-8">
-                                                            <input class="form-control" type="text" id="minimumqty" name="min_qty" placeholder="Minimum Qty">
-        
-                                                        </div>
-                                                    </div>
+                                                    
                                            
 
                                                 </div>
@@ -164,14 +170,25 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group row m-b-15">
-                                                        <label class="col-md-12 col-sm-4 col-form-label" for="openingqty">Stock Unit:</label>
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="stockUnit">Stock Unit:</label>
                                                         <div class="col-md-12 col-sm-8">
-                                                            <select class="form-control" id="openingqty" name="openingqty" placeholder="Opening qty">
-                                                                <option>select</option>
+                                                            <select class="form-control" id="stockUnit" name="stock_unit">
+                                                                <option value="">select</option>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="minimumqty">Minimum Qty:</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <input class="form-control" type="text" id="minimumqty" name="min_qty" placeholder="Minimum Qty">
+        
+                                                        </div>
+                                                    </div>
 
                                                 </div>
                                                 <div class="col-md-4 col-sm-8">
@@ -181,6 +198,16 @@
                                                             <select class="form-control" id="group" name="group_id" data-parsley-required="true" placeholder="Group">
                                                                 @foreach($dataObjArr as $groupData)
                                                                 <option value="{{$groupData->g_id}}">{{$groupData->g_name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="brand">Brand :</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <select class="form-control" id="brand" name="brand_id" data-parsley-required="true" placeholder="Brand">
+                                                                @foreach($brands as $brand)
+                                                                <option value="{{$brand->id}}">{{$brand->name}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -201,6 +228,7 @@
         
                                                         </div>
                                                     </div>
+                                                    
                                                     
 
 
@@ -364,35 +392,12 @@
                                     <!-- end panel-body -->
                                     <form id="fileupload" action="{{route('uploadGalleryImage')}}" method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        {{-- <input type="hidden" name="item_id" value="{{$item_id}}"/> --}}
+                                        <input type="hidden" name="item_id" id="itemId"/>
                                         <!-- begin panel -->
                                         <div class="panel panel-inverse">
-                                            <!-- begin panel-heading -->
-                                            {{-- <div class="panel-heading">
-                                                <h4 class="panel-title">Image Upload</h4>
-                                                <div class="panel-heading-btn">
-                                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
-                                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
-                                                </div>
-                                            </div> --}}
-                                            <!-- end panel-heading -->
-                                            <!-- begin panel-body -->
+                                            
                                             <div class="panel-body">			
-                                                {{-- <div class="note note-yellow m-b-15">
-                                                    <div class="note-icon f-s-20">
-                                                        <i class="fa fa-lightbulb fa-2x"></i>
-                                                    </div>
-                                                    <div class="note-content">
-                                                        <h4 class="m-t-5 m-b-5 p-b-2">Demo Notes</h4>
-                                                        <ul class="m-b-5 p-l-25">
-                                                            <li>The maximum file size for uploads in this demo is <strong>5 MB</strong> (default file size is unlimited).</li>
-                                                            <li>Only image files (<strong>JPG, GIF, PNG</strong>) are allowed in this demo (by default there is no file type restriction).</li>
-                                                            <li>Uploaded files will be deleted automatically after <strong>5 minutes</strong> (demo setting).</li>
-                                                        </ul>
-                                                    </div>
-                                                </div> --}}
+                                               
                                                 <div class="row fileupload-buttonbar">
                                                     <div class="col-xl-7">
                                                         <span class="btn btn-primary fileinput-button m-r-3">

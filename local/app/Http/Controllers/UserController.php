@@ -31,11 +31,25 @@ class UserController extends Controller
         return $theme->scope('admin.banner.banner_list', compact('bannerLists'))->render();
     }
 
+    public function brandListLayout()
+    {
+        $theme = Theme::uses('backend')->layout('layout');
+        $brandLists = DB::table('tbl_brands')->get();
+        //dd($bannerLists);
+        return $theme->scope('admin.brand.brand_list', compact('brandLists'))->render();
+    }
+
     public function addBannerLayout()
     {
         $theme = Theme::uses('backend')->layout('layout');
         $bannerSizes = DB::table('tbl_banner_size')->get();
         return $theme->scope('admin.banner.banner_add', compact('bannerSizes'))->render();
+    }
+
+    public function addBrandLayout()
+    {
+        $theme = Theme::uses('backend')->layout('layout');
+        return $theme->scope('admin.brand.brand_add')->render();
     }
 
     public function editBannerLayout($id)
@@ -44,6 +58,14 @@ class UserController extends Controller
         $bannerSizes = DB::table('tbl_banner_size')->get();
         $banner = DB::table('tbl_banners')->where('id', $id)->first();
         return $theme->scope('admin.banner.banner_edit', compact('bannerSizes','banner'))->render();
+    }
+
+    public function editBrandLayout($id)
+    {
+        $theme = Theme::uses('backend')->layout('layout');
+        $brand = DB::table('tbl_brands')->first();
+        
+        return $theme->scope('admin.brand.brand_edit', compact('brand'))->render();
     }
 
     public function saveBanner(Request $request)
@@ -75,6 +97,81 @@ class UserController extends Controller
             $request->session()->flash('message', 'Something is wrong try again.');
             $request->session()->flash('message-type', 'warning');
             return redirect()->route('addBannerLayout');
+        }
+        
+    }
+
+    public function saveBrand(Request $request)
+    {
+        $this->validate($request, [
+            'brand_img' => 'required|image',
+            'name' => 'required|max:120',
+            //'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+        $banner = $request->file('brand_img');
+        
+        $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $banner->getClientOriginalName());
+        $destinationPath = ITEM_IMG_PATH;
+        $image_name = 'brand_'.date('mdis').$name;
+        $banner->move($destinationPath, $image_name);
+
+        $user_id = Auth::user()->id;
+        $bannerData = DB::table('tbl_brands')->insert([
+            'brand_img' => $image_name,
+            'name' => $request->name,
+            'description' => $request->description
+            
+        ]);
+
+        if($bannerData){
+            $request->session()->flash('message', 'Brand save successfully.');
+            $request->session()->flash('message-type', 'success');
+            return redirect()->route('brandListLayout');
+        }else{
+            $request->session()->flash('message', 'Something is wrong try again.');
+            $request->session()->flash('message-type', 'warning');
+            return redirect()->route('addBrandLayout');
+        }
+        
+    }
+
+    public function updateBrand(Request $request, $id)
+    {
+        $this->validate($request, [
+            //'brand_img' => 'required|image',
+            'name' => 'required|max:120',
+            //'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+        
+        if ($request->hasFile('brand_img')) {
+            $banner = $request->file('brand_img');
+            $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $banner->getClientOriginalName());
+            $destinationPath = ITEM_IMG_PATH;
+            $image_name = 'brand_'.date('mdis').$name;
+            $banner->move($destinationPath, $image_name);
+            if (File::exists($destinationPath.'/'.$request->input('old_brand'))) {
+				File::delete($destinationPath.'/'.$request->input('old_brand'));
+			}
+		} else {
+			$image_name = $request->input('old_brand');
+        }
+
+        $user_id = Auth::user()->id;
+        $bannerData = DB::table('tbl_brands')->where('id', $id)->update([
+            'brand_img' => $image_name,
+            'name' => $request->name,
+            'description' => $request->description
+            
+        ]);
+
+        if($bannerData){
+            $request->session()->flash('message', 'Brand updated successfully.');
+            $request->session()->flash('message-type', 'success');
+            return redirect()->route('brandListLayout');
+        }else{
+            $request->session()->flash('message', 'Something is wrong try again.');
+            $request->session()->flash('message-type', 'warning');
+            return redirect()->route('editBrandLayout', $id);
         }
         
     }
@@ -137,6 +234,25 @@ class UserController extends Controller
             }
     }
 
+    public function deleteBrand($id)
+    {
+        $brandimg = DB::table('tbl_brands')->where('id', $id)->first();
+        $brandImgForDel = $brandimg->brand_img;
+        $brand = DB::table('tbl_brands')->where('id', $id)->delete();
+        if ($brand) {
+            $destinationPath = ITEM_IMG_PATH;
+            if (File::exists($destinationPath.'/'.$brandImgForDel)) {
+                File::delete($destinationPath.'/'.$brandImgForDel);
+            }
+                return redirect()->route('brandListLayout')
+                        ->with(['message' =>'Brand deleted successfully.','message-type' => 'success']);
+        } else {
+            
+                return redirect()->route('brandListLayout')
+                    ->with(['message' =>'Something is wrong try again.','message-type' => 'warning']);
+            }
+    }
+
     public function uploadGalleryImage(Request $request)  //item gallary uploads
     {
         $photos = $request->file('files');
@@ -157,11 +273,49 @@ class UserController extends Controller
                 'alt_tag' => $photo->getClientOriginalName(),
                 'created_by' => $user_id,
             ]);
+
+            
         }
+        $defaultImg = DB::table('tbl_item_gallery')->where('item_id', $request->item_id)->first();
+        DB::table('tbl_item_gallery')->where('item_id', $request->item_id)->where('id', $defaultImg->id)
+        ->update(['default'=> 1]);
+
         return Response::json([
             'message' => 'Image saved Successfully'
         ], 200);
     }
+
+    // public function addItenImage(Request $request)  //item gallary uploads
+    // {
+    //     $photos = $request->file('files');
+
+    //     $destinationPath = ITEM_IMG_PATH;
+    //     for ($i = 0; $i < count($photos); $i++) {
+    //         $photo = $photos[$i];
+    //         //$name = sha1(date('YmdHis') . microtime());
+    //         $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $photo->getClientOriginalName()).'_'.$i;
+            
+    //         $image_name = $name . '.' . $photo->getClientOriginalExtension();
+    //         $photo->move($destinationPath, $image_name);
+            
+    //         $user_id = Auth::user()->id;
+    //         $itemData = DB::table('tbl_item_gallery')->insert([
+    //             'item_id' => $request->item_id,
+    //             'img_name' => $image_name,
+    //             'alt_tag' => $photo->getClientOriginalName(),
+    //             'created_by' => $user_id,
+    //         ]);
+
+            
+    //     }
+    //     $defaultImg = DB::table('tbl_item_gallery')->where('item_id', $request->item_id)->first();
+    //     DB::table('tbl_item_gallery')->where('item_id', $request->item_id)->where('id', $defaultImg->id)
+    //     ->update(['default'=> 1]);
+
+    //     return Response::json([
+    //         'message' => 'Image saved Successfully'
+    //     ], 200);
+    // }
 
     public function saveAttribute(Request $request)
     { 
@@ -196,6 +350,7 @@ class UserController extends Controller
         $this->validate($request, [
             'item_name' => 'required|string|max:120',
             'group_id' => 'required|integer',
+            'brand_id' => 'required|integer',
             'open_qty' => 'required|integer',
             'min_qty' => 'required|integer',
         ], [
@@ -203,6 +358,7 @@ class UserController extends Controller
             'item_name.string' => 'Item name should be string.',
             'item_name.max' => 'Item name Should be Minimum of 120 Character.',
             'group_id.required' => 'Group field is required.',
+            'group_id.required' => 'Brand field is required.',
             'open_qty.required' => 'Open quantity field is required.',
             'open_qty.integer' => 'Open quantity field should be number.',
             'min_qty.required' => 'Min quantity field is required.',
@@ -212,8 +368,13 @@ class UserController extends Controller
         $itemData = DB::table('tbl_items')->insert([
             'item_name' => $request->item_name,
             'group_id' => $request->group_id,
+            'brand_id' => $request->brand_id,
+            'description' => $request->description,
+            'sale_price' => $request->sale_price,
+            'regular_price' => $request->regular_price,
             'open_qty' => $request->open_qty,
             'min_qty' => $request->min_qty,
+            'status' => $request->status
         ]);
         $request->session()->flash('message', 'New Item added successfully.');
         $request->session()->flash('message-type', 'success');
@@ -255,6 +416,7 @@ class UserController extends Controller
         $this->validate($request, [
             'item_name' => 'required|string|max:120',
             'group_id' => 'required|integer',
+            'brand_id' => 'required|integer',
             'open_qty' => 'required|integer',
             'min_qty' => 'required|integer',
         ], [
@@ -262,6 +424,7 @@ class UserController extends Controller
             'item_name.string' => 'Item name should be string.',
             'item_name.max' => 'Item name Should be Minimum of 120 Character.',
             'group_id.required' => 'Group field is required.',
+            'group_id.required' => 'Brand field is required.',
             'open_qty.required' => 'Open quantity field is required.',
             'open_qty.integer' => 'Open quantity field should be number.',
             'min_qty.required' => 'Min quantity field is required.',
@@ -271,6 +434,10 @@ class UserController extends Controller
         $itemData = DB::table('tbl_items')->where('item_id', $item_id)->update([
             'item_name' => $request->item_name,
             'group_id' => $request->group_id,
+            'brand_id' => $request->brand_id,
+            'description' => $request->description,
+            'sale_price' => $request->sale_price,
+            'regular_price' => $request->regular_price,
             'open_qty' => $request->open_qty,
             'min_qty' => $request->min_qty,
         ]);
@@ -309,12 +476,14 @@ class UserController extends Controller
         
         ->select('tbl_items.*','tbl_group.g_id','tbl_group.g_name','tbl_item_gallery.img_name','tbl_item_gallery.default')
         ->get();
+
+        $brands = DB::table('tbl_brands')->get();
         //echo"<pre>"; print_r(DB::getQueryLog());exit;
         $galleryImages = DB::table('tbl_item_gallery')->rightJoin('tbl_items', function ($join) {
             $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
         })->get();
 
-        return $theme->scope('admin.item_master', compact('dataObjArr','galleryImages'))->render();
+        return $theme->scope('admin.item_master', compact('dataObjArr','galleryImages','brands'))->render();
     }
     
     public function itemListLayout()
@@ -331,10 +500,12 @@ class UserController extends Controller
             // SELECT DISTINCT(column_name) FROM table_name ORDER BY column_name DESC limit 2,1;
             // $join->orderBy('tbl_items.item_id','DESC');
              $join->limit(2,1);
+        })->leftjoin('tbl_brands', function($brand){
+            $brand->on('tbl_items.brand_id','=','tbl_brands.id');
         })
         //->orderBy('DESC')
         
-        ->select('tbl_items.*','tbl_group.g_id','tbl_group.g_name','tbl_item_gallery.img_name','tbl_item_gallery.default')
+        ->select('tbl_items.*','tbl_brands.id as brandId','tbl_brands.name as brandName','tbl_group.g_id','tbl_group.g_name','tbl_item_gallery.img_name','tbl_item_gallery.default')
         ->get();
         //echo"<pre>"; print_r(DB::getQueryLog());exit;
         $galleryImages = DB::table('tbl_item_gallery')->rightJoin('tbl_items', function ($join) {
@@ -403,7 +574,10 @@ class UserController extends Controller
         $item = DB::table('tbl_items')->leftJoin('tbl_group', function ($join) {
             $join->on('tbl_items.group_id', '=', 'tbl_group.g_id');
             
-        })->select('tbl_items.*','tbl_group.g_id','tbl_group.g_name')
+        })->leftJoin('tbl_brands', function ($brand) {
+            $brand->on('tbl_items.brand_id', '=', 'tbl_brands.id');
+            
+        })->select('tbl_items.*','tbl_brands.name as brandName','tbl_group.g_id','tbl_group.g_name')
         ->where('tbl_items.item_id', '=', $item_id)
         ->first();
 
@@ -414,7 +588,9 @@ class UserController extends Controller
         ->where('tbl_items.item_id', '=', $item_id)
         ->get();
 
-        return $theme->scope('admin.item_edit', compact('item','itemImages'))->render();
+        $brands = DB::table('tbl_brands')->get();
+
+        return $theme->scope('admin.item_edit', compact('brands','item','itemImages'))->render();
     }
 
     public function saveGroupAttribute(Request $request)

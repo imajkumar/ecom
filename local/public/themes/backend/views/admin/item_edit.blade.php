@@ -120,6 +120,9 @@
                                         {{-- <th class="text-nowrap">Image</th> --}}
                                         <th class="text-nowrap">Item name</th>
                                         <th class="text-nowrap">Group name</th>
+                                        <th class="text-nowrap">Brand name</th>
+                                        <th class="text-nowrap">Sale price</th>
+                                        <th class="text-nowrap">Regular price</th>
                                         <th class="text-nowrap">Open quantity</th>
                                         <th class="text-nowrap">Min quantity</th>
 
@@ -131,6 +134,9 @@
                                         <td width="1%" class="f-s-600 text-inverse">1</td>
                                         <td>{{$item->item_name}}</td>
                                         <td>{{$item->g_name}}</td>
+                                        <td>{{$item->brandName}}</td>
+                                        <td>{{$item->sale_price}}</td>
+                                        <td>{{$item->regular_price}}</td>
                                         <td>{{$item->open_qty}}</td>
                                         <td>{{$item->min_qty}}</td>
                                         
@@ -174,6 +180,18 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="salePrice">Sale price :</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <input type="text" class="form-control" value="{{$item->sale_price}}" id="salePrice" name="sale_price" placeholder="Sale price" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="regularPrice">Reguler price :</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <input type="text" class="form-control" id="regularPrice" name="regular_price" value="{{$item->regular_price}}" placeholder="Regular price" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row m-b-15">
                                                         <label class="col-md-12 col-sm-4 col-form-label" for="code">Code :</label>
                                                         <div class="col-md-12 col-sm-8">
                                                             <input type="text" class="form-control" value="" id="code" name="code" placeholder="code" />
@@ -187,13 +205,7 @@
                                                             <input class="form-control" type="text" id="openingqty" name="open_qty" value="{{$item->open_qty}}" placeholder="Opening qty">
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row m-b-15">
-                                                        <label class="col-md-12 col-sm-4 col-form-label" for="minimumqty">Minimum Qty:</label>
-                                                        <div class="col-md-12 col-sm-8">
-                                                            <input class="form-control" type="text" id="minimumqty" name="min_qty" value="{{$item->min_qty}}" placeholder="Minimum Qty">
-        
-                                                        </div>
-                                                    </div>
+                                                    
                                            
 
                                                 </div>
@@ -201,7 +213,7 @@
                                                     <div class="form-group row m-b-15">
                                                         <label class="col-md-12 col-sm-4 col-form-label" for="description">Description * :</label>
                                                         <div class="col-md-12 col-sm-8">
-                                                            <input class="form-control" type="text" id="description" name="description" placeholder="Description" data-parsley-required="true">
+                                                        <input class="form-control" type="text" id="description" value="{{$item->description}}" name="description" placeholder="Description" data-parsley-required="true">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row m-b-15">
@@ -211,14 +223,26 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group row m-b-15">
-                                                        <label class="col-md-12 col-sm-4 col-form-label" for="openingqty">Stock Unit:</label>
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="stockUnit">Stock Unit:</label>
                                                         <div class="col-md-12 col-sm-8">
-                                                            <select class="form-control" id="openingqty" name="openingqty" placeholder="Opening qty">
-                                                                <option>select</option>
+                                                            <select class="form-control" id="stockUnit" name="stock_unit">
+                                                                <option value="">select</option>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="minimumqty">Minimum Qty:</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <input class="form-control" type="text" id="minimumqty" name="min_qty" value="{{$item->min_qty}}" placeholder="Minimum Qty">
+        
+                                                        </div>
+                                                    </div>
 
                                                 </div>
                                                 <div class="col-md-4 col-sm-8">
@@ -233,11 +257,21 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="brand">Brand :</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <select class="form-control" id="brand" name="brand_id" data-parsley-required="true" placeholder="Brand">
+                                                                @foreach($brands as $brand)
+                                                                <option value="{{$brand->id}}" {{($brand->id==$item->brand_id)? 'selected':''}}>{{$brand->name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row m-b-15">
                                                         <label class="col-md-12 col-sm-4 col-form-label" for="status">Status :</label>
                                                         <div class="col-md-12 col-sm-8">
                                                             <select class="form-control" id="status" name="status" placeholder="Status">
-                                                                <option value="1">Active</option>
-                                                                <option value="0">Deactive</option>
+                                                                <option value="1" {{($item->status ==1)? 'selected':''}}>Active</option>
+                                                                <option value="0" {{($item->status ==0)? 'selected':''}}>Deactive</option>
                                                             </select>
                                                         </div>
                                                     </div>

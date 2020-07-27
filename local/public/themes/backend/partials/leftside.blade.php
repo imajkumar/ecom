@@ -47,6 +47,7 @@
 							
 							<li><a href="{{route('masterSettingsLayout')}}">Master Setup</a></li>
 							<li><a href="{{route('itemListLayout')}}">Item Master</a></li>
+							<li><a href="{{route('brandListLayout')}}">Brands</a></li>
 							
 						</ul>
 					</li>

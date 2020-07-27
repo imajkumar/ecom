@@ -49,3 +49,10 @@ Route::post('/save-banner', 'UserController@saveBanner')->name('saveBanner');
 Route::get('/edit-banner/{id}', 'UserController@editBannerLayout')->name('editBannerLayout');
 Route::post('/update-banner/{id}', 'UserController@updateBanner')->name('updateBanner');
 Route::get('/delete-banner/{id}', 'UserController@deleteBanner')->name('deleteBanner');
+
+Route::get('/brands', 'UserController@brandListLayout')->name('brandListLayout'); 
+Route::get('/add-brand', 'UserController@addBrandLayout')->name('addBrandLayout');
+Route::post('/save-brand', 'UserController@saveBrand')->name('saveBrand');
+Route::get('/edit-brand/{id}', 'UserController@editBrandLayout')->name('editBrandLayout');
+Route::post('/update-brand/{id}', 'UserController@updateBrand')->name('updateBrand');
+Route::get('/delete-brand/{id}', 'UserController@deleteBrand')->name('deleteBrand');

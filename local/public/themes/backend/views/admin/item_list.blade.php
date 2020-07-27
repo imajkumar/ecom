@@ -68,7 +68,11 @@
 
                                         <th class="text-nowrap">Image</th>
                                         <th class="text-nowrap">Item name</th>
+                                        <th class="text-nowrap">Item description</th>
                                         <th class="text-nowrap">Group name</th>
+                                        <th class="text-nowrap">Brand name</th>
+                                        <th class="text-nowrap">Sale price</th>
+                                        <th class="text-nowrap">Regular price</th>
                                         <th class="text-nowrap">Open quantity</th>
                                         <th class="text-nowrap">Min quantity</th>
                                         <th class="text-nowrap">Action</th>
@@ -87,9 +91,13 @@
                                             @else
                                             <img src="{{BACKEND.'img/product/default.jpg'}}" width="50px" height="50px"/>
                                             @endif
-                                            <a href="{{route('addGalleryImage', $itemData->item_id)}}">Add image</a></td>
+                                            <a href="{{route('addGalleryImage', $itemData->item_id)}}" id="addImageModelAjax" value="{{$itemData->item_id}}">Add image</a></td>
                                             <td>{{$itemData->item_name}}</td>
+                                            <td>{{$itemData->description}}</td>
                                             <td>{{$itemData->g_name}}</td>
+                                            <td>{{$itemData->brandName}}</td>
+                                            <td>{{$itemData->sale_price}}</td>
+                                            <td>{{$itemData->regular_price}}</td>
                                             <td>{{$itemData->open_qty}}</td>
                                             <td>{{$itemData->min_qty}}</td>
                                             <td><a class="btn btn-primary" href="{{route('itemEditLayout',$itemData->item_id)}}">Edit</a></td>

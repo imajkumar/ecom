@@ -107,6 +107,12 @@ $(document).ready(function() {
             //ajax
     });
 
+    // $('#addImageModelAjax').click(function() {
+    //     alert();
+    //     $("#addItemImageByModel").show("slow");
+
+    // });
+
     $(document).ready(function() {
 
 
@@ -165,7 +171,9 @@ $(document).ready(function() {
                                                 <td>${itemData['open_qty']}</td>
                                                 <td>${itemData['min_qty']}</td>
                                             </tr>`;
+                                        $('#itemId').val(itemData['item_id']);
                                     });
+
 
                                     $('#itemDataAppend').append(html);
                                 }
