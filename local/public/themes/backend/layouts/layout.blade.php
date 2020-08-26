@@ -74,6 +74,11 @@
 	<link href="{{BACKEND.'plugins/smartwizard/dist/css/smart_wizard.cs'}}s" rel="stylesheet" />
 
 	<link rel="stylesheet" href="http://cdn.syncfusion.com/13.2.0.29/js/web/flat-azure/ej.web.all.min.css" />
+	<style>
+		.required-star{
+			color: red;
+		}
+	</style>
 </head>
 
 <body>
@@ -239,6 +244,19 @@
 
 	<script src="{{ BACKEND.'js/appjs/dashboard.js'}}"></script>
 	<script src="{{ BACKEND.'js/ecom-backend.js'}}"></script>
+	<script src="{{ BACKEND.'plugins/parsleyjs/dist/parsley.min.js'}}"></script>
+	<script src="{{ BACKEND.'plugins/highlight.js/highlight.min.js'}}"></script>
+	<script src="{{ BACKEND.'js/demo/render.highlight.js'}}"></script>
+
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		toastr.options.timeOut = 5000; // 1.5s
+		toastr.info('Page Loaded!');
+		
+	});
+	</script>
 
 	<!-- ================== END PAGE LEVEL JS ================== -->
 </body>

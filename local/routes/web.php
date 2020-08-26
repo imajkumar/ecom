@@ -24,7 +24,7 @@ Route::get('/master-settings', 'UserController@masterSettingsLayout')->name('mas
 Route::get('/item-master', 'UserController@itemMasterLayout')->name('itemMasterLayout');
 Route::get('/items', 'UserController@itemListLayout')->name('itemListLayout');
 Route::get('/item-edit/{item_id}', 'UserController@itemEditLayout')->name('itemEditLayout');
-Route::get('/update-item/{item_id}', 'UserController@updateItem')->name('updateItem');
+Route::post('/update-item/{item_id}', 'UserController@updateItem')->name('updateItem');
 Route::post('deleteItemImgByAjax', 'UserController@deleteItemImgByAjax')->name('deleteItemImgByAjax');
 Route::post('addPrimaryImgByAjax', 'UserController@addPrimaryImgByAjax')->name('addPrimaryImgByAjax');
 

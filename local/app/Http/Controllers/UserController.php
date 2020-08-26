@@ -349,38 +349,43 @@ class UserController extends Controller
     { 
         $this->validate($request, [
             'item_name' => 'required|string|max:120',
-            'group_id' => 'required|integer',
-            'brand_id' => 'required|integer',
-            'open_qty' => 'required|integer',
-            'min_qty' => 'required|integer',
+            'item_sku' => 'required|string|unique:tbl_items,item_sku',
+            // 'group_id' => 'required|integer',
+            // 'brand_id' => 'required|integer',
+            // 'open_qty' => 'required|integer',
+            // 'min_qty' => 'required|integer',
         ], [
             'item_name.required' => 'Item name is required.',
             'item_name.string' => 'Item name should be string.',
+            'item_sku.required' => 'Item sku is required.',
+            'item_sku.string' => 'Item sku should be string.',
+            'item_sku.unique' => 'Item sku olready used.',
             'item_name.max' => 'Item name Should be Minimum of 120 Character.',
-            'group_id.required' => 'Group field is required.',
-            'group_id.required' => 'Brand field is required.',
-            'open_qty.required' => 'Open quantity field is required.',
-            'open_qty.integer' => 'Open quantity field should be number.',
-            'min_qty.required' => 'Min quantity field is required.',
-            'min_qty.integer' => 'Min quantity field should be number.',
+            // 'group_id.required' => 'Group field is required.',
+            // 'group_id.required' => 'Brand field is required.',
+            // 'open_qty.required' => 'Open quantity field is required.',
+            // 'open_qty.integer' => 'Open quantity field should be number.',
+            // 'min_qty.required' => 'Min quantity field is required.',
+            // 'min_qty.integer' => 'Min quantity field should be number.',
         ]);
         $user_id = Auth::user()->id;
-        $itemData = DB::table('tbl_items')->insert([
+        $itemData = DB::table('tbl_items')->insertGetId([
             'item_name' => $request->item_name,
-            'group_id' => $request->group_id,
-            'brand_id' => $request->brand_id,
-            'description' => $request->description,
-            'sale_price' => $request->sale_price,
-            'regular_price' => $request->regular_price,
-            'open_qty' => $request->open_qty,
-            'min_qty' => $request->min_qty,
-            'status' => $request->status
+            'item_sku' => $request->item_sku,
+            // 'brand_id' => $request->brand_id,
+            // 'description' => $request->description,
+            // 'sale_price' => $request->sale_price,
+            // 'regular_price' => $request->regular_price,
+            // 'open_qty' => $request->open_qty,
+            // 'min_qty' => $request->min_qty,
+            // 'status' => $request->status
         ]);
-        $request->session()->flash('message', 'New Item added successfully.');
-        $request->session()->flash('message-type', 'success');
+        //dd($itemData);exit;
+        //$request->session()->flash('message', 'New Item added successfully.');
+        //$request->session()->flash('message-type', 'success');
 
         if ($itemData) {
-            return Response::json(array('status' => 'success', 'msg' => 'Item details save successfull.'));
+            return Response::json(array('status' => 'success', 'msg' => 'New Item added successfully.', 'url' => route('itemEditLayout', $itemData)));
         } else {
             return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again'));
         }
@@ -415,24 +420,32 @@ class UserController extends Controller
     {  
         $this->validate($request, [
             'item_name' => 'required|string|max:120',
+            'item_sku' => 'required|string',
             'group_id' => 'required|integer',
             'brand_id' => 'required|integer',
             'open_qty' => 'required|integer',
             'min_qty' => 'required|integer',
+            'sale_price' => 'integer',
+            'regular_price' => 'integer',
         ], [
             'item_name.required' => 'Item name is required.',
             'item_name.string' => 'Item name should be string.',
             'item_name.max' => 'Item name Should be Minimum of 120 Character.',
+            'item_sku.required' => 'Item sku is required.',
+            'item_sku.string' => 'Item sku should be string.',
             'group_id.required' => 'Group field is required.',
             'group_id.required' => 'Brand field is required.',
             'open_qty.required' => 'Open quantity field is required.',
             'open_qty.integer' => 'Open quantity field should be number.',
             'min_qty.required' => 'Min quantity field is required.',
             'min_qty.integer' => 'Min quantity field should be number.',
+            'sale_price.integer' => 'Sale price field should be number.',
+            'regular_price.integer' => 'Regular price field should be number.',
         ]);
         $user_id = Auth::user()->id;
         $itemData = DB::table('tbl_items')->where('item_id', $item_id)->update([
             'item_name' => $request->item_name,
+            'item_sku' => $request->item_sku,
             'group_id' => $request->group_id,
             'brand_id' => $request->brand_id,
             'description' => $request->description,
@@ -442,19 +455,24 @@ class UserController extends Controller
             'min_qty' => $request->min_qty,
         ]);
         
-        
         if ($itemData) {
-            $request->session()->flash('message', 'Item updated successfully.');
-            $request->session()->flash('message-type', 'success');
-            
-            return redirect()->route('itemEditLayout', $item_id);
-            //return Response::json(array('status' => 'success', 'msg' => 'Item details updated successfull.'));
+            return Response::json(array('status' => 'success', 'msg' => 'Item updated successfully.', 'url' => route('itemListLayout') ));
         } else {
-            $request->session()->flash('message', 'Something is wrong try again.');
-            $request->session()->flash('message-type', 'warning');
-            return redirect()->route('itemEditLayout', $item_id);
-            //return Response::json(array('status' => 'wrong', 'msg' => 'Something is wrong try again'));
+            return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again', 'url' => route('itemEditLayout', $item_id)));
         }
+        
+        // if ($itemData) {
+        //     $request->session()->flash('message', 'Item updated successfully.');
+        //     $request->session()->flash('message-type', 'success');
+            
+        //     return redirect()->route('itemEditLayout', $item_id);
+        //     //return Response::json(array('status' => 'success', 'msg' => 'Item details updated successfull.'));
+        // } else {
+        //     $request->session()->flash('message', 'Something is wrong try again.');
+        //     $request->session()->flash('message-type', 'warning');
+        //     return redirect()->route('itemEditLayout', $item_id);
+        //     //return Response::json(array('status' => 'wrong', 'msg' => 'Something is wrong try again'));
+        // }
     }
 
     public function itemMasterLayout()
@@ -495,19 +513,19 @@ class UserController extends Controller
         })->leftJoin('tbl_item_gallery', function ($join) {
             $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
             $join->DISTINCT('tbl_items.item_id');
-            $join->orderBy('tbl_items.item_id','DESC');
+            //$join->orderBy('tbl_items.item_id','DESC');
             $join->where('tbl_item_gallery.default',1);
             // SELECT DISTINCT(column_name) FROM table_name ORDER BY column_name DESC limit 2,1;
-            // $join->orderBy('tbl_items.item_id','DESC');
+             //$join->orderBy('tbl_items.item_id','DESC');
              $join->limit(2,1);
         })->leftjoin('tbl_brands', function($brand){
             $brand->on('tbl_items.brand_id','=','tbl_brands.id');
         })
-        //->orderBy('DESC')
+        ->orderBy('tbl_items.item_id','DESC')
         
         ->select('tbl_items.*','tbl_brands.id as brandId','tbl_brands.name as brandName','tbl_group.g_id','tbl_group.g_name','tbl_item_gallery.img_name','tbl_item_gallery.default')
         ->get();
-        //echo"<pre>"; print_r(DB::getQueryLog());exit;
+        //echo"<pre>"; print_r($dataObjArr);exit;
         $galleryImages = DB::table('tbl_item_gallery')->rightJoin('tbl_items', function ($join) {
             $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
         })->get();

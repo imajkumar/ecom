@@ -116,16 +116,9 @@ $(document).ready(function() {
     $(document).ready(function() {
 
 
-        $('#submitItemBtn').click(function() {
+        $('#saveItemMaster').on('submit', function(e) {
+            e.preventDefault();
 
-            // let name= $('input[name="name"]').val();
-            // let email= $('input[name="email"]').val();
-            // let contact= $('input[name="contact"]').val();
-            // let website= $('input[name="website"]').val();
-            // let address= $('input[name="address"]').val();
-            // let state= $('input[name="state"]').val();
-            // let city= $('input[name="city"]').val();
-            //$('#errorMsg').css("display","none");
             $('#errorMsg').html('');
             $.ajax({
                     type: 'POST',
@@ -133,67 +126,70 @@ $(document).ready(function() {
                     data: $('#saveItemMaster').serialize(),
 
                     success: function(responce) {
-                        //console.log(responce);
-                        // return false;
+
                         if (responce['status'] == 'success') {
-                            $('#saveItemMaster')[0].reset();
-                            $('#errorMsg').css("display", "block");
-                            $('#errorMsg').removeClass('alert-warning');
-                            $('#errorMsg').addClass('alert-success');
-                            $('#errorMsg').html(`<strong>${responce['msg']}</strong>`);
-                            $('html,body').animate({
-                                scrollTop: $("#content").offset().top
-                            }, 100);
-                            setInterval(function() {
-                                $('#errorMsg').css("display", "none");
 
-                                $('#errorMsg').html('');
+                            toastr.success(responce['msg']);
+                            window.location.replace(responce['url']);
+                            // $('#saveItemMaster')[0].reset();
+                            // $('#errorMsg').css("display", "block");
+                            // $('#errorMsg').removeClass('alert-warning');
+                            // $('#errorMsg').addClass('alert-success');
+                            // $('#errorMsg').html(`<strong>${responce['msg']}</strong>`);
+                            // $('html,body').animate({
+                            //     scrollTop: $("#content").offset().top
+                            // }, 100);
+                            // setInterval(function() {
+                            //     $('#errorMsg').css("display", "none");
 
-                            }, 10000);
+                            //     $('#errorMsg').html('');
 
-                            $.ajax({
-                                type: 'GET',
-                                url: BASE_URL + '/getItembyAjax',
-                                success: function(res) {
-                                    //console.log(res);
-                                    $('#itemDataAppend').empty();
-                                    let html = '';
-                                    $.each(res['dataForTable'], function(ind, itemData) {
-                                        // console.log(itemData['item_name']);
-                                        html += `<tr class="odd gradeX">
-                                                <td width="1%" class="f-s-600 text-inverse">${ind+1}</td>
-                                                <td>
-                                                <img src="${(itemData['img_name'] && itemData['default']==1) ? BASE_URL+'/gallery/'+itemData['img_name']: BASE_URL+'/assets/img/product/default.jpg'}" width="50px" height="50px"/>
-                                               
-                                                <a href="${BASE_URL+'/add-gallery-image/'+itemData['item_id']}">Add image</a></td>
-                                                <td>${itemData['item_name']}</td>
-                                                <td>${itemData['g_name']}</td>
-                                                <td>${itemData['open_qty']}</td>
-                                                <td>${itemData['min_qty']}</td>
-                                            </tr>`;
-                                        $('#itemId').val(itemData['item_id']);
-                                    });
+                            // }, 10000);
+
+                            // $.ajax({
+                            //     type: 'GET',
+                            //     url: BASE_URL + '/getItembyAjax',
+                            //     success: function(res) {
+                            //         //console.log(res);
+                            //         $('#itemDataAppend').empty();
+                            //         let html = '';
+                            //         $.each(res['dataForTable'], function(ind, itemData) {
+                            //             // console.log(itemData['item_name']);
+                            //             html += `<tr class="odd gradeX">
+                            //                     <td width="1%" class="f-s-600 text-inverse">${ind+1}</td>
+                            //                     <td>
+                            //                     <img src="${(itemData['img_name'] && itemData['default']==1) ? BASE_URL+'/gallery/'+itemData['img_name']: BASE_URL+'/assets/img/product/default.jpg'}" width="50px" height="50px"/>
+
+                            //                     <a href="${BASE_URL+'/add-gallery-image/'+itemData['item_id']}">Add image</a></td>
+                            //                     <td>${itemData['item_name']}</td>
+                            //                     <td>${itemData['g_name']}</td>
+                            //                     <td>${itemData['open_qty']}</td>
+                            //                     <td>${itemData['min_qty']}</td>
+                            //                 </tr>`;
+                            //             $('#itemId').val(itemData['item_id']);
+                            //         });
 
 
-                                    $('#itemDataAppend').append(html);
-                                }
-                            });
+                            //         $('#itemDataAppend').append(html);
+                            //     }
+                            // });
 
 
                         } else {
 
-                            $('#errorMsg').css("display", "block");
-                            $('#errorMsg').removeClass('alert-success');
-                            $('#errorMsg').addClass('alert-warning');
-                            $('#errorMsg').html(`<strong>${responce['msg']}</strong>`);
-                            $('html,body').animate({
-                                scrollTop: $("#content").offset().top
-                            }, 100);
-                            setInterval(function() {
-                                $('#errorMsg').css("display", "none");
+                            toastr.warning(responce['msg']);
+                            // $('#errorMsg').css("display", "block");
+                            // $('#errorMsg').removeClass('alert-success');
+                            // $('#errorMsg').addClass('alert-warning');
+                            // $('#errorMsg').html(`<strong>${responce['msg']}</strong>`);
+                            // $('html,body').animate({
+                            //     scrollTop: $("#content").offset().top
+                            // }, 100);
+                            // setInterval(function() {
+                            //     $('#errorMsg').css("display", "none");
 
-                                $('#errorMsg').html('');
-                            }, 10000);
+                            //     $('#errorMsg').html('');
+                            // }, 10000);
 
 
                         }
@@ -205,17 +201,18 @@ $(document).ready(function() {
                         $.each(xhr.responseJSON.errors, function(key, item) {
                             errorHtml += `<strong>${item}</strong></br>`;
                         });
-                        $('#errorMsg').css("display", "block");
-                        $('#errorMsg').removeClass('alert-success');
-                        $('#errorMsg').addClass('alert-warning');
-                        $('#errorMsg').html(errorHtml);
-                        $('html,body').animate({
-                            scrollTop: $("#content").offset().top
-                        }, 100);
-                        setInterval(function() {
-                            $('#errorMsg').css("display", "none");
-                            $('#errorMsg').html('');
-                        }, 10000);
+                        toastr.error(errorHtml);
+                        // $('#errorMsg').css("display", "block");
+                        // $('#errorMsg').removeClass('alert-success');
+                        // $('#errorMsg').addClass('alert-warning');
+                        // $('#errorMsg').html(errorHtml);
+                        // $('html,body').animate({
+                        //     scrollTop: $("#content").offset().top
+                        // }, 100);
+                        // setInterval(function() {
+                        //     $('#errorMsg').css("display", "none");
+                        //     $('#errorMsg').html('');
+                        // }, 10000);
                         // $('#errorMsg').css("display", "block");
                         // $('#errorMsg').addClass('alert-warning');
                         // $('#errorMsg').append(errorHtml);
@@ -223,6 +220,43 @@ $(document).ready(function() {
 
                 })
                 //alert('submitBtn');
+        });
+
+        $('#editItemMasterForm').on('submit', function(e) {
+            e.preventDefault();
+            var item_id = $('#edit_item_id').val();
+            $('#errorMsg').html('');
+            $.ajax({
+                type: 'POST',
+                url: BASE_URL + '/update-item/' + item_id,
+                data: $('#editItemMasterForm').serialize(),
+
+                success: function(responce) {
+
+                    if (responce['status'] == 'success') {
+
+                        toastr.success(responce['msg']);
+                        window.location.replace(responce['url']);
+
+                    } else {
+
+                        toastr.warning(responce['msg']);
+                        //window.location.replace(responce['url']);
+
+                    }
+                },
+                error: function(xhr, status, error) {
+
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+                    toastr.error(errorHtml);
+
+                }
+
+            })
+
         });
 
     });

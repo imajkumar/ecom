@@ -36,12 +36,55 @@
 							<li class="active"><a href="index.html">Dashboard</a></li>
 							
 						</ul>
-                    </li> -->
-                    <li class="has-sub active">
+					</li> -->
+					 {{-- <li class="">
+						<a href="{{route('customerListLayout')}}">
+							
+							<i class="icon-user"></i>
+							<span>Customer </span>
+						</a>
+						
+					</li> --}}
+					<li class="active">
+						<a href="javascript:;">
+							{{-- <b class="caret"></b> --}}
+							<i class="ion-ios-cog"></i>
+							<span>DASHBOARD </span>
+						</a>
+						{{-- <ul class="sub-menu">
+							
+							<li><a href="javascript:;"> Orders</a></li>
+							{{-- <li><a href="javascript:;"> Shipments</a></li>
+							<li><a href="javascript:;"> Invoices</a></li>
+							<li><a href="javascript:;"> Refunds</a></li> --}}
+							{{-- <li><a href="{{route('itemListLayout')}}">Item Master</a></li>
+							<li><a href="{{route('brandListLayout')}}">Brands</a></li>
+							 
+						</ul> --}}
+					</li>
+					<li class="has-sub">
 						<a href="javascript:;">
 							<b class="caret"></b>
-							<i class="ion-ios-cog"></i>
-							<span>Settings <span class="label label-theme">NEW</span></span>
+							<i class="icon-graph"></i>
+							<span>SALES </span>
+						</a>
+						<ul class="sub-menu">
+							
+							<li><a href="javascript:;"> Orders</a></li>
+							<li><a href="javascript:;"> Shipments</a></li>
+							<li><a href="javascript:;"> Invoices</a></li>
+							<li><a href="javascript:;"> Refunds</a></li>
+							{{-- <li><a href="{{route('itemListLayout')}}">Item Master</a></li>
+							<li><a href="{{route('brandListLayout')}}">Brands</a></li>
+							 --}}
+						</ul>
+					</li>
+                    <li class="has-sub">
+						<a href="javascript:;">
+							<b class="caret"></b>
+							<i class="icon-basket"></i>
+							{{-- <span>PRODUCTS <span class="label label-theme">NEW</span></span> --}}
+							<span>PRODUCTS</span>
 						</a>
 						<ul class="sub-menu">
 							
@@ -51,15 +94,28 @@
 							
 						</ul>
 					</li>
-                    <li class="">
+                    {{-- <li class="">
 						<a href="{{route('customerListLayout')}}">
 							
 							<i class="icon-user"></i>
 							<span>Customer </span>
 						</a>
 						
+					</li> --}}
+					<li class="has-sub">
+						<a href="javascript:;">
+							<b class="caret"></b>
+							<i class="icon-user"></i>
+							<span>CUSTOMERS </span>
+						</a>
+						<ul class="sub-menu">
+							
+							<li><a href="{{route('customerListLayout')}}">Customers</a></li>
+							{{-- <li><a href="{{route('itemListLayout')}}">Item Master</a></li> --}}
+							
+						</ul>
 					</li>
-					<li class="has-sub active">
+					<li class="has-sub">
 						<a href="javascript:;">
 							<b class="caret"></b>
 							<i class="fa fa-cogs"></i>
