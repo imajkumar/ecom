@@ -130,7 +130,7 @@
                             
                         </div>
                         <fieldset>
-                            <button type="submit" id="addCustomerBtn" class="btn btn-sm btn-primary m-r-5">SAVE </button>
+                            <button type="reset" id="addCustomerBtn" class="btn btn-sm btn-primary m-r-5">SAVE </button>
                             <button type="reset" class="btn btn-sm btn-default">Cancel</button>
                         </fieldset>
                     </form> 
