@@ -5,12 +5,12 @@
     <ol class="breadcrumb float-xl-right">
         <li class="breadcrumb-item"><a href="javascript:;">Dashboar</a></li>
         <li class="breadcrumb-item"><a href="javascript:;">Settings</a></li>
-        <li class="breadcrumb-item active">Customers</li>
+        <li class="breadcrumb-item active">Attributes families</li>
     </ol>
     <!-- end breadcrumb -->
     <!-- begin page-header -->
     
-    <h1 class="page-header">CUSTOMER <small>LIST</small></h1>
+    <h1 class="page-header">ATTRIBUTE FAMLIES <small>LIST</small></h1>
 
     <!-- end page-header -->
 
@@ -22,9 +22,9 @@
             
             <div class="panel panel-inverse" data-sortable-id="tree-view-1">
                 <div class="panel-heading">
-                    <h4 class="panel-title">CUSTOMERS</h4>
+                    <h4 class="panel-title">ATTRIBUTE FAMILIES</h4>
                     <div class="panel-heading-btn">
-                        <a class="btn btn-primary pull-right" href="{{route('addNewCustomerLayout')}}" style="background-color:#0f0f0f;border: none;">Add New</a>
+                        <a class="btn btn-primary pull-right" href="{{route('addAttrFamilyLayout')}}" style="background-color:#0f0f0f;border: none;">Add Family</a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
@@ -36,33 +36,41 @@
                     <div class="tab-content">
 
                         <!-- begin tab-pane -->
-                        <div id="Grid"></div>
+                        {{-- <div id="Grid"></div> --}}
                         
 
-                            {{-- <table id="grid1"></table> --}}
+                            
                             <table id="data-table-default" class="table table-striped table-bordered table-td-valign-middle">
                                 <thead>
                                     <tr>
-                                        <th width="1%"></th>
+                                        <th width="1%">Id</th>
 
-                                        <th class="text-nowrap">Image</th>
+                                        <th class="text-nowrap">Code</th>
                                         <th class="text-nowrap">Name</th>
-                                        <th class="text-nowrap">Email</th>
-                                        <th class="text-nowrap">Address</th>
-                                        <th class="text-nowrap">Contact</th>
+                                        
+                                        <th class="text-nowrap">Action</th>
                                         
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($attributeFamilies as $attribute)
                                     <tr>
-                                        <td>1</td>
-                                        <td>img</td>
-                                        <td>Neeraj</td>
-                                        <td>email@1.com</td>
-                                        <td>noida</td>
-                                        <td>9454522343</td>
+                                        <td>{{$attribute->id}}</td>
+                                       
+                                        <td>{{$attribute->code}}</td>
+                                        <td>{{$attribute->name}}</td>
+                                        
+                                        <td>
+                                        <a href="{{route('editAttributeFamilyLayout', $attribute->id)}}" class="btn btn-primary">Edit</a>
+                                            <form method="post" action="{{route('deleteCustomer')}}" class="pull-right" id="deleteCustomer">
+                                                @csrf()
+                                               <input type="hidden" name="customer_id" value="{{$attribute->id}}"/>
+                                               <input class="btn btn-danger con" type="submit" value="Delete"/>
+                                           </form>
+                                        </td>
                                        
                                     </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
 

@@ -36,6 +36,46 @@ var handleJstreeCheckable = function() {
 
 };
 
+var handleJstreeCheckableGroup = function() {
+    var itemId = $('#item_id').val();
+    var formData = {
+        '_token': $('meta[name="csrf-token"]').attr('content'),
+        'action': 1,
+        'itemId': itemId,
+
+    };
+    $.ajax({
+        url: BASE_URL + '/getTreeViewFrEdit',
+        type: 'POST',
+        data: formData,
+        success: function(res) {
+            // tree
+            $('#jstree-checkable-group').jstree({
+                'plugins': ["wholerow", "checkbox", "types"],
+                'core': {
+                    "themes": {
+                        "responsive": false
+                    },
+                    'data': res
+                },
+                "types": {
+                    "default": {
+                        "icon": "fa fa-d text-primary fa-lg"
+                    },
+                    "file": {
+                        "icon": "fa fa-file text-success fa-lg"
+                    }
+                }
+            });
+            // tree
+        },
+        dataType: "json"
+    });
+
+
+
+};
+
 
 var Dashboard = function() {
     "use strict";
@@ -43,6 +83,7 @@ var Dashboard = function() {
         //main function
         init: function() {
             handleJstreeCheckable();
+            handleJstreeCheckableGroup();
 
 
         }
@@ -222,14 +263,307 @@ $(document).ready(function() {
                 //alert('submitBtn');
         });
 
+        $('#addCustomer').on('submit', function(e) {
+            e.preventDefault();
+
+            $('#errorMsg').html('');
+            $.ajax({
+                type: 'POST',
+                url: BASE_URL + '/add-new-customer',
+                data: $('#addCustomer').serialize(),
+
+                success: function(responce) {
+
+                    if (responce['status'] == 'success') {
+
+                        toastr.success(responce['msg']);
+                        window.location.replace(responce['url']);
+
+                    } else {
+
+                        toastr.warning(responce['msg']);
+
+                    }
+                },
+                error: function(xhr, status, error) {
+
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+                    toastr.error(errorHtml);
+
+                }
+
+            })
+
+        });
+
+        $('#updateCustomer').on('submit', function(e) {
+            e.preventDefault();
+
+            $('#errorMsg').html('');
+            $.ajax({
+                type: 'POST',
+                url: BASE_URL + '/update-customer',
+                data: $('#updateCustomer').serialize(),
+
+                success: function(responce) {
+
+                    if (responce['status'] == 'success') {
+
+                        toastr.success(responce['msg']);
+                        window.location.replace(responce['url']);
+
+                    } else {
+
+                        toastr.warning(responce['msg']);
+
+                    }
+                },
+                error: function(xhr, status, error) {
+
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+                    toastr.error(errorHtml);
+
+                }
+
+            })
+
+        });
+
+        $('#addAttribute').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: BASE_URL + '/addAttribute',
+                data: $(this).serialize(),
+
+                success: function(responce) {
+
+                    if (responce['status'] == 'success') {
+
+                        toastr.success(responce['msg']);
+                        window.location.replace(responce['url']);
+
+                    } else {
+
+                        toastr.warning(responce['msg']);
+                        window.location.replace(responce['url']);
+
+                    }
+                },
+                error: function(xhr, status, error) {
+
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+                    toastr.error(errorHtml);
+
+                }
+
+            })
+
+        });
+
+        $('#updateAttribute').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: BASE_URL + '/updateAttribute',
+                data: $(this).serialize(),
+
+                success: function(responce) {
+
+                    if (responce['status'] == 'success') {
+
+                        toastr.success(responce['msg']);
+                        window.location.replace(responce['url']);
+
+                    } else {
+
+                        toastr.warning(responce['msg']);
+                        window.location.replace(responce['url']);
+
+                    }
+                },
+                error: function(xhr, status, error) {
+
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+                    toastr.error(errorHtml);
+
+                }
+
+            })
+
+        });
+
+        $('#addAttributeFamily').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: BASE_URL + '/addAttributeFamily',
+                data: $(this).serialize(),
+
+                success: function(responce) {
+
+                    if (responce['status'] == 'success') {
+
+                        toastr.success(responce['msg']);
+                        window.location.replace(responce['url']);
+
+                    } else {
+
+                        toastr.warning(responce['msg']);
+                        //window.location.replace(responce['url']);
+
+                    }
+                },
+                error: function(xhr, status, error) {
+
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+                    toastr.error(errorHtml);
+
+                }
+
+            })
+
+        });
+
+        $('#addAddress').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: BASE_URL + '/addAddress',
+                data: $(this).serialize(),
+
+                success: function(responce) {
+
+                    if (responce['status'] == 'success') {
+
+                        toastr.success(responce['msg']);
+                        window.location.replace(responce['url']);
+
+                    } else {
+
+                        toastr.warning(responce['msg']);
+                        window.location.replace(responce['url']);
+
+                    }
+                },
+                error: function(xhr, status, error) {
+
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+                    toastr.error(errorHtml);
+
+                }
+
+            })
+
+        });
+
+        $('#updateAddress').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: BASE_URL + '/updateAddress',
+                data: $(this).serialize(),
+
+                success: function(responce) {
+
+                    if (responce['status'] == 'success') {
+
+                        toastr.success(responce['msg']);
+                        window.location.replace(responce['url']);
+
+                    } else {
+
+                        toastr.warning(responce['msg']);
+                        window.location.replace(responce['url']);
+
+                    }
+                },
+                error: function(xhr, status, error) {
+
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+                    toastr.error(errorHtml);
+
+                }
+
+            })
+
+        });
+
+        $('#deleteCustomer').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: BASE_URL + '/delete-customer',
+                data: $(this).serialize(),
+
+                success: function(responce) {
+
+                    if (responce['status'] == 'success') {
+
+                        toastr.success(responce['msg']);
+                        //window.location.replace(responce['url']);
+
+                    } else {
+
+                        toastr.warning(responce['msg']);
+
+                    }
+                },
+                error: function(xhr, status, error) {
+
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+                    toastr.error(errorHtml);
+
+                }
+
+            })
+
+        });
+
         $('#editItemMasterForm').on('submit', function(e) {
             e.preventDefault();
+            var selectedElmsIds = $('#jstree-checkable-group').jstree("get_selected");
+            var formData = new FormData(this);
+            formData.append('categorys', JSON.stringify(selectedElmsIds));
+
             var item_id = $('#edit_item_id').val();
             $('#errorMsg').html('');
             $.ajax({
                 type: 'POST',
                 url: BASE_URL + '/update-item/' + item_id,
-                data: $('#editItemMasterForm').serialize(),
+                data: formData,
+                processData: false,
+                contentType: false,
+                //data: $('#editItemMasterForm').serialize(),
 
                 success: function(responce) {
 
@@ -557,6 +891,58 @@ $(document).ready(function() {
         }
     });
 
+    $('#type').change(function() {
+        var typeVal = $(this).val();
+        if (typeVal == 'select' || typeVal == 'checkbox' || typeVal == 'multiselect') {
+            $('#attrOption').show();
+        } else {
+            $('#attrOption').hide();
+        }
+    });
 
+});
+
+
+$(document).ready(function() {
+
+    var MaxInputs = 2;
+    var InputsWrapper = $("#InputsWrapper");
+    var AddButton = $("#AddMoreFileBox");
+
+    var x = InputsWrapper.length; //initlal text box count
+    var FieldCount = 1;
+
+
+    $(AddButton).click(function(e) {
+
+        FieldCount++;
+        $(InputsWrapper).append(`<div class="row form_group" id="removeBlock_${FieldCount}">
+                                       
+                                      <div class="col-sm-10">
+                                        <input type="text" name="options[]"  class="form-control" placeholder="Please enter option" data-parsley-required="true"> 
+                                        <a href="#" class="removeclass">Remove</a>
+                                      </div>
+                                    </div>`);
+        x++;
+
+
+
+        return false;
+    });
+
+    $("body").on("click", ".removeclass", function(e) {
+        if (x > 1) {
+            $(this).parent().parent().remove();
+
+            x--;
+
+            $("#AddMoreFileId").show();
+
+            $("#lineBreak").html("");
+
+            $('AddMoreFileBox').html("Add field");
+        }
+        return false;
+    })
 
 });

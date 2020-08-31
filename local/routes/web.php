@@ -39,9 +39,33 @@ Route::get('/add-gallery-image/{item_id}', 'UserController@addGalleryImage')->na
 Route::post('/uploadGalleryImage', 'UserController@uploadGalleryImage')->name('uploadGalleryImage');
 
 Route::Post('/getTreeView', 'UserController@getTreeView')->name('getTreeView'); 
+Route::Post('/getTreeViewFrEdit', 'UserController@getTreeViewFrEdit')->name('getTreeViewFrEdit'); 
 Route::Post('/saveAttribute', 'UserController@saveAttribute')->name('saveAttribute'); 
-Route::get('/customer-list', 'UserController@customerListLayout')->name('customerListLayout'); 
+Route::get('/customers', 'UserController@customerListLayout')->name('customerListLayout'); 
+
+Route::get('/customers/{id}/addresses', 'UserController@addressListLayout')->name('addressListLayout');
+Route::get('/customers/{id}/addresses/create', 'UserController@addAddressLayout')->name('addAddressLayout');
+Route::get('/customers/addresses/edit/{id}', 'UserController@editAddressLayout')->name('editAddressLayout');
+Route::post('/updateAddress', 'UserController@updateAddress')->name('updateAddress');
+Route::post('/addAddress', 'UserController@addAddress')->name('addAddress');
+
 Route::get('/add-new-customer', 'UserController@addNewCustomerLayout')->name('addNewCustomerLayout'); 
+Route::get('/attributesLayout', 'UserController@attributesLayout')->name('attributesLayout'); 
+Route::get('/addAttributeLayout', 'UserController@addAttributeLayout')->name('addAttributeLayout'); 
+Route::post('/addAttribute', 'UserController@addAttribute')->name('addAttribute'); 
+Route::get('/editAttributeLayout/{id}', 'UserController@editAttributeLayout')->name('editAttributeLayout'); 
+Route::post('/updateAttribute', 'UserController@updateAttribute')->name('updateAttribute');
+
+Route::get('/attributeFamiliesLayout', 'UserController@attributeFamiliesLayout')->name('attributeFamiliesLayout'); 
+Route::get('/addAttrFamilyLayout', 'UserController@addAttrFamilyLayout')->name('addAttrFamilyLayout'); 
+Route::get('/editAttributeFamilyLayout/{id}', 'UserController@editAttributeFamilyLayout')->name('editAttributeFamilyLayout'); 
+Route::post('/addAttributeFamily', 'UserController@addAttributeFamily')->name('addAttributeFamily'); 
+Route::post('/updateAttributeFamily', 'UserController@updateAttributeFamily')->name('updateAttributeFamily'); 
+
+Route::post('/add-new-customer', 'UserController@addNewCustomer')->name('addNewCustomer'); 
+Route::get('/edit-customer/{id}', 'UserController@editCustomerLayout')->name('editCustomerLayout'); 
+Route::post('/update-customer', 'UserController@updateCustomer')->name('updateCustomer'); 
+Route::post('/delete-customer', 'UserController@deleteCustomer')->name('deleteCustomer'); 
 
 Route::get('/banners', 'UserController@bannerListLayout')->name('bannerListLayout'); 
 Route::get('/add-banner', 'UserController@addBannerLayout')->name('addBannerLayout');

@@ -3,7 +3,7 @@
 			<!-- begin sidebar scrollbar -->
 			<div data-scrollbar="true" data-height="100%">
 				<!-- begin sidebar user -->
-				<ul class="nav">
+				{{-- <ul class="nav">
 					<li class="nav-profile">
 						<a href="javascript:;" data-toggle="nav-profile">
 							<div class="cover with-shadow"></div>
@@ -22,7 +22,7 @@
 							
 						</ul>
 					</li>
-				</ul>
+				</ul> --}}
 				<!-- end sidebar user -->
 				<!-- begin sidebar nav -->
 				<ul class="nav">
@@ -90,6 +90,7 @@
 							
 							<li><a href="{{route('masterSettingsLayout')}}">Master Setup</a></li>
 							<li><a href="{{route('itemListLayout')}}">Item Master</a></li>
+							
 							<li><a href="{{route('brandListLayout')}}">Brands</a></li>
 							
 						</ul>
@@ -126,6 +127,17 @@
 							<li><a href="{{route('bannerListLayout')}}">Banners</a></li>
 							{{-- <li><a href="{{route('itemListLayout')}}">Item Master</a></li> --}}
 							
+						</ul>
+					</li>
+					<li class="has-sub">
+						<a href="javascript:;">
+							<b class="caret"></b>
+							<i class="fa fa-cogs"></i>
+							<span>SETTINGS </span>
+						</a>
+						<ul class="sub-menu">
+							<li><a href="{{route('attributesLayout')}}">Attributes</a></li>
+							<li><a href="{{route('attributeFamiliesLayout')}}">Attribute Families</a></li>
 						</ul>
 					</li>
 				

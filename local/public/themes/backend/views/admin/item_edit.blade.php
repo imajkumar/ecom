@@ -74,6 +74,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="#category" data-toggle="tab" class="nav-link">
+                                    <span class="d-sm-none">Tab 2</span>
+                                    <span class="d-sm-block d-none">CATEGORY</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="#purchasetab" data-toggle="tab" class="nav-link">
                                     <span class="d-sm-none">Tab 3</span>
                                     <span class="d-sm-block d-none">PURCHASE</span>
@@ -306,6 +312,36 @@
 
 
                                     <!-- end panel -->
+                                </div>
+                                <!-- end col-6 -->
+                            </div>
+                            <!-- end row -->
+                            <fieldset>
+                                <button type="submit" id="updateItemBtn" class="btn btn-sm btn-primary m-r-5">SAVE </button>
+                                <button type="reset" class="btn btn-sm btn-default">Cancel</button>
+                            </fieldset>
+
+                        </div>
+                    
+                        <div class="tab-pane fade show" id="category">
+                            <!-- begin row -->
+                            <div class="row">
+                                <!-- begin col-12 -->
+                                <div class="col-12">
+                                    <!-- begin panel -->
+
+
+                                    <!-- end panel-heading -->
+                                    <!-- begin panel-body -->
+
+
+                                    <div class="panel-body">
+                                    
+
+                                        <div id="jstree-checkable-group"></div>
+                                    </div>       
+                                   
+                                
                                 </div>
                                 <!-- end col-6 -->
                             </div>
@@ -807,7 +843,7 @@
                                             <!-- begin form-file-upload -->
                                         <form id="fileupload" action="{{route('uploadGalleryImage')}}" method="POST" enctype="multipart/form-data">
                                                 @csrf
-                                                <input type="hidden" name="item_id" value="{{$item->item_id}}"/>
+                                                <input type="hidden" id="item_id" name="item_id" value="{{$item->item_id}}"/>
                                                 <!-- begin panel -->
                                                 <div class="panel panel-inverse">
                                                     <!-- begin panel-heading -->
