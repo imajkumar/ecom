@@ -1,5 +1,27 @@
 <!-- begin #content -->
 
+
+<style>
+    .select2-result-label .wrap:before{
+position:absolute;
+left:4px;
+font-family:fontAwesome;
+color:#0000;
+content:"\f096";
+width:25px;
+height:25px;
+
+}
+.select2-result-label .wrap.checked:before{
+content:"\f14a";
+}
+.select2-result-label .wrap{
+margin-left:15px;
+}
+
+    </style>
+
+
 <div id="content" class="content">
     <!-- begin breadcrumb -->
     <ol class="breadcrumb float-xl-right">
@@ -71,6 +93,12 @@
                                 <a href="#addItem" data-toggle="tab" class="nav-link active">
                                     <span class="d-sm-none">Tab 2</span>
                                     <span class="d-sm-block d-none">EDIT ITEM</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#attribute" data-toggle="tab" class="nav-link">
+                                    <span class="d-sm-none">Tab 2</span>
+                                    <span class="d-sm-block d-none">ATTRIBUTE</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -180,7 +208,7 @@
 
                                         ?>
 
-                                    <form class="form-horizontal" id="editItemMasterForm" action="{{route('updateItem', $item->item_id)}}" name="demo-form">
+                                    <form class="form-horizontal" id="editItemMasterForm" action="{{route('updateItem', $item->item_id)}}" name="demo-form" data-parsley-validate="true">
                                             <input type="hidden" name="edit_item_id" id="edit_item_id" value="{{$item->item_id}}"/>
                                         @csrf
                                             @method('POST')
@@ -214,13 +242,15 @@
 
                                                     {{-- <h2>Stock Details</h2> --}}
                                                     <div class="form-group row m-b-15">
-                                                        <label class="col-md-12 col-sm-4 col-form-label" for="openingqty">Openinig Qty:</label>
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="minimumqty">Minimum Qty:</label>
                                                         <div class="col-md-12 col-sm-8">
-                                                            <input class="form-control" type="text" id="openingqty" name="open_qty" value="{{$item->open_qty}}" placeholder="Opening qty">
+                                                            <input class="form-control" type="text" id="minimumqty" name="min_qty" value="{{$item->min_qty}}" placeholder="Minimum Qty">
+        
                                                         </div>
                                                     </div>
                                                     
-                                           
+                                                    
+                                                   
 
                                                 </div>
                                                 <div class="col-md-4 col-sm-8">
@@ -256,17 +286,14 @@
                                                         </div>
                                                     </div>
                                                     
-                                                    <div class="form-group row m-b-15">
-                                                        <label class="col-md-12 col-sm-4 col-form-label" for="minimumqty">Minimum Qty:</label>
-                                                        <div class="col-md-12 col-sm-8">
-                                                            <input class="form-control" type="text" id="minimumqty" name="min_qty" value="{{$item->min_qty}}" placeholder="Minimum Qty">
-        
-                                                        </div>
-                                                    </div>
+                                                    
+
+                                                    
 
                                                 </div>
                                                 <div class="col-md-4 col-sm-8">
-                                                    <div class="form-group row m-b-15">
+                                                    
+                                                    {{-- <div class="form-group row m-b-15">
                                                         <label class="col-md-12 col-sm-4 col-form-label" for="group">Group :</label>
                                                         <div class="col-md-12 col-sm-8">
                                                             <select class="form-control" id="group" name="group_id" value="{{$item->g_name}}" data-parsley-required="true" placeholder="Group">
@@ -275,7 +302,7 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                     <div class="form-group row m-b-15">
                                                         <label class="col-md-12 col-sm-4 col-form-label" for="brand">Brand :</label>
                                                         <div class="col-md-12 col-sm-8">
@@ -302,6 +329,12 @@
         
                                                         </div>
                                                     </div>
+                                                    <div class="form-group row m-b-15">
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="openingqty">Openinig Qty:</label>
+                                                        <div class="col-md-12 col-sm-8">
+                                                            <input class="form-control" type="text" id="openingqty" name="open_qty" value="{{$item->open_qty}}" placeholder="Opening qty">
+                                                        </div>
+                                                    </div>
                                                     
 
 
@@ -323,6 +356,153 @@
 
                         </div>
                     
+                        <div class="tab-pane fade show" id="attribute">
+                            {{-- add attrubue new  --}}
+                        <div name="aj[]">
+                            
+                            <div class="row">
+                                <div class="col-4">
+                                    <select name="attr_color[]">
+                                        <option value="color">Color</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <select name="attrVal_color[]">
+                                        <option value="red">Red</option>
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <select name="attr_color[]">
+                                        <option value="color">Color</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <select name="attrVal_color[]">
+                                        <option value="green">Green</option>
+                                    </select>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-4">
+                                    <select name="attr_size[]">
+                                        <option value="L">L</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <select name="attrVal_size[]">
+                                        <option value="M">M</option>
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                            {{-- add attrubue new  --}}
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Attributes :</label>    
+                                                    <select class="form-control attributeList" id="attr_1" name="attribute">
+                                                        <option value="" selected>Choose attribute</option>
+                                                        <?php
+                                                        $attributes = get_attributes();
+                                                        foreach($attributes as $attribute){
+                                                        ?>
+                                                        <option value="{{$attribute['id']}}">{{ucfirst($attribute['admin_name_lable'])}}</option>
+                                                            
+                                                        <?php }?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group" id="aqttrOptions_attr_1oo">
+                                           
+                                                    <label class="col-form-label">Options :</label> 
+                                                    <select name="option[]" id="attrOptions_attr_1" class="select2-original attrOption" multiple> 
+                                                        
+                                                        
+                                                    </select>
+                                                    {{-- <label class="">ddff</label>
+                                                    <input type="checkbox" name="option[]" id="attrOptions_attr_1" class="select2-original1" multiple /> --}}
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <button type="button" id="AddMoreFileBoxAttr" class="btn btn-primary">
+                                            Add More
+                                        </button>
+                                        <div id="InputsWrapperAttr"> </div>
+                                        
+                                            
+
+                                    
+
+{{-- <?php
+foreach($attrFamilyGroups as $attrFamilyGroup){
+   
+    $attributes = get_attribute_by_id($attrFamilyGroup['attribute_id']);
+    
+    $attrOptions = get_attribute_options_by_attribute_id($attributes['id']);
+    
+
+?>
+<div class="form-group row m-b-15">
+    <label class="col-md-12 col-sm-4 col-form-label">{{$attributes['admin_name_lable']}} :</label>
+    <div class="col-md-12 col-sm-8">
+        <?php
+        if($attributes['type'] == 'select'){
+        ?>
+        <select class="form-control" name="attributes" data-parsley-required="{{($attributes['is_required'] == 1)? 'true':'false'}}">
+            @foreach($attrOptions as $attrOption)
+            <option value="{{$attrOption->id}}">{{$attrOption->attribute_option_name}}</option>
+            @endforeach
+        </select>
+        <?php
+        }else if($attributes['type'] == 'multiselect'){?>
+        <select class="form-control" name="attributes[]" multiselect data-parsley-required="{{($attributes['is_required'] == 1)? 'true':'false'}}">
+            @foreach($attrOptions as $attrOption)
+            <option value="{{$attrOption->id}}" >{{$attrOption->attribute_option_name}}</option>
+            @endforeach
+        </select>
+        <?php
+        }
+            else if($attributes['type'] == 'checkbox'){
+                
+        ?>
+        @foreach($attrOptions as $attrOption)
+            <label class="col-form-label" style="margin-top: 11px;
+            margin-left: 122px;">{{$attrOption->attribute_option_name}}</label>
+            <input class="form-control" type="{{$attributes['type']}}" name="attributes[]" value="{{$attrOption->id}}" data-parsley-required="{{($attributes['is_required'] == 1)? 'true':'false'}}">
+        @endforeach
+
+        <?php }else{?>
+            <input class="form-control" type="{{$attributes['type']}}" name="attributes" data-parsley-required="{{($attributes['is_required'] == 1)? 'true':'false'}}">
+        <?php }?>
+    </div>
+</div>
+<?php }?> --}}
+                                       
+                                    </div>       
+                                   
+                                
+                                </div>
+                                <!-- end col-6 -->
+                            </div>
+                            <!-- end row -->
+                            <fieldset>
+                                <button type="submit" id="updateItemBtn" class="btn btn-sm btn-primary m-r-5">SAVE </button>
+                                <button type="reset" class="btn btn-sm btn-default">Cancel</button>
+                            </fieldset>
+
+                        </div>
+
                         <div class="tab-pane fade show" id="category">
                             <!-- begin row -->
                             <div class="row">

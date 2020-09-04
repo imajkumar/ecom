@@ -350,11 +350,13 @@ class UserController extends Controller
         $this->validate($request, [
             'item_name' => 'required|string|max:120',
             'item_sku' => 'required|string|unique:tbl_items,item_sku',
+            'attribute_family_id' => 'required',
             // 'group_id' => 'required|integer',
             // 'brand_id' => 'required|integer',
             // 'open_qty' => 'required|integer',
             // 'min_qty' => 'required|integer',
         ], [
+            'attribute_family_id.required' => 'Attribute family is required.',
             'item_name.required' => 'Item name is required.',
             'item_name.string' => 'Item name should be string.',
             'item_sku.required' => 'Item sku is required.',
@@ -372,6 +374,7 @@ class UserController extends Controller
         $itemData = DB::table('tbl_items')->insertGetId([
             'item_name' => $request->item_name,
             'item_sku' => $request->item_sku,
+            'attribute_family_id' => $request->attribute_family_id,
             // 'brand_id' => $request->brand_id,
             // 'description' => $request->description,
             // 'sale_price' => $request->sale_price,
@@ -418,6 +421,8 @@ class UserController extends Controller
 
     public function updateItem(Request $request, $item_id)
     {  
+       
+        pr($request->all());
         //echo"<pre>".$item_id; print_r(json_decode($request->categorys));exit;
         $this->validate($request, [
             'item_name' => 'required|string|max:120',
@@ -647,11 +652,13 @@ class UserController extends Controller
     { 
         $theme = Theme::uses('backend')->layout('layout');
         $attrFamily = DB::table('tbl_attribute_families')->where('id', $id)->first();
+
         $attrFamilyGroups = DB::table('tbl_attribute_families_group')->where('attribute_family_id', $attrFamily->id)->get();
         $attrFamilyGroups = json_decode(json_encode($attrFamilyGroups), true);
 
         $attrFamily = DB::table('tbl_attribute_families')->where('id', $id)->first();
         $attributes = DB::table('tbl_attributes')->get();
+        
         return $theme->scope('admin.attribute.edit_attribute_family', compact('attributes','attrFamily','attrFamilyGroups'))->render();
     }
 
@@ -664,7 +671,6 @@ class UserController extends Controller
 
     public function updateAttribute(Request $request)
     { 
-      //pr($request->all());
         $this->validate($request, [
             'attribute_code' => 'required|string|max:191',
             'type' => 'required|max:191',
@@ -709,11 +715,42 @@ class UserController extends Controller
         }
     }
 
+    public function updateAttributeFamily(Request $request)
+    { 
+        
+       $this->validate($request, [
+            'code' => 'required|string|max:191',
+            'name' => 'required|string|max:191',
+        ]);
+        
+        $addressData = DB::table('tbl_attribute_families')->where('id', $request->attribute_families_id)->update([
+            'code' => $request->code,
+            'name' => $request->name,
+            'status' => $request->status,
+            
+        ]);
+        
+        if ($addressData) {
+            $delFamilyGroup = DB::table('tbl_attribute_families_group')->where('attribute_family_id', $request->attribute_families_id)->delete();
+
+            $attr = $request->request->get('attributes');
+            for($i=0; $i<count($attr); $i++){
+                $option = DB::table('tbl_attribute_families_group')->insert([
+                    'attribute_id' => $attr[$i],
+                    'attribute_family_id' => $request->attribute_families_id,
+                ]);
+            }
+            
+            return Response::json(array('status' => 'success', 'msg' => 'Attribute Family updated successfully.', 'url' => route('attributeFamiliesLayout')));
+        } else {
+            return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again', 'url' => route('editAttributeFamilyLayout', $request->attribute_families_id)));
+        }
+    }
+
     public function addAttributeFamily(Request $request)
     { 
         
-       
-        $this->validate($request, [
+       $this->validate($request, [
             'code' => 'required|string|max:191|unique:tbl_attribute_families,code',
             'name' => 'required|string|max:191|unique:tbl_attribute_families,name',
         ]);
@@ -735,8 +772,6 @@ class UserController extends Controller
                 ]);
             }
             
-            
-
             return Response::json(array('status' => 'success', 'msg' => 'Attribute Family saved successfully.', 'url' => route('attributeFamiliesLayout')));
         } else {
             return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again'));
@@ -843,11 +878,9 @@ class UserController extends Controller
             'country.required' => 'Country is required.',
             'state.required' => 'State is required.',
             'city.required' => 'City is required.',
-            
-            
         ]);
-        $checks = DB::table('tbl_addresses')->where('customer_id', $request->customer_id)
-        ->where('default_address', 1)->get();
+
+        $checks = DB::table('tbl_addresses')->where('customer_id', $request->customer_id)->where('default_address', 1)->get();
         if(count($checks)>0){
             DB::table('tbl_addresses')->where('customer_id', $request->customer_id)->update([
                 'default_address' => 0,
@@ -910,22 +943,16 @@ class UserController extends Controller
             'country.required' => 'Country is required.',
             'state.required' => 'State is required.',
             'city.required' => 'City is required.',
-            
-            
         ]);
+
         $user_id = Auth::user()->id;
-        $checks = DB::table('tbl_addresses')->where('customer_id', $request->customer_id)
-        ->where('default_address', 1)->get();
+        $checks = DB::table('tbl_addresses')->where('customer_id', $request->customer_id)->where('default_address', 1)->get();
         if(count($checks)>0){
             DB::table('tbl_addresses')->where('customer_id', $request->customer_id)->update([
                 'default_address' => 0,
             ]);
         }
-        // foreach($checks as $check){
-        //     if(count($checks)==0 || $checks){
-
-        //     }
-        // }
+        
 
         $addressData = DB::table('tbl_addresses')->where('id', $request->address_id)->update([
             'customer_id' => $request->customer_id,
@@ -939,8 +966,6 @@ class UserController extends Controller
             'city' => $request->city,
             'postal_code' => $request->postal_code,
             'default_address' => ($request->default_address)? 1:0,
-            
-            
         ]);
         
         if ($addressData) {
@@ -1072,6 +1097,39 @@ class UserController extends Controller
         return $theme->scope('admin.customer_add', $dataObjArr)->render();
     }
 
+    public function get_attributes(){
+        $attributes = get_attributes();
+        $html = '<option value="" disabled selected>Choose atrribute</option>';
+        
+        foreach($attributes as $attribute){
+            
+            $html .= '<option value="'.$attribute['id'].'">'.$attribute['admin_name_lable'].'</option>';
+        }
+        return $html;
+        
+    }
+
+    public function getAttributeOptions(Request $request){
+        $options = get_attributes_option_by_attr_id($request->attr_id);
+        // $html = '';
+        
+        // foreach($options as $attribute){
+        //     $html .= '<label class="">'.$attribute['attribute_option_name'].'</label>';
+        //     $html .= '<input type="checkbox" name="option[]" value="'.$attribute['id'].'" class="" multiple/>';
+                                                
+            
+        // }
+        // return $html;
+        $html = '<option value="" disabled selected>Choose option</option>';
+        
+        foreach($options as $attribute){
+            
+            $html .= '<option value="'.$attribute['id'].'">'.$attribute['attribute_option_name'].'</option>';
+        }
+        return $html;
+        
+    }
+
     public function itemEditLayout($item_id)
     { 
         $theme = Theme::uses('backend')->layout('layout');
@@ -1084,6 +1142,17 @@ class UserController extends Controller
         })->select('tbl_items.*','tbl_brands.name as brandName','tbl_group.g_id','tbl_group.g_name')
         ->where('tbl_items.item_id', '=', $item_id)
         ->first();
+        //pr($item);
+        //$item = json_decode(json_encode($item), true);
+        $attrFamily = DB::table('tbl_attribute_families')->where('id', $item->attribute_family_id)->first();
+
+        $attrFamilyGroups = DB::table('tbl_attribute_families_group')->where('attribute_family_id', $attrFamily->id)->get();
+        $attrFamilyGroups = json_decode(json_encode($attrFamilyGroups), true);
+
+        
+        //$attributes = DB::table('tbl_attributes')->get();
+
+        
 
         $itemImages = DB::table('tbl_items')->leftJoin('tbl_item_gallery', function ($join) {
             $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
@@ -1094,7 +1163,7 @@ class UserController extends Controller
 
         $brands = DB::table('tbl_brands')->get();
 
-        return $theme->scope('admin.item_edit', compact('brands','item','itemImages'))->render();
+        return $theme->scope('admin.item_edit', compact('brands','item','itemImages','attrFamilyGroups'))->render();
     }
 
     public function saveGroupAttribute(Request $request)

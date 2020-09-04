@@ -370,6 +370,42 @@ $(document).ready(function() {
 
         });
 
+        $('#updateAttributeFamily').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: BASE_URL + '/updateAttributeFamily',
+                data: $(this).serialize(),
+
+                success: function(responce) {
+
+                    if (responce['status'] == 'success') {
+
+                        toastr.success(responce['msg']);
+                        window.location.replace(responce['url']);
+
+                    } else {
+
+                        toastr.warning(responce['msg']);
+                        window.location.replace(responce['url']);
+
+                    }
+                },
+                error: function(xhr, status, error) {
+
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+                    toastr.error(errorHtml);
+
+                }
+
+            })
+
+        });
+
         $('#updateAttribute').on('submit', function(e) {
             e.preventDefault();
 
@@ -552,7 +588,16 @@ $(document).ready(function() {
         $('#editItemMasterForm').on('submit', function(e) {
             e.preventDefault();
             var selectedElmsIds = $('#jstree-checkable-group').jstree("get_selected");
+            // console.log($('input[type="checkbox"]:checked').serialize());
+            var attr = $.map($('.attributeList :selected'), function(c) {
+                return c.value;
+            });
+            var option = $.map($('.attrOption :selected'), function(c) { return c.value; });
+            console.log(attr);
+            console.log(option);
             var formData = new FormData(this);
+            formData.append('attributes', attr);
+            formData.append('options', option);
             formData.append('categorys', JSON.stringify(selectedElmsIds));
 
             var item_id = $('#edit_item_id').val();
@@ -563,6 +608,7 @@ $(document).ready(function() {
                 data: formData,
                 processData: false,
                 contentType: false,
+                dataType: 'text',
                 //data: $('#editItemMasterForm').serialize(),
 
                 success: function(responce) {
@@ -908,25 +954,17 @@ $(document).ready(function() {
     var MaxInputs = 2;
     var InputsWrapper = $("#InputsWrapper");
     var AddButton = $("#AddMoreFileBox");
-
-    var x = InputsWrapper.length; //initlal text box count
+    var x = InputsWrapper.length;
     var FieldCount = 1;
-
-
     $(AddButton).click(function(e) {
-
         FieldCount++;
         $(InputsWrapper).append(`<div class="row form_group" id="removeBlock_${FieldCount}">
-                                       
-                                      <div class="col-sm-10">
-                                        <input type="text" name="options[]"  class="form-control" placeholder="Please enter option" data-parsley-required="true"> 
-                                        <a href="#" class="removeclass">Remove</a>
-                                      </div>
-                                    </div>`);
+                        <div class="col-sm-10">
+                        <input type="text" name="options[]"  class="form-control" placeholder="Please enter option" data-parsley-required="true"> 
+                        <a href="#" class="removeclass">Remove</a>
+                        </div>
+                    </div>`);
         x++;
-
-
-
         return false;
     });
 
@@ -946,3 +984,97 @@ $(document).ready(function() {
     })
 
 });
+
+//item attr Add more start
+
+$(document).ready(function() {
+
+    var MaxInputs = 2;
+    var InputsWrapper = $("#InputsWrapperAttr");
+    var AddButton = $("#AddMoreFileBoxAttr");
+    var x = InputsWrapper.length;
+    var FieldCount = 1;
+
+    $(AddButton).click(function(e) {
+        FieldCount++;
+        $(InputsWrapper).append(`<div class="row" id="removeBlock_${FieldCount}">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label class="col-form-label">Attributes :</label>    
+                <select class="form-control attributeList" name="attribute" id="attr_${FieldCount}">
+                </select>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-group">
+            <label class="col-form-label">Options :</label>
+            <select name="option[]" id="attrOptions_attr_${FieldCount}" class="select2-original attrOption" multiple>
+            </select>  
+            </div>
+        </div>
+        <a href="#" class="removeclass">Remove</a>
+        </div>
+    </div>`);
+
+
+        $.ajax({
+            url: BASE_URL + '/get_attributes',
+            type: 'GET',
+            success: function(res) {
+                $('#attr_' + FieldCount).find('option')
+                    .remove()
+                    .end()
+                    .append(res);
+
+            },
+        });
+
+        attrOptions();
+        $('.select2-original').select2({
+            placeholder: "Choose elements",
+            width: "100%"
+        })
+
+        x++;
+        return false;
+    });
+
+    $("body").on("click", ".removeclass", function(e) {
+        if (x > 1) {
+            $(this).parent().remove();
+
+            x--;
+
+        }
+        return false;
+    })
+
+    attrOptions();
+
+    function attrOptions() {
+        $('.attributeList').on('change', function() {
+
+            var id = $(this).attr('id');
+            var formData = {
+                'attr_id': this.value,
+                '_token': $('meta[name="csrf-token"]').attr('content')
+            };
+            $.ajax({
+                url: BASE_URL + '/getAttributeOptions',
+                type: 'POST',
+                data: formData,
+                success: function(res) {
+                    $('#attrOptions_' + id)
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append(res);
+
+                }
+            });
+
+        });
+    }
+
+});
+//item attr add more  end

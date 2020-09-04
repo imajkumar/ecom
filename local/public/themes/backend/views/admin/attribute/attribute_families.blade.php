@@ -47,6 +47,7 @@
 
                                         <th class="text-nowrap">Code</th>
                                         <th class="text-nowrap">Name</th>
+                                        <th class="text-nowrap">Status</th>
                                         
                                         <th class="text-nowrap">Action</th>
                                         
@@ -59,6 +60,13 @@
                                        
                                         <td>{{$attribute->code}}</td>
                                         <td>{{$attribute->name}}</td>
+                                        <td>
+                                            @if($attribute->status == 1)
+                                            <span class="badge badge-md badge-success">Active</span>
+                                            @else
+                                            <span class="badge badge-md badge-danger">Deactive</span>
+                                            @endif    
+                                        </td>
                                         
                                         <td>
                                         <a href="{{route('editAttributeFamilyLayout', $attribute->id)}}" class="btn btn-primary">Edit</a>

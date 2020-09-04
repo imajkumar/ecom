@@ -27,6 +27,8 @@ Route::get('/item-edit/{item_id}', 'UserController@itemEditLayout')->name('itemE
 Route::post('/update-item/{item_id}', 'UserController@updateItem')->name('updateItem');
 Route::post('deleteItemImgByAjax', 'UserController@deleteItemImgByAjax')->name('deleteItemImgByAjax');
 Route::post('addPrimaryImgByAjax', 'UserController@addPrimaryImgByAjax')->name('addPrimaryImgByAjax');
+Route::get('/get_attributes', 'UserController@get_attributes')->name('get_attributes');
+Route::post('/getAttributeOptions', 'UserController@getAttributeOptions')->name('getAttributeOptions');
 
 Route::post('/saveItem', 'UserController@saveItem')->name('saveItem');
 Route::get('/getItembyAjax', 'UserController@getItembyAjax')->name('getItembyAjax');

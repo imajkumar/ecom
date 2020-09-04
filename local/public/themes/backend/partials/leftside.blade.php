@@ -137,7 +137,7 @@
 						</a>
 						<ul class="sub-menu">
 							<li><a href="{{route('attributesLayout')}}">Attributes</a></li>
-							<li><a href="{{route('attributeFamiliesLayout')}}">Attribute Families</a></li>
+							{{-- <li><a href="{{route('attributeFamiliesLayout')}}">Attribute Families</a></li> --}}
 						</ul>
 					</li>
 				

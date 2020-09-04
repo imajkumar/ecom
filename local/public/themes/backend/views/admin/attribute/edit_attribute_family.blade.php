@@ -33,7 +33,7 @@
                 {{-- <div class="panel-body"> --}}
                     
                 <form method="post" action="{{route('updateAttributeFamily')}}" id="updateAttributeFamily" name="updateAttributeFamily" data-parsley-validate="true">
-                
+                <input type="hidden" name="attribute_families_id" value="{{$attrFamily->id}}"/>
                     @csrf   
                     <div class="row">
                            
@@ -52,11 +52,13 @@
                                     
                                         <?php 
                                         $i=0;
-                                        $checked = false;
+                                        
                                         foreach ($attributes as $rowData){
-                                            // echo $rowData->id.'==';
-                                            // echo @$attrFamilyGroups[$i]['attribute_id'];
-                                           if(count($attrFamilyGroups)>0 && $rowData->id === @$attrFamilyGroups[$i]['attribute_id']) {
+                                             $attrId[] = $rowData->id;
+                                        }
+                                        foreach ($attributes as $rowData){
+                                             //pr($attrId);
+                                           if(count($attrFamilyGroups)>0 && in_array(@$attrFamilyGroups[$i]['attribute_id'], $attrId)) {
                                             $checked = 'checked';
                                            }else{
                                             $checked ='';
@@ -66,8 +68,7 @@
                                         
                                         <label class="col-form-label" style="margin-top: 11px;
                                         margin-left: 122px;">{{$rowData->admin_name_lable}}</label>
-                                        <input type="checkbox" class="form-check-input" name="attributes[]" value="{{$rowData->id}}"  {{$checked}} id="attributes" style="margin-top: 11px;
-                                        margin-left: 122px;"><br>
+                                        <input type="checkbox" class="form-check-input" name="attributes[]" value="{{$rowData->id}}"  {{$checked}} ><br>
                                         {{-- <option value="{{$rowData->id}}">{{$rowData->attr_name}}</option> --}}
                                         
                                         <?php 
@@ -125,12 +126,9 @@
                         </div>
                             
                             
-                         
-                        
-                            
-                        </div>
+                       </div>
                         <fieldset>
-                            <button type="reset" id="addCustomerBtn" class="btn btn-sm btn-primary m-r-5">SAVE </button>
+                            <button type="submit" id="updateFamilyBtn" class="btn btn-sm btn-primary m-r-5">SAVE </button>
                             <button type="reset" class="btn btn-sm btn-default">Cancel</button>
                         </fieldset>
                     </form> 

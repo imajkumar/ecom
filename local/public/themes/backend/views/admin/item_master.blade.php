@@ -132,9 +132,9 @@
                                                 <div class="col-md-4 col-sm-8">
 
                                                     <div class="form-group row m-b-15">
-                                                        <label class="col-md-12 col-sm-4 col-form-label" for="attribut_family">Attribute family <span class="required-star">* </span>:</label>
+                                                        <label class="col-md-12 col-sm-4 col-form-label" for="attribute_family_id">Attribute family <span class="required-star">* </span>:</label>
                                                         <div class="col-md-12 col-sm-8">
-                                                            <select class="form-control" type="text" id="attribut_family" name="attribut_family" data-parsley-required="true">
+                                                            <select class="form-control" type="text" id="attribute_family_id" name="attribute_family_id" data-parsley-required="true">
                                                             <option value="">Select Attribute Family</option>
                                                             @foreach($attrFamilys as $attrFamily)
                                                             <option value="{{$attrFamily->id}}">{{$attrFamily->name}}</option>

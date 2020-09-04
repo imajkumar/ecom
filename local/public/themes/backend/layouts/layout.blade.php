@@ -127,7 +127,10 @@
 	<!-- end scroll to top btn -->
 	</div>
 	<!-- end page container -->
-
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.min.js"
+	integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+	crossorigin="anonymous"></script>
 	<!-- ================== BEGIN BASE JS ================== -->
 	<script src="{{ BACKEND.'js/app.min.js'}}"></script>
 	<script src="{{ BACKEND.'js/theme/apple.min.js'}}"></script>
@@ -250,6 +253,19 @@
 
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+	
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.css" rel="stylesheet" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.js"></script>
+<script src="https://rawgit.com/wasikuss/select2-multi-checkboxes/select2-3.5.x/select2.multi-checkboxes.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		
+	$('.select2-original').select2({
+	placeholder: "Choose elements",
+	width: "100%"
+	})
+	});
+	</script>
 	<script type="text/javascript">
 	$(document).ready(function() {
 		toastr.options.timeOut = 5000; // 1.5s
