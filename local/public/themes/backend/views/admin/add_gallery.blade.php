@@ -106,6 +106,7 @@
         </div>
         <!-- end panel -->
     </form>
+    <a href="{{ URL::previous() }}" class="btn btn-sm btn-primary">BACK</a>
     <!-- end form-file-upload -->
 </div>
 <!-- end #content -->

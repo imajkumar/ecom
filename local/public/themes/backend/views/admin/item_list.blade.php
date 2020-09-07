@@ -69,7 +69,7 @@
                                         <th class="text-nowrap">Image</th>
                                         <th class="text-nowrap">Item name</th>
                                         <th class="text-nowrap">Item description</th>
-                                        <th class="text-nowrap">Group name</th>
+                                        {{-- <th class="text-nowrap">Categorys name</th> --}}
                                         <th class="text-nowrap">Brand name</th>
                                         <th class="text-nowrap">Sale price</th>
                                         <th class="text-nowrap">Regular price</th>
@@ -94,7 +94,14 @@
                                             <a href="{{route('addGalleryImage', $itemData->item_id)}}" id="addImageModelAjax" value="{{$itemData->item_id}}">Add image</a></td>
                                             <td>{{$itemData->item_name}}</td>
                                             <td>{{$itemData->description}}</td>
-                                            <td>{{$itemData->g_name}}</td>
+                                            {{-- <?php
+                                                // $categoryes = get_categorys_by_item_id($itemData->item_id);
+                                                // foreach($categoryes as $categorye){
+                                                //     $grouName = get_categorys_by_g_id($categorye->g_id);
+                                                //     $categori = $grouName->
+                                                // }
+                                            ?> --}}
+                                            {{-- <td>{{$itemData->g_name}}</td> --}}
                                             <td>{{$itemData->brandName}}</td>
                                             <td>{{$itemData->sale_price}}</td>
                                             <td>{{$itemData->regular_price}}</td>

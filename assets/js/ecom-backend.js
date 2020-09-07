@@ -588,16 +588,16 @@ $(document).ready(function() {
         $('#editItemMasterForm').on('submit', function(e) {
             e.preventDefault();
             var selectedElmsIds = $('#jstree-checkable-group').jstree("get_selected");
-            // console.log($('input[type="checkbox"]:checked').serialize());
-            var attr = $.map($('.attributeList :selected'), function(c) {
-                return c.value;
-            });
-            var option = $.map($('.attrOption :selected'), function(c) { return c.value; });
-            console.log(attr);
-            console.log(option);
+
+            // var attr = $.map($('.attributeList :selected'), function(c) {
+            //     return c.value;
+            // });
+            // var option = $.map($('.attrOption :selected'), function(c) { return c.value; });
+            // console.log(attr);
+            // console.log(option);
             var formData = new FormData(this);
-            formData.append('attributes', attr);
-            formData.append('options', option);
+            // formData.append('attributes', attr);
+            // formData.append('options', option);
             formData.append('categorys', JSON.stringify(selectedElmsIds));
 
             var item_id = $('#edit_item_id').val();
@@ -608,7 +608,7 @@ $(document).ready(function() {
                 data: formData,
                 processData: false,
                 contentType: false,
-                dataType: 'text',
+                //dataType: 'text',
                 //data: $('#editItemMasterForm').serialize(),
 
                 success: function(responce) {

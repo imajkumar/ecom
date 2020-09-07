@@ -358,7 +358,7 @@ margin-left:15px;
                     
                         <div class="tab-pane fade show" id="attribute">
                             {{-- add attrubue new  --}}
-                        <div name="aj[]">
+                        {{-- <div name="aj[]">
                             
                             <div class="row">
                                 <div class="col-4">
@@ -400,12 +400,49 @@ margin-left:15px;
                                     
                                 </div>
                             </div>
+                        </div> --}}
+
+
+                        <div id="accordion" class="accordion">
+                            <!-- begin card -->
+                            <?php
+                                $i=1;
+                                $attributes = get_attributes();
+                                foreach($attributes as $attribute){
+                            ?>
+                            <div class="card bg-dark1 text-white">
+                                <div class="card-header bg-dark-darker pointer-cursor d-flex align-items-center collapsed" data-toggle="collapse" data-target="#collapse{{$i}}" aria-expanded="false">
+                                    <i class="fa fa-circle fa-fw text-blue mr-2 f-s-8"></i> {{ucfirst($attribute['admin_name_lable'])}}
+                                    {{-- <input type="hidden" name="attr_name[]" value="{{$attribute['attribute_code']}}"/> --}}
+                                </div>
+                                <div id="collapse{{$i}}" class="collapse" data-parent="#accordion" style="">
+                                    <div class="card-body">
+                                        <?php
+                                            $options = get_attributes_option_by_attr_id($attribute['id']);
+                                            foreach($options as $option){
+                                                $checkBox = '';
+                                                $itemAttrOption = get_itemAtributeOptions_by_option_id($option['id']);
+                                                
+                                                if(!empty($itemAttrOption)){
+                                                    $checkBox = 'checked';
+                                                }
+                                        ?>
+                                            <label class="" style="color: black;">{{$option['attribute_option_name']}}</label>&nbsp; 
+                                            <input type="checkbox" {{$checkBox}} name="option[{{$attribute['attribute_code']}}][]" id="" value="{{$option['id']}}" class="select2-original1" multiple /> 
+                                            &nbsp;&nbsp;
+                                            <?php }?>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php $i++;}?>
+                           
+                            <!-- end card -->
                         </div>
                             {{-- add attrubue new  --}}
                             <div class="row">
                                 <div class="col-12">
                                     <div class="panel-body">
-                                        <div class="row">
+                                        {{-- <div class="row">
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label class="col-form-label">Attributes :</label>    
@@ -431,14 +468,14 @@ margin-left:15px;
                                                     </select>
                                                     {{-- <label class="">ddff</label>
                                                     <input type="checkbox" name="option[]" id="attrOptions_attr_1" class="select2-original1" multiple /> --}}
-                                                </div>
+                                                {{-- </div>
                                             </div>
                                             
-                                        </div>
-                                        <button type="button" id="AddMoreFileBoxAttr" class="btn btn-primary">
+                                        </div> --}}
+                                        {{-- <button type="button" id="AddMoreFileBoxAttr" class="btn btn-primary">
                                             Add More
-                                        </button>
-                                        <div id="InputsWrapperAttr"> </div>
+                                        </button> --}}
+                                        {{-- <div id="InputsWrapperAttr"> </div> --}} 
                                         
                                             
 
@@ -1141,7 +1178,7 @@ foreach($attrFamilyGroups as $attrFamilyGroup){
                 
             </div>
            
-        {{-- <a href="{{route('itemListLayout')}}" class="btn btn-sm btn-primary">BACK</a> --}}
+        <a href="{{ URL::previous() }}" class="btn btn-sm btn-primary">BACK</a>
         </div>
         
     </div>

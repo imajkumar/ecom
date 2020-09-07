@@ -422,13 +422,13 @@ class UserController extends Controller
     public function updateItem(Request $request, $item_id)
     {  
        
-        pr($request->all());
+        
         //echo"<pre>".$item_id; print_r(json_decode($request->categorys));exit;
         $this->validate($request, [
             'item_name' => 'required|string|max:120',
             'item_sku' => 'required|string',
-            'group_id' => 'required|integer',
-            'brand_id' => 'required|integer',
+            //'group_id' => 'required|integer',
+            'brand_id' => 'required',
             'open_qty' => 'required|integer',
             'min_qty' => 'required|integer',
             'sale_price' => 'integer',
@@ -440,8 +440,8 @@ class UserController extends Controller
             'item_name.max' => 'Item name Should be Minimum of 120 Character.',
             'item_sku.required' => 'Item sku is required.',
             'item_sku.string' => 'Item sku should be string.',
-            'group_id.required' => 'Group field is required.',
-            'group_id.required' => 'Brand field is required.',
+            //'group_id.required' => 'Group field is required.',
+            'brand_id.required' => 'Brand field is required.',
             'open_qty.required' => 'Open quantity field is required.',
             'open_qty.integer' => 'Open quantity field should be number.',
             'min_qty.required' => 'Min quantity field is required.',
@@ -451,10 +451,11 @@ class UserController extends Controller
             'regular_price.required' => 'Category field is required.',
         ]);
         $user_id = Auth::user()->id;
+        $query = 0;
         $itemData = DB::table('tbl_items')->where('item_id', $item_id)->update([
             'item_name' => $request->item_name,
             'item_sku' => $request->item_sku,
-            'group_id' => $request->group_id,
+            //'group_id' => $request->group_id,
             'brand_id' => $request->brand_id,
             'description' => $request->description,
             'sale_price' => $request->sale_price,
@@ -464,6 +465,8 @@ class UserController extends Controller
         ]);
         
         if ($itemData) {
+            $query = 1;
+        }
             if($request->categorys){
                 $cats = json_decode($request->categorys);
                 //echo count($cats); dd($cats);
@@ -475,7 +478,27 @@ class UserController extends Controller
                         'g_id' => $cats[$i],
                     ]);
                 }
+                $query = 1;
             }
+
+            
+            if(count($request->option)>0){
+                
+                foreach($request->option as $code => $attrOptions){
+                    DB::table('tbl_item_attributes')->where('item_id', $item_id)->where('attr_code', $code)->delete();
+                    //echo $code;
+                    foreach($attrOptions as $attrOption){
+                        DB::table('tbl_item_attributes')->insert([
+                            'item_id' => $item_id,
+                            'attr_code' => $code,
+                            'attr_option' => $attrOption,
+                        ]);
+                    }
+                }
+                $query = 1;
+            }
+        if($query ==1)
+        {  
             return Response::json(array('status' => 'success', 'msg' => 'Item updated successfully.', 'url' => route('itemListLayout') ));
         } else {
             return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again', 'url' => route('itemEditLayout', $item_id)));
@@ -1149,8 +1172,8 @@ class UserController extends Controller
         $attrFamilyGroups = DB::table('tbl_attribute_families_group')->where('attribute_family_id', $attrFamily->id)->get();
         $attrFamilyGroups = json_decode(json_encode($attrFamilyGroups), true);
 
-        
-        //$attributes = DB::table('tbl_attributes')->get();
+        $attributeAndOptions = DB::table('tbl_item_attributes')->where('item_id', $item_id)->get();
+        $attributeAndOptions = json_decode(json_encode($attributeAndOptions), true);
 
         
 
@@ -1163,7 +1186,7 @@ class UserController extends Controller
 
         $brands = DB::table('tbl_brands')->get();
 
-        return $theme->scope('admin.item_edit', compact('brands','item','itemImages','attrFamilyGroups'))->render();
+        return $theme->scope('admin.item_edit', compact('attributeAndOptions','brands','item','itemImages','attrFamilyGroups'))->render();
     }
 
     public function saveGroupAttribute(Request $request)

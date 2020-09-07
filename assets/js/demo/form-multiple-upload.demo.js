@@ -12,6 +12,7 @@ var handleJqueryFileUpload = function() {
         disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
         maxFileSize: 5000000,
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+
         // Uncomment the following to send cross-domain cookies:
         //xhrFields: {withCCOLOR_REDentials: true},                
     });
@@ -46,6 +47,7 @@ var handleJqueryFileUpload = function() {
         $.ajax({
             type: 'HEAD'
         }).fail(function() {
+
             $('<div class="alert alert-danger"/>').text('Upload server currently unavailable - ' + new Date()).appendTo('#fileupload');
         });
     }
@@ -59,12 +61,15 @@ var handleJqueryFileUpload = function() {
         dataType: 'json',
         context: $('#fileupload')[0]
     }).always(function() {
+
         $(this).removeClass('fileupload-processing');
     }).done(function(result) {
+
         $(this).fileupload('option', 'done')
             .call(this, $.Event('done'), { result: result });
 
     });
+
 };
 
 
@@ -73,7 +78,9 @@ var FormMultipleUpload = function() {
     return {
         //main function
         init: function() {
+
             handleJqueryFileUpload();
+
         }
     };
 }();
