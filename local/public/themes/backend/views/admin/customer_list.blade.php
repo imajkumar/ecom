@@ -24,7 +24,7 @@
                 <div class="panel-heading">
                     <h4 class="panel-title">CUSTOMERS</h4>
                     <div class="panel-heading-btn">
-                        <a class="btn btn-primary pull-right" href="{{route('addNewCustomerLayout')}}" style="background-color:#0f0f0f;border: none;">Add New</a>
+                        <a class="btn btn-primary pull-right" href="{{route('addNewCustomerLayout')}}" style="background-color:#0f0f0f;border: none;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle"></i>Add</a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
@@ -64,8 +64,8 @@
                                         <td>{{$customer->phone}}</td>
                                         <td>{{$customer->dob}}</td>
                                         <td>
-                                        <a href="{{route('editCustomerLayout', $customer->id)}}" class="btn btn-primary">Edit</a>
-                                        <a href="{{route('addressListLayout', $customer->id)}}" class="btn btn-primary">Add address</a>
+                                        <a href="{{route('editCustomerLayout', $customer->id)}}" class="btn btn-primary"><i class="far fa-lg fa-fw m-r-10 fa-edit"></i>Edit</a>
+                                        <a href="{{route('addressListLayout', $customer->id)}}" class="btn btn-primary"><i class="fas fa-lg fa-fw m-r-10 fa-address-book"></i>Address</a>
 
                                             {{-- <form method="post" action="{{route('addAddress')}}" class="pull-right" id="addAddress">
                                                 @csrf()

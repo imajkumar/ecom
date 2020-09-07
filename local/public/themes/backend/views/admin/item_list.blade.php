@@ -107,7 +107,7 @@
                                             <td>{{$itemData->regular_price}}</td>
                                             <td>{{$itemData->open_qty}}</td>
                                             <td>{{$itemData->min_qty}}</td>
-                                            <td><a class="btn btn-primary" href="{{route('itemEditLayout',$itemData->item_id)}}">Edit</a></td>
+                                            <td><a class="btn btn-primary" href="{{route('itemEditLayout',$itemData->item_id)}}"><i class="far fa-lg fa-fw m-r-10 fa-edit"></i>Edit</a></td>
                                         </tr>
                                     <?php } ?>
 

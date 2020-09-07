@@ -79,9 +79,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group row m-b-15">
-                                    <label class="col-md-12 col-sm-4 col-form-label" for="dob">Date of Birth</label>
+                                    <label class="col-md-12 col-sm-4 col-form-label">Date of Birth</label>
                                     <div class="col-md-12 col-sm-8">
-                                        <input class="form-control" type="text" id="dob" name="dob" placeholder="Please enter date of birth">
+                                        <input class="form-control" type="text" id="datepicker-autoClose" name="dob" placeholder="Please enter date of birth">
                                     </div>
                                 </div>
                                

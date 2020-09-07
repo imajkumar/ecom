@@ -36,8 +36,10 @@ var handleJqueryFileUpload = function() {
     $('#fileupload').bind('fileuploadfail', function(e, data) {
         var rowLeft = (data['originalFiles']) ? data['originalFiles'].length : 0;
         if (rowLeft === 0) {
+
             $('#fileupload [data-id="empty"]').show();
         } else {
+
             $('#fileupload [data-id="empty"]').hide();
         }
     });
@@ -86,6 +88,7 @@ var FormMultipleUpload = function() {
 }();
 
 $(document).ready(function() {
+
     FormMultipleUpload.init();
 
 });
