@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Theme;
+use Cart;
 class HomeController extends Controller
 {
     /**
@@ -23,6 +24,10 @@ class HomeController extends Controller
      */
     public function index()
     {
+        Cart::add(455, 'Sample Item', 100.99, 2, array());
+        $cartTotalQuantity = Cart::getTotalQuantity();
+        print_r($cartTotalQuantity);
+        die;
      
        return $this->FrontEnd();
 
