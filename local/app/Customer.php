@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class Customer extends Authenticatable
 {
     use Notifiable;
     use HasRoles;
@@ -18,7 +18,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    // protected $guard = 'web';
+    protected $guard = 'customer';
     protected $fillable = [
         'name', 'email', 'password',
     ];
