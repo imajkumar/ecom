@@ -18,9 +18,15 @@ class User extends Authenticatable
      *
      * @var array
      */
+    // public function isAdmin()
+    // {
+    //     return $this->admin; // this looks for an admin column in your users table
+    // }
+
+    
     // protected $guard = 'web';
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','mobile','otp'
     ];
 
     /**

@@ -1,3 +1,6 @@
+<?php
+$customer = session()->get('customer'); 
+?>
 <!-- begin #page-container -->
 <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
 
@@ -5,7 +8,7 @@
 		<div id="header" class="header navbar-default">
 			<!-- begin navbar-header -->
 			<div class="navbar-header">
-			<a href="{{url('/')}}" class="navbar-brand"><span class="navbar-logo"><i class="ion-ios-cloud"></i></span> <b class="mr-1">Bartanwale</b> Admin</a>
+			<a href="{{url('/')}}" class="navbar-brand"><span class="navbar-logo"><i class="ion-ios-cloud"></i></span> <b class="mr-1">Bartanwale</b> {{($customer->user_type == 0)? 'Customer':'Admin'}}</a>
 				<button type="button" class="navbar-toggle" data-click="sidebar-toggled">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -87,7 +90,7 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<img src="../assets/img/user/user-13.jpg" alt="" /> 
 						<span class="d-none d-md-inline">
-							{{Auth::user()->name}}
+							{{ ($customer)? ucfirst($customer->name):ucfirst(Auth::user()->name)}}
 						</span> <b class="caret"></b>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right">

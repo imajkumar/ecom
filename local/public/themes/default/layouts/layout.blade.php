@@ -317,6 +317,12 @@
 									<span class="d-none d-xl-inline">Login</span>
 								</a>
 							</li>
+							<li>
+								<a href="{{route('showCustomerLoginForm')}}">
+									
+									<span class="d-none d-xl-inline">Customer login</span>
+								</a>
+							</li>
 						</ul>
 					</div>
 					<!-- END header-nav -->

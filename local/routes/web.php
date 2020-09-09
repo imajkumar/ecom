@@ -17,7 +17,7 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Auth::routes(['register' => false]);
 
-Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
+
 
 //admin route 
 Route::get('/master-settings', 'UserController@masterSettingsLayout')->name('masterSettingsLayout');
@@ -82,3 +82,29 @@ Route::post('/save-brand', 'UserController@saveBrand')->name('saveBrand');
 Route::get('/edit-brand/{id}', 'UserController@editBrandLayout')->name('editBrandLayout');
 Route::post('/update-brand/{id}', 'UserController@updateBrand')->name('updateBrand');
 Route::get('/delete-brand/{id}', 'UserController@deleteBrand')->name('deleteBrand');
+
+
+
+
+
+
+//Start customer
+Route::group(['prefix'=>'customer'], function(){
+    Route::get('login', 'HomeController@showCustomerLoginForm')->name('showCustomerLoginForm');
+    Route::post('/sendOtp', 'Auth\RegisterController@sendOtp')->name('sendOtp');
+    Route::post('/verifyOtp', 'Auth\RegisterController@verifyOtp')->name('verifyOtp');
+    
+});
+Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
+// Route::get('protected', ['middleware' => ['auth'], function() {
+//     // this page requires that you be logged in AND be an Admin
+    
+    
+// }]);
+
+// Route::get('protected', ['middleware' => ['auth'], ['prefix'=>'customer'],function() {
+//     this page requires that you be logged inbut you don't need to be an admin
+    
+    
+// }]);
+//End customer

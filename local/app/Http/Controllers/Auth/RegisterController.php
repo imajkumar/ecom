@@ -8,6 +8,9 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Response;
 
 class RegisterController extends Controller
 {
@@ -69,5 +72,57 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function sendOtp(Request $request){
+        //echo "<pre>";print_r($request->all());exit;
+        $this->validate($request, [
+            'mobile' => 'required|integer|digits:10',
+        ]);
+        $otp = 123456;
+        
+        $customer = User:: updateOrCreate([
+            'mobile' => $request->mobile
+            
+        ],[
+            'mobile' => $request->mobile,
+            'otp' => $otp
+        ]);
+
+        if($customer){
+            $request->session()->put('customer', $customer);
+            return Response::json(array('status' => 'success', 'msg' => 'OTP send to your mobile successfully.','mobile' =>$request->mobile));
+        }else{
+            return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again.'));
+        }
+        
+        
+    }
+
+   
+    public function verifyOtp(Request $request){
+        $this->validate($request, [
+            'otp' => 'required|integer',
+        ]);
+        //$credentials = $request->only($request->mobile, $request->otp);
+        //$authSuccess = Auth::attempt(['mobile'=> $request->mobile,'otp' => $request->otp], $request->has('remember'));
+
+        // if($authSuccess) {
+        //     $request->session()->regenerate();
+        //     return response(['success' => true], Response::HTTP_OK);
+        // }
+
+            $customer = User::where('mobile', $request->mobile)->where('otp', $request->otp)->first();
+        if ($customer)
+        { 
+           
+            $request->session()->regenerate();
+            //return redirect()->intended(route('dashboard'));
+            return Response::json(array('status' => 'success', 'msg' => 'You are login successfull.', 'url' => route('dashboard')));
+            
+        }else{
+            return Response::json(array('status' => 'warning', 'msg' => 'Please enter valid otp', 'mobile' =>$request->mobile));
+        }
+
     }
 }

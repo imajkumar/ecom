@@ -45,23 +45,57 @@
 						</a>
 						
 					</li> --}}
+					
+					<?php 
+					$customer = session()->get('customer'); 
+					if($customer){
+					?>
 					<li class="active">
-						<a href="javascript:;">
-							{{-- <b class="caret"></b> --}}
-							<i class="ion-ios-cog"></i>
-							<span>DASHBOARD </span>
+						<a href="">
+							
+							<i class="icon-user"></i>
+							<span>Profile </span>
 						</a>
 						{{-- <ul class="sub-menu">
 							
-							<li><a href="javascript:;"> Orders</a></li>
-							{{-- <li><a href="javascript:;"> Shipments</a></li>
-							<li><a href="javascript:;"> Invoices</a></li>
-							<li><a href="javascript:;"> Refunds</a></li> --}}
-							{{-- <li><a href="{{route('itemListLayout')}}">Item Master</a></li>
-							<li><a href="{{route('brandListLayout')}}">Brands</a></li>
-							 
+							<li><a href="javascript:;"> Profile</a></li>
+							
+							
 						</ul> --}}
 					</li>
+
+						{{-- <li class="has-sub">
+							<a href="javascript:;">
+								<b class="caret"></b>
+								<i class="icon-graph"></i>
+								<span>SALES </span>
+							</a>
+							<ul class="sub-menu">
+								
+								<li><a href="javascript:;"> Orders</a></li>
+								
+								
+							</ul>
+						</li> --}}
+					<?php }else{?>
+
+						<li class="active">
+							<a href="javascript:;">
+								{{-- <b class="caret"></b> --}}
+								<i class="ion-ios-cog"></i>
+								<span>DASHBOARD </span>
+							</a>
+							{{-- <ul class="sub-menu">
+								
+								<li><a href="javascript:;"> Orders</a></li>
+								{{-- <li><a href="javascript:;"> Shipments</a></li>
+								<li><a href="javascript:;"> Invoices</a></li>
+								<li><a href="javascript:;"> Refunds</a></li> --}}
+								{{-- <li><a href="{{route('itemListLayout')}}">Item Master</a></li>
+								<li><a href="{{route('brandListLayout')}}">Brands</a></li>
+								 
+							</ul> --}}
+						</li>
 					<li class="has-sub">
 						<a href="javascript:;">
 							<b class="caret"></b>
@@ -140,7 +174,7 @@
 							{{-- <li><a href="{{route('attributeFamiliesLayout')}}">Attribute Families</a></li> --}}
 						</ul>
 					</li>
-				
+				<?php }?>
 					<!-- begin sidebar minify button -->
 					<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="ion-ios-arrow-back"></i> <span>Collapse</span></a></li>
 					<!-- end sidebar minify button -->

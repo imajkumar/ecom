@@ -25,6 +25,8 @@
 
 </html>
 */
+$customer = session()->get('customer');
+// pr($customer);
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +39,9 @@
 	<meta content="" name="description" />
 	<meta content="" name="author" />
 	<meta name="BASE_URL" content="{{ url('/') }}" />
-	<meta name="UUID" content="{{Auth::user()->id}}" />
+	
+	<meta name="UUID" content="{{ ($customer)? $customer->id:Auth::user()->id}}" />
+	
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 
 	<!-- ================== BEGIN BASE CSS STYLE ================== -->
@@ -79,6 +83,8 @@
 			color: red;
 		}
 	</style>
+
+
 </head>
 
 <body>
@@ -92,6 +98,7 @@
 
 	@partial('leftside')
 	@content()
+	
 	@partial('footer')
 
 
@@ -257,6 +264,9 @@
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.css" rel="stylesheet" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.js"></script>
 <script src="https://rawgit.com/wasikuss/select2-multi-checkboxes/select2-3.5.x/select2.multi-checkboxes.js"></script>
+
+
+
 <script type="text/javascript">
 	$(document).ready(function() {
 		

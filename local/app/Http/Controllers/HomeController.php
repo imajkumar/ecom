@@ -24,10 +24,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        Cart::add(455, 'Sample Item', 100.99, 2, array());
-        $cartTotalQuantity = Cart::getTotalQuantity();
-        print_r($cartTotalQuantity);
-        die;
+        // Cart::add(455, 'Sample Item', 100.99, 2, array());
+        // $cartTotalQuantity = Cart::getTotalQuantity();
+        // print_r($cartTotalQuantity);
+        // die;
      
        return $this->FrontEnd();
 
@@ -37,10 +37,21 @@ class HomeController extends Controller
         $data=["name"=>''];
         return $theme->scope('index', $data)->render();
     }
+
     public function dashboard(){
         $theme = Theme::uses('backend')->layout('layout');
         $data=["name"=>''];
         return $theme->scope('index', $data)->render();
     }
+
+    
+
+    public function showCustomerLoginForm(){
+        //$theme = Theme::uses('backend')->layout('layout');
+        
+        return view('auth.customer_login');
+    }
+
+    
 
 }
