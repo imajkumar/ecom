@@ -1,14 +1,48 @@
 <?php
-$customer = session()->get('customer'); 
+
+	$customer = session()->get('customer'); 
+	if($customer)
+		{
+			
+			if($customer->user_type == 0){
+				$userType = 'Customer';
+
+				$customerdetail = get_custumer_by_user_id($customer->id);
+				if(!empty($customerdetail->profile_pic) )
+				{
+				
+				$profil_pic = asset('/'.ITEM_IMG_PATH.'/'.$customerdetail->profile_pic);
+				}else{
+					
+					$profil_pic = BACKEND.'img/user/user-4.jpg';
+				}
+
+			}else{
+				$userType = 'Admin';
+			}
+
+		}else{
+			if(Auth::user()->user_type == 0){
+				$userType = 'Customer';
+			}else{
+				$userType = 'Admin';
+			}
+		}
+		
+		
+	
+		
 ?>
-<!-- begin #page-container -->
+?>
+<!-- begin custumer #page-container -->
 <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
 
 		<!-- begin #header -->
 		<div id="header" class="header navbar-default">
 			<!-- begin navbar-header -->
 			<div class="navbar-header">
-			<a href="{{url('/')}}" class="navbar-brand"><span class="navbar-logo"><i class="ion-ios-cloud"></i></span> <b class="mr-1">Bartanwale</b> {{($customer->user_type == 0)? 'Customer':'Admin'}}</a>
+				
+			<a href="{{url('/')}}" class="navbar-brand"><span class="navbar-logo"><i class="ion-ios-cloud"></i></span> <b class="mr-1">Bartanwale</b> {{$userType}}</a>
 				<button type="button" class="navbar-toggle" data-click="sidebar-toggled">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -88,14 +122,14 @@ $customer = session()->get('customer');
 					</div>
 				</li><li class="dropdown navbar-user">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<img src="../assets/img/user/user-13.jpg" alt="" /> 
+					<img src="{{($customer)? $profil_pic:''}}" class="outputPic" alt="" /> 
 						<span class="d-none d-md-inline">
 							{{ ($customer)? ucfirst($customer->name):ucfirst(Auth::user()->name)}}
 						</span> <b class="caret"></b>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right">
 						<a href="javascript:;" class="dropdown-item">Edit Profile</a>
-						<a href="javascript:;" class="dropdown-item"><span class="badge badge-danger pull-right">2</span> Inbox</a>						                        
+						{{-- <a href="javascript:;" class="dropdown-item"><span class="badge badge-danger pull-right">2</span> Inbox</a>						                         --}}
                         
                         <div class="dropdown-divider"></div>
                         

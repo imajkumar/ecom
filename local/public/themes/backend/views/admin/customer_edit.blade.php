@@ -32,7 +32,7 @@
                 </div>
                 {{-- <div class="panel-body"> --}}
                     
-                <form method="post" action="{{route('updateCustomer')}}" id="updateCustomer" name="updateCustomer" data-parsley-validate="true">
+                <form method="post" action="{{route('updateCustomer')}}" id="updateCustomer" name="updateCustomer" class="form-layout" data-parsley-validate="true">
                     <input type="hidden" name="customer_id" id="customer_id" value="{{$customer->id}}"/>
                     @csrf   
                     <div class="row">

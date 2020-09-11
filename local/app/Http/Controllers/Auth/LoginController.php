@@ -7,6 +7,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
 use Request;
+use Auth;
+use Session;
 
 
 class LoginController extends Controller
@@ -44,8 +46,8 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-        $request->session()->flush();
-        $request->session()->regenerate();
+        session()->forget('customer');
+        //$request->session()->regenerate();
 
         return redirect('/');
     }

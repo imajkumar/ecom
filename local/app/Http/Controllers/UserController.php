@@ -16,6 +16,13 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        // if (Auth::user()) {   
+        //   $this->middleware('auth');
+        // } else {
+        //     $this->middleware('guest');
+             
+        // }
+        
     }
 
     public function bannerListLayout()
@@ -626,7 +633,7 @@ class UserController extends Controller
     public function addressListLayout($id)
     { 
         $theme = Theme::uses('backend')->layout('layout');
-        $addresses = DB::table('tbl_addresses')->orderBy('id','DESC')->get();
+        $addresses = DB::table('tbl_addresses')->orderBy('id','DESC')->where('customer_id', $id)->get();
         $customer = DB::table('tbl_customers')->where('id', $id)->first();
         
         return $theme->scope('admin.address_list', compact('addresses', 'customer'))->render();
@@ -636,7 +643,7 @@ class UserController extends Controller
     { 
         $theme = Theme::uses('backend')->layout('layout');
         $customer = DB::table('tbl_customers')->where('id', $id)->first();
-
+        
         return $theme->scope('admin.address_add', compact('customer'))->render();
     }
 
@@ -851,6 +858,7 @@ class UserController extends Controller
 
     public function editAddressLayout($id)
     { 
+        
         $theme = Theme::uses('backend')->layout('layout');
         //$customer = DB::table('tbl_customers')->where('id', $id)->first();
         $address = DB::table('tbl_addresses')->where('id', $id)->first();
@@ -909,9 +917,9 @@ class UserController extends Controller
                 'default_address' => 0,
             ]);
         }
-        $user_id = Auth::user()->id;
         $addressData = DB::table('tbl_addresses')->insertGetId([
             'customer_id' => $request->customer_id,
+            'address_user_id' => $request->user_id,
             'f_name' => $request->f_name,
             'l_name' => $request->l_name,
             'company_name' => $request->company_name,
@@ -968,7 +976,6 @@ class UserController extends Controller
             'city.required' => 'City is required.',
         ]);
 
-        $user_id = Auth::user()->id;
         $checks = DB::table('tbl_addresses')->where('customer_id', $request->customer_id)->where('default_address', 1)->get();
         if(count($checks)>0){
             DB::table('tbl_addresses')->where('customer_id', $request->customer_id)->update([

@@ -32,7 +32,7 @@
                 </div>
                 {{-- <div class="panel-body"> --}}
                     
-                <form method="post" action="{{route('addNewCustomer')}}" id="addCustomer" name="addCustomer" data-parsley-validate="true">
+                <form method="post" action="{{route('addNewCustomer')}}" id="addCustomer" name="addCustomer" class="form-layout" data-parsley-validate="true">
                     @csrf   
                     <div class="row">
                            

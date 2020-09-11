@@ -585,6 +585,8 @@ $(document).ready(function() {
 
         });
 
+
+
         $('#editItemMasterForm').on('submit', function(e) {
             e.preventDefault();
             var selectedElmsIds = $('#jstree-checkable-group').jstree("get_selected");
@@ -1076,5 +1078,92 @@ $(document).ready(function() {
         });
     }
 
+    //item attr add more  end
+
+    $('#saveCustomerProfileDetails').on('submit', function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: BASE_URL + '/saveCustomerProfileDetails',
+            data: $(this).serialize(),
+
+            success: function(responce) {
+
+                if (responce['status'] == 'success') {
+
+                    toastr.success(responce['msg']);
+                    window.location.replace(responce['url']);
+
+                } else {
+
+                    toastr.warning(responce['msg']);
+
+                }
+            },
+            error: function(xhr, status, error) {
+
+                let errorHtml = '';
+                $.each(xhr.responseJSON.errors, function(key, item) {
+                    errorHtml += `<strong>${item}</strong></br>`;
+                });
+                toastr.error(errorHtml);
+
+            }
+
+        })
+
+    });
+
+    $('#output').click(function() {
+
+        $('#customerPic').trigger('click');
+    })
+
+    loadFile = function(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('output');
+            output.src = reader.result;
+
+            $('#saveProfilePic').submit();
+
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
+
+    $('#saveProfilePic').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: BASE_URL + '/saveProfilePic',
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(responce) {
+
+                if (responce['status'] == 'success') {
+
+                    $('.outputPic').attr('src', responce['picPath']);
+                    toastr.success(responce['msg']);
+
+
+                } else {
+
+                    toastr.warning(responce['msg']);
+
+                }
+            },
+            error: function(xhr, status, error) {
+
+                let errorHtml = '';
+                $.each(xhr.responseJSON.errors, function(key, item) {
+                    errorHtml += `<strong>${item}</strong></br>`;
+                });
+                toastr.error(errorHtml);
+
+            }
+        });
+    });
 });
-//item attr add more  end

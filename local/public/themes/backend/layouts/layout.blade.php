@@ -82,6 +82,10 @@ $customer = session()->get('customer');
 		.required-star{
 			color: red;
 		}
+		.form-layout{
+			margin-left: 10px;
+			margin-right: 10px;
+		}
 	</style>
 
 
@@ -102,8 +106,7 @@ $customer = session()->get('customer');
 	@partial('footer')
 
 
-
-
+	
 	
     {{-- start model add item image--}}
     <div class="modal fade" id="addItemImageByModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
@@ -140,11 +143,16 @@ $customer = session()->get('customer');
 	crossorigin="anonymous"></script>
 	<!-- ================== BEGIN BASE JS ================== -->
 	<script src="{{ BACKEND.'js/app.min.js'}}"></script>
+	
 	<script src="{{ BACKEND.'js/theme/apple.min.js'}}"></script>
 	<!-- ================== END BASE JS ================== -->
 	
+	
+	
 	{{-- gallery --}}
-    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+	<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+
+	
 	<script src="{{asset('assets/plugins/blueimp-file-upload/js/vendor/jquery.ui.widget.js')}}"></script>
 	<script src="{{asset('assets/plugins/blueimp-tmpl/js/tmpl.js')}}"></script>
 	<script src="{{asset('assets/plugins/blueimp-load-image/js/load-image.all.min.js')}}"></script>
@@ -183,7 +191,7 @@ $customer = session()->get('customer');
 	<script src="{{ BACKEND.'plugins/jvectormap-next/jquery-jvectormap-world-mill.js'}}"></script>
 	<script src="{{ BACKEND.'plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js'}}"></script>
 	<script src="{{ BACKEND.'plugins/jstree/dist/jstree.min.js'}}"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.5/jquery.jqgrid.min.js"></script>
+	
 
 	<script src="{{asset('assets/plugins/datatables.net/js/jquery.dataTables.min.js')}}"></script>
 	<script src="{{asset('assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
@@ -205,7 +213,7 @@ $customer = session()->get('customer');
 	<script src="{{BACKEND.'plugins/smartwizard/dist/js/jquery.smartWizard.js'}}"></script>
 	<script src="{{BACKEND.'js/demo/form-wizards.demo.js'}}"></script>
 
-	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.5/jquery.jqgrid.min.js"></script>
 	<script>
     //<![CDATA[
     $(function () {
@@ -246,7 +254,8 @@ $customer = session()->get('customer');
         });
     });
     //]]>
-    </script>
+	</script>
+	
 	<script src="{{ BACKEND.'js/jquery.validate.js'}}"></script>
 
 	<script src="{{ BACKEND.'js/appjs/ui-tree.demo.js'}}"></script>
@@ -283,6 +292,20 @@ $customer = session()->get('customer');
 		
 	});
 	</script>
+
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.5/jquery.jqgrid.min.js"></script>
+<script>
+   $(function () {
+	   $("#Grid").ejGrid({
+		   toolbarSettings : { showToolbar : true, toolbarItems : ["search"] },
+		   //The datasource "window.gridData" is referred from 'http://js.syncfusion.com/demos/web/scripts/jsondata.min.js'
+		   dataSource : window.gridData,
+		   allowPaging : true,
+		   allowSearching : true,
+		   columns : ["OrderID", "EmployeeID", "CustomerID", "ShipCountry", "Freight"]
+	   });
+   });
+</script> --}}
 
 	<!-- ================== END PAGE LEVEL JS ================== -->
 </body>

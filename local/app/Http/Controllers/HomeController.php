@@ -40,6 +40,7 @@ class HomeController extends Controller
 
     public function dashboard(){
         $theme = Theme::uses('backend')->layout('layout');
+        
         $data=["name"=>''];
         return $theme->scope('index', $data)->render();
     }

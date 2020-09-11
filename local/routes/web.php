@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomeController@index')->name('home');
 
 Auth::routes(['register' => false]);
-
+Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 
 
 //admin route 
@@ -95,7 +95,13 @@ Route::group(['prefix'=>'customer'], function(){
     Route::post('/verifyOtp', 'Auth\RegisterController@verifyOtp')->name('verifyOtp');
     
 });
-Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
+
+Route::post('/saveCustomerProfileDetails', 'CustomerController@saveCustomerProfileDetails')->name('saveCustomerProfileDetails');
+Route::get('/addresses', 'CustomerController@addresses')->name('addresses');
+Route::post('/saveProfilePic', 'CustomerController@saveProfilePic')->name('saveProfilePic');
+
+
+
 // Route::get('protected', ['middleware' => ['auth'], function() {
 //     // this page requires that you be logged in AND be an Admin
     
