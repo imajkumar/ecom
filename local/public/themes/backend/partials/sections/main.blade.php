@@ -1,26 +1,17 @@
 <?php 
 
-    $customer = session()->get('customer'); 
-
-    if($customer)
-        {
-            if($customer->user_type == 0){
+if(Auth::user()->user_type == 0){
+            if(Auth::user()->profile == 1){
                 $profile = 'true';
             }else{
                 $profile = 'false';
             }
+        
+            $customerProfile = get_customer_and_address_by__user_id(Auth::user()->id);
 
-        }else{
-            if(Auth::user()->user_type == 0){
-                $profile = 'true';
-            }else{
-                $profile = 'false';
-            }
-        }
+        if($profile == 'false' || $customerProfile->status == 2 || $customerProfile->status == 0){
 
-        if($profile == 'true'){
-
-            $customerProfile = get_customer_and_address_by__user_id($customer->id);
+            
             
 ?>
 <!-- begin #content -->
@@ -64,12 +55,12 @@
                         </ol> --}}
                         <!-- end breadcrumb -->
                         <!-- begin page-header -->
-                        <h1 class="page-header form-layout">Profile <small>header small text goes here...</small></h1>
+                    <h1 class="page-header form-layout">Profile <small>{{($customerProfile->status == 0)? 'Pending':(($customerProfile->status == 2)? 'Rejected,':'')}} {{($customerProfile->remark)? 'Remark: '.$customerProfile->remark:''}}</small></h1>
                         <!-- end page-header -->
                         <!-- begin wizard-form -->
                     <form action="{{route('saveCustomerProfileDetails')}}" method="POST" id="saveCustomerProfileDetails" class="form-control-with-bg form-layout">
                             @csrf
-                        <input type="hidden" name="customer_id" value="{{$customer->id}}"/>
+                        <input type="hidden" name="customer_id" value="{{Auth::user()->id}}"/>
                             <!-- begin wizard -->
                             <div id="wizard">
                                 <!-- begin wizard-step -->
@@ -214,14 +205,14 @@
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">Phone Number <span class="required-star">* </span></label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input class="form-control" type="text" id="phone" name="phone" value="{{@$customer->mobile}}" readonly placeholder="Please enter phone number" data-parsley-required="true">
+                                                        <input class="form-control" type="text" id="phone" name="mobile" value="{{Auth::user()->mobile}}" {{(Auth::user()->mobile)? 'readonly':''}} placeholder="Please enter phone number" data-parsley-required="true">
                                                         </div>
                                                     </div>
                                                     
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">Email Address <span class="required-star">* </span></label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input class="form-control" type="email" id="email" name="email" value="{{@$customerProfile->email}}" placeholder="Please enter your email" data-parsley-required="true">
+                                                            <input class="form-control" type="email" id="email" name="email" value="{{Auth::user()->email}}" {{(Auth::user()->email)? 'readonly':''}} placeholder="Please enter your email" data-parsley-required="true">
                                                         </div>
                                                     </div>
                                                     
@@ -455,6 +446,6 @@
 {{-- </div> --}}
 <!-- end #content -->
 
-<?php }else{?>
-    <h1>Admin</h1>
+<?php }}else{?>
+    {{-- <h1>Admin</h1> --}}
 <?php }?>

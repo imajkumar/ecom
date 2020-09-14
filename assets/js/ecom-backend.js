@@ -1115,6 +1115,41 @@ $(document).ready(function() {
 
     });
 
+    $('#saveCustomerApproval').on('submit', function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: BASE_URL + '/saveCustomerApproval',
+            data: $(this).serialize(),
+
+            success: function(responce) {
+
+                if (responce['status'] == 'success') {
+
+                    toastr.success(responce['msg']);
+                    window.location.replace(responce['url']);
+
+                } else {
+
+                    toastr.warning(responce['msg']);
+
+                }
+            },
+            error: function(xhr, status, error) {
+
+                let errorHtml = '';
+                $.each(xhr.responseJSON.errors, function(key, item) {
+                    errorHtml += `<strong>${item}</strong></br>`;
+                });
+                toastr.error(errorHtml);
+
+            }
+
+        })
+
+    });
+
     $('#output').click(function() {
 
         $('#customerPic').trigger('click');
@@ -1123,7 +1158,7 @@ $(document).ready(function() {
     loadFile = function(event) {
         var reader = new FileReader();
         reader.onload = function() {
-            var output = document.getElementById('output');
+            var output = document.getElementsByClassName('outputPic');
             output.src = reader.result;
 
             $('#saveProfilePic').submit();
@@ -1166,4 +1201,143 @@ $(document).ready(function() {
             }
         });
     });
+
+
+
+    e.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: BASE_URL + '/saveCustomerApproval',
+        data: new FormData(this),
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(responce) {
+
+            if (responce['status'] == 'success') {
+
+                $('.outputPic').attr('src', responce['picPath']);
+                toastr.success(responce['msg']);
+
+
+            } else {
+
+                toastr.warning(responce['msg']);
+
+            }
+        },
+        error: function(xhr, status, error) {
+
+            let errorHtml = '';
+            $.each(xhr.responseJSON.errors, function(key, item) {
+                errorHtml += `<strong>${item}</strong></br>`;
+            });
+            toastr.error(errorHtml);
+
+        }
+    });
+});
+
+
+// Start code for item category----------------------------------------
+
+//var MaxInputs = 2;
+var InputsCategoryWrapper = $("#categoryAttrWrapper");
+var AddButtonCategory = $("#AddMoreAttrInCategory");
+var x = InputsCategoryWrapper.length;
+var FieldCount = 1;
+
+$(AddButtonCategory).click(function(e) {
+    FieldCount++;
+
+    $(InputsCategoryWrapper).append(`<div class="row form-layout">
+                <div class="form-group">
+                    <div class="m-b-3">
+                        <label class="" for="attribute">Attribute</label>
+                        <div class="">
+                            <select class="form-control" id="attribute" name="attribute[]" placeholder="Please select attribute">
+                                <option value="">Please select Attribute</option>
+                                
+                                
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="m-b-3">
+                        <label class="" for="is_required">Is required</label>
+                        <div class="">
+                            <select class="form-control" id="is_required" name="is_required[]">
+                                <option value="1">Yes</option>
+                                <option value="2">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="m-b-3">
+                        <label class="" for="is_unique">Is unique</label>
+                        <div class="">
+                            <select class="form-control" id="is_unique" name="is_unique[]">
+                                <option value="1">Yes</option>
+                                <option value="2">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="m-b-3">
+                        <label class="" for="is_comparable">Attribute to comparable</label>
+                        <div class="">
+                            <select class="form-control" id="is_comparable" name="is_comparable[]">
+                                <option value="1">Yes</option>
+                                <option value="2">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="m-b-3">
+                        <label class="" for="sku_count">SKU Count</label>
+                        <div class="">
+                            <input class="form-control" type="text" id="sku_count" name="sku_count[]" placeholder="Please enter sku count">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="m-b-3">
+                        <label class="" for="priority">Priority</label>
+                        <div class="">
+                            <input class="form-control" type="text" id="priority" name="priority[]" placeholder="Please enter priority">
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="removeCategoryclass">Remove</a>
+            </div>`);
+    x++;
+    return false;
+});
+$("body").on("click", ".removeCategoryclass", function(e) {
+    if (x > 1) {
+        $(this).parent().remove();
+
+        x--;
+
+    }
+    return false;
+})
+
+// End code for item category------------------------------------------
+
+$('#status').on('change', function() {
+
+    var statusVal = $(this).val();
+
+    if (statusVal == 2) {
+        $('#remarkField').show();
+    } else {
+        $('#remarkField').hide();
+    }
+
+
 });

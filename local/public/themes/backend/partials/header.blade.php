@@ -1,39 +1,34 @@
 <?php
 
-	$customer = session()->get('customer'); 
-	if($customer)
+	//$customer = session()->get('customer'); 
+	//pr(Auth::user());
+	if(Auth::user()->user_type == 0)
 		{
 			
-			if($customer->user_type == 0){
-				$userType = 'Customer';
+			$userType = 'Customer';
 
-				$customerdetail = get_custumer_by_user_id($customer->id);
-				if(!empty($customerdetail->profile_pic) )
-				{
-				
-				$profil_pic = asset('/'.ITEM_IMG_PATH.'/'.$customerdetail->profile_pic);
-				}else{
-					
-					$profil_pic = BACKEND.'img/user/user-4.jpg';
-				}
-
+			$customerdetail = get_custumer_by_user_id(Auth::user()->id);
+			if(!empty($customerdetail->profile_pic) )
+			{
+			
+			$profil_pic = asset('/'.ITEM_IMG_PATH.'/'.$customerdetail->profile_pic);
 			}else{
-				$userType = 'Admin';
+				
+				$profil_pic = BACKEND.'img/user/user-4.jpg';
 			}
+
 
 		}else{
-			if(Auth::user()->user_type == 0){
-				$userType = 'Customer';
-			}else{
-				$userType = 'Admin';
-			}
+
+			$userType = 'Admin';
+			$profile_pic = ' ';
 		}
 		
 		
 	
 		
 ?>
-?>
+
 <!-- begin custumer #page-container -->
 <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
 
@@ -122,9 +117,9 @@
 					</div>
 				</li><li class="dropdown navbar-user">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-					<img src="{{($customer)? $profil_pic:''}}" class="outputPic" alt="" /> 
+					<img src="{{$profil_pic ?? ''}}" class="outputPic" alt="" /> 
 						<span class="d-none d-md-inline">
-							{{ ($customer)? ucfirst($customer->name):ucfirst(Auth::user()->name)}}
+							{{ ucfirst(Auth::user()->name)}}
 						</span> <b class="caret"></b>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right">

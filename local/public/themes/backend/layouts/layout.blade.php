@@ -25,6 +25,8 @@
 
 </html>
 */
+
+//pr(Auth::user());
 $customer = session()->get('customer');
 // pr($customer);
 ?>
@@ -40,7 +42,8 @@ $customer = session()->get('customer');
 	<meta content="" name="author" />
 	<meta name="BASE_URL" content="{{ url('/') }}" />
 	
-	<meta name="UUID" content="{{ ($customer)? $customer->id:Auth::user()->id}}" />
+	{{-- <meta name="UUID" content="{{ ($customer)? $customer->id:Auth::user()->id}}" /> --}}
+	<meta name="UUID" content="{{ Auth::user()->id }}" />
 	
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -274,7 +277,7 @@ $customer = session()->get('customer');
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.js"></script>
 <script src="https://rawgit.com/wasikuss/select2-multi-checkboxes/select2-3.5.x/select2.multi-checkboxes.js"></script>
 
-
+<script src="{{ BACKEND.'js/demo/profile.demo.js'}}"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {

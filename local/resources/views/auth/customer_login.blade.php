@@ -7,6 +7,7 @@
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 	
 	<!-- ================== BEGIN BASE CSS STYLE ================== -->
 	<link href="{{BACKEND.'css/apple/app.min.css'}}" rel="stylesheet" />
@@ -52,9 +53,11 @@
 				<div class="login-content">
 					
                     <form method="post" class="margin-bottom-0" action="{{ route('sendOtp') }}" id="sendOtpForCustomer" >
-                    @csrf
+					@csrf
+					<div dir="auto" class="styled-Function styled-Function css-76zvg2" style="color: rgb(99, 115, 129); font-family: Roboto; font-size: 14px; font-weight: normal; line-height: 20px; margin-top: 4px; max-width: 80%; text-align: center;">Enter your 10-digit mobile number OR Email id to receive the verification code.</div>
+					
 						<div class="form-group m-b-15">
-							<input type="text" name="mobile" class="form-control form-control-lg" placeholder="Mobile number" required />
+							<input type="text" name="mobile" class="form-control form-control-lg" placeholder="Mobile number / Email id" required />
 						</div>
 						
 						{{-- <div class="checkbox checkbox-css m-b-30">
@@ -73,13 +76,17 @@
 						</p>
                     </form>
                     <form class="margin-bottom-0" action="{{ route('verifyOtp') }}" id="verifyOtp" method="post" style="display:none">
-                       <input type="hidden" name="mobile" id="mobileForVerify"/>
-                        @csrf
+					   
+						<input type="hidden" name="mobile" id="mobileForVerify"/>
+						@csrf
+						<div dir="auto" id="verifyOtpMsg" class="styled-Function styled-Function css-76zvg2" style="color: rgb(99, 115, 129); font-family: Roboto; font-size: 14px; font-weight: normal; line-height: 20px; margin-top: 4px; max-width: 80%; text-align: center;"></div>
+						<a href="javascript:void();" id="changeNumber" class="pull-left">Change</a>
                             <div class="form-group m-b-15">
                                 <input type="text" name="otp" class="form-control form-control-lg" placeholder="Please enter otp" required />
                             </div>
                             
-                            
+						
+                            <a href="javascript:void();" onclick="resendOtp()" class="pull-right">Resend OTP</a>
                             <div class="login-buttons">
                                 <button type="submit" class="btn btn-success btn-block btn-lg">Verify Otp</button>
                             </div>
@@ -260,8 +267,51 @@
 <script>
 	//start send otp for customer
 	BASE_URL = "{{URL::to('/')}}"; 
+	
 	//alert(BASE_URL);
     
+	$('#changeNumber').click(function(){
+		$('#sendOtpForCustomer').show();
+		$('#verifyOtp').css('display', 'none');
+	});
+
+	function resendOtp(){
+		
+		$.ajax({
+                type: 'POST',
+                url: BASE_URL + '/customer/resendOtp',
+                data: {
+					'_token': $('meta[name="csrf-token"]').attr('content'),
+				},
+
+                success: function(responce) {
+
+                    if (responce['status'] == 'success') {
+						toastr.success(responce['msg']);
+                        
+                        $('#mobileForVerify').val(responce['mobile']);
+                        
+
+                    } else {
+						toastr.warning(responce['msg']);
+                        
+
+                    }
+                },
+                error: function(xhr, status, error) {
+
+                    let errorHtml = '';
+                    $.each(xhr.responseJSON.errors, function(key, item) {
+                        errorHtml += `<strong>${item}</strong></br>`;
+                    });
+					toastr.error(errorHtml);
+					$('#sendOtpForCustomer').show();
+
+                }
+
+            
+		});
+	}
 
     //function sendOtpForCustomer() {
         $('#sendOtpForCustomer').on('submit', function(e) {
@@ -279,6 +329,7 @@
                     if (responce['status'] == 'success') {
 						$('#sendOtpForCustomer').hide();
                         toastr.success(responce['msg']);
+                        $('#verifyOtpMsg').html('Enter 6 digit verification code sent to '+responce['mobile']);
                         $('#mobileForVerify').val(responce['mobile']);
                         $('#verifyOtp').css('display', 'block');
 

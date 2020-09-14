@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Response;
 use Session;
 use File;
+use App\User;
 
 class UserController extends Controller
 {
@@ -44,6 +45,22 @@ class UserController extends Controller
         $brandLists = DB::table('tbl_brands')->get();
         //dd($bannerLists);
         return $theme->scope('admin.brand.brand_list', compact('brandLists'))->render();
+    }
+
+    public function itemCategories()
+    {
+        $theme = Theme::uses('backend')->layout('layout');
+        $brandLists = DB::table('tbl_brands')->get();
+        //dd($bannerLists);
+        return $theme->scope('admin.item_category_list', compact('brandLists'))->render();
+    }
+
+    public function addCategoryLayout()
+    {
+        $theme = Theme::uses('backend')->layout('layout');
+        $brandLists = DB::table('tbl_brands')->get();
+        //dd($bannerLists);
+        return $theme->scope('admin.item_category_add', compact('brandLists'))->render();
     }
 
     public function addBannerLayout()
@@ -871,8 +888,17 @@ class UserController extends Controller
     { 
         $theme = Theme::uses('backend')->layout('layout');
         $customer = DB::table('tbl_customers')->where('id', $id)->first();
-
-        return $theme->scope('admin.customer_edit', compact('customer'))->render();
+        echo $id;
+        $customerProfile = DB::table('tbl_customers')->where('tbl_customers.id', $id)
+        //->rightjoin('tbl_customers','tbl_customers.user_id','=','users.id')
+        ->rightjoin('tbl_addresses','tbl_addresses.customer_id','=','tbl_customers.id')
+        ->select('tbl_customers.*', 'tbl_customers.f_name as cutomer_fname', 'tbl_customers.l_name as cutomer_lname', 
+        'tbl_addresses.id as address_id',  'tbl_addresses.company_name', 'tbl_addresses.street_address', 'tbl_addresses.country',
+        'tbl_addresses.state','tbl_addresses.city','tbl_addresses.postal_code')
+        ->first();
+        
+        $user = DB::table('users')->where('id', $customerProfile->user_id)->first();
+        return $theme->scope('admin.customer_edit', compact('customer','customerProfile','user'))->render();
     }
 
     public function addAddress(Request $request)
@@ -1312,6 +1338,119 @@ class UserController extends Controller
 
 
                 break;
+        }
+    }
+
+    public function saveCustomerApproval(Request $request)
+    {
+        $this->validate($request, [
+            'f_name' => 'required|string|max:120',
+            'l_name' => 'required|string|max:120',
+            'email' => 'required|string|max:50',
+            'gender' => 'required',
+            'dob' => 'max:15',
+            'mobile' => 'required|integer|digits:10',
+            'street_address' => 'required|string',
+            'country' => 'required',
+            'state' => 'required',
+            'city' => 'required',
+            'postal_code' => 'required|integer',
+            
+        ], [
+            'f_name.required' => 'First name is required.',
+            'f_name.string' => 'First name should be string.',
+            'f_name.max' => 'First name should not be grater than 120 Character.',
+
+            'mobile.required' => 'Phone name is required.',
+            'mobile.integer' => 'Phone number should be number.',
+            'mobile.digit' => 'Phone should not be grater than 10 Character.',
+
+            'l_name.required' => 'Last name is required.',
+            'l_name.string' => 'Last name should be string.',
+            'l_name.max' => 'Last name should not be grater than 120 Character.',
+            'dob.max' => 'Date of birth should not be grater than 15 Character.',
+            
+            'gender.required' => 'Gender is required.',
+            'email.required' => 'Email is required.',
+            'email.string' => 'Email should be string.',
+            'email.max' => 'Email should not be grater than 50 Character.',
+
+            'street_address.required' => 'Street adrress is required.',
+            'street_address.string' => 'Street adrress should be string.',
+            
+            'postal_code.required' => 'Postal code is required.',
+            'postal_code.integer' => 'Postal code should be number.',
+            'country.required' => 'Country is required.',
+            'state.required' => 'State is required.',
+            'city.required' => 'City is required.',
+            
+        ]);
+        $query = 0;
+        $status = 'Pending';
+        $remark = '';
+            $profile = 0;
+            if($request->status == 1){
+                $status = 'Approved';
+                $profile = 1;
+            }
+            if($request->status == 2){
+                $status = 'Rejected';
+                $profile = 0;
+                $remark = $request->remark;
+            }
+        $customerData = DB::table('tbl_customers')->where('id', $request->customer_id)->update(
+            [
+            'f_name' => $request->f_name,
+            'l_name' => $request->l_name,
+            'email' => $request->email,
+            'gender' => $request->gender,
+            'dob' => $request->dob,
+            'phone' => $request->mobile,
+            'status' => $request->status,
+            'remark' => $remark,
+            'customer_type' => $request->customer_type,
+            
+        ]);
+        if ($customerData || !$customerData) {
+            $query = 1;
+        }
+        $customer = DB::table('tbl_customers')->where('id', $request->customer_id)->first();
+              
+        $addressData = DB::table('tbl_addresses')->where('customer_id', $customer->id)->update(
+           [
+                'f_name' => $request->f_name,
+                'l_name' => $request->l_name,
+                'customer_id' => $customer->id,
+                'address_user_id' => $customer->user_id,
+                'company_name' => $request->company_name,
+                'street_address' => $request->street_address,
+                'country' => $request->country,
+                'state' => $request->state,
+                'city' => $request->city,
+                'postal_code' => $request->postal_code,
+           
+             ]);
+         
+        if ($addressData || !$addressData) {
+            
+            $query = 1;
+        }
+        
+        if ($query ==1) {
+
+            
+
+            
+
+            $user = User::find($customer->user_id);
+            $user->profile = $profile;
+            $user->mobile = $request->mobile;
+            $user->email = $request->email;
+            $user->save();
+
+            return Response::json(array('status' => 'success', 'msg' => 'Customer '.$status, 'url' => route('customerListLayout')));
+        } else {
+            return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again', 'url' => route('editCustomerLayout', $request->customer_id)));
         }
     }
 }

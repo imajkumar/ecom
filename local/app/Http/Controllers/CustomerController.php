@@ -10,18 +10,20 @@ use session;
 use Theme;
 use File;
 use App\User;
+use Auth;
 
 class CustomerController extends Controller
 {
    public function saveCustomerProfileDetails(Request $request)
     {
+        
         $this->validate($request, [
             'f_name' => 'required|string|max:120',
             'l_name' => 'required|string|max:120',
             'email' => 'required|string|max:50',
             'gender' => 'required',
             'dob' => 'max:15',
-            'phone' => 'required|integer|digits:10',
+            'mobile' => 'required|integer|digits:10',
             'street_address' => 'required|string',
             'country' => 'required',
             'state' => 'required',
@@ -33,9 +35,9 @@ class CustomerController extends Controller
             'f_name.string' => 'First name should be string.',
             'f_name.max' => 'First name should not be grater than 120 Character.',
 
-            'phone.required' => 'Phone name is required.',
-            'phone.integer' => 'Phone number should be number.',
-            'phone.digit' => 'Phone should not be grater than 10 Character.',
+            'mobile.required' => 'Phone name is required.',
+            'mobile.integer' => 'Phone number should be number.',
+            'mobile.digit' => 'Phone should not be grater than 10 Character.',
 
             'l_name.required' => 'Last name is required.',
             'l_name.string' => 'Last name should be string.',
@@ -67,7 +69,7 @@ class CustomerController extends Controller
             'email' => $request->email,
             'gender' => $request->gender,
             'dob' => $request->dob,
-            'phone' => $request->phone,
+            'phone' => $request->mobile,
             'customer_type' => $request->customer_type,
             
         ]);
@@ -103,11 +105,14 @@ class CustomerController extends Controller
         if ($query ==1) {
 
             $user = User::find($request->customer_id);
-            $user->profile = 1;
+            $user->profile = 0;
+            $user->mobile = $request->mobile;
+            $user->name = $request->f_name.' '.$request->l_name;
             $user->save();
 
             $customer = session()->get('customer'); 
-            $customer->profile = 1;
+            $customer->profile = 0;
+            $customer->mobile = $request->mobile;
             $customer->save();
 
             return Response::json(array('status' => 'success', 'msg' => 'Profile save successfully.', 'url' => route('addresses')));
@@ -164,6 +169,15 @@ class CustomerController extends Controller
                 return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again'));
             }
         }
+    }
+
+    public function customerProfile(Request $request)
+    {
+        $theme = Theme::uses('backend')->layout('layout');
+        $customer = get_customer_and_address_by__user_id(Auth::user()->id);
+
+        return $theme->scope('admin.customer_profile', compact('customer'))->render();
+       
     }
 
 }

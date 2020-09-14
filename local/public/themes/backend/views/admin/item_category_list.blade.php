@@ -5,12 +5,12 @@
     <ol class="breadcrumb float-xl-right">
         <li class="breadcrumb-item"><a href="javascript:;">Dashboar</a></li>
         {{-- <li class="breadcrumb-item"><a href="javascript:;">Settings</a></li> --}}
-        <li class="breadcrumb-item active">Customers</li>
+        <li class="breadcrumb-item active">Categories</li>
     </ol>
     <!-- end breadcrumb -->
     <!-- begin page-header -->
     
-    <h1 class="page-header">CUSTOMER <small>LIST</small></h1>
+    <h1 class="page-header">Category <small>LIST</small></h1>
 
     <!-- end page-header -->
 
@@ -22,9 +22,9 @@
             
             <div class="panel panel-inverse" data-sortable-id="tree-view-1">
                 <div class="panel-heading">
-                    <h4 class="panel-title">CUSTOMERS</h4>
+                    <h4 class="panel-title">CATEGORIES</h4>
                     <div class="panel-heading-btn">
-                        <a class="btn btn-primary pull-right" href="{{route('addNewCustomerLayout')}}" style="background-color:#0f0f0f;border: none;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle"></i>Add</a>
+                        <a class="btn btn-primary pull-right" href="{{route('addCategoryLayout')}}" style="background-color:#0f0f0f;border: none;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle"></i>Add</a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
@@ -40,7 +40,7 @@
                         
                         
                         
-                            <table id="data-table-default" class="table table-striped table-bordered table-td-valign-middle">
+                            {{-- <table id="data-table-default" class="table table-striped table-bordered table-td-valign-middle">
                                 <thead>
                                     <tr>
                                         <th width="1%">Id</th>
@@ -50,7 +50,6 @@
                                         <th class="text-nowrap">Gender</th>
                                         <th class="text-nowrap">Phone</th>
                                         <th class="text-nowrap">Date of birth</th>
-                                        <th class="text-nowrap">Status</th>
                                         <th class="text-nowrap">Action</th>
                                         
                                     </tr>
@@ -65,23 +64,10 @@
                                         <td>{{$customer->phone}}</td>
                                         <td>{{$customer->dob}}</td>
                                         <td>
-                                            @if($customer->status == 1)
-                                            <span class="badge badge-md badge-success">Approved</span>
-                                            @elseif($customer->status == 0)
-                                            <span class="badge badge-md badge-danger">Pending</span>
-                                            @else
-                                            <span class="badge badge-md badge-danger">Rejected</span>
-                                            @endif
-                                        </td>
-                                        <td>
                                         <a href="{{route('editCustomerLayout', $customer->id)}}" class="btn btn-primary"><i class="far fa-lg fa-fw m-r-10 fa-edit"></i>Edit</a>
-                                        {{-- <a href="{{route('addressListLayout', $customer->id)}}" class="btn btn-primary"><i class="fas fa-lg fa-fw m-r-10 fa-address-book"></i>Address</a> --}}
+                                        <a href="{{route('addressListLayout', $customer->id)}}" class="btn btn-primary"><i class="fas fa-lg fa-fw m-r-10 fa-address-book"></i>Address</a>
 
-                                            {{-- <form method="post" action="{{route('addAddress')}}" class="pull-right" id="addAddress">
-                                                @csrf()
-                                               <input type="hidden" name="customer_id" value="{{$customer->id}}"/>
-                                               <input class="btn btn-info con" type="submit" value="Add address"/>
-                                           </form> --}}
+                                           
                                             <form method="post" action="{{route('deleteCustomer')}}" class="pull-right" id="deleteCustomer">
                                                 @csrf()
                                                <input type="hidden" name="customer_id" value="{{$customer->id}}"/>
@@ -92,7 +78,7 @@
                                     </tr>
                                     @endforeach
                                 </tbody>
-                            </table>
+                            </table> --}}
 
                     </div>
                 <!-- end col-8 -->

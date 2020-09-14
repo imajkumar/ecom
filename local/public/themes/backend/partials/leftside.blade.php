@@ -1,10 +1,10 @@
 
 <?php 
-	$customer = session()->get('customer'); 
-	if($customer){
-		$customerdetail = get_custumer_by_user_id($customer->id);
+	// $customer = session()->get('customer'); 
+	
+	if(Auth::user()->user_type == 0){
+		$customerdetail = get_custumer_by_user_id(Auth::user()->id);
 		
-		//if(!empty($customerdetail->profile_pic) && file_exists(asset('/'.ITEM_IMG_PATH.'/'.$customerdetail->profile_pic)))
 		if(!empty($customerdetail->profile_pic) )
 		{
 			
@@ -73,21 +73,77 @@
 					
 					
 					<li class="active">
-						<a href="{{route('dashboard')}}">
+						<a href="{{route('customerProfile')}}">
 							
 							<i class="icon-user"></i>
-							<span>PROFILE </span>
+							<span>MY PROFILE </span>
 						</a>
 						
 					</li>
 
 		{{-- Start code for menu show when pfofile is completed --}}
 					<?php 
-					//echo session()->get('customer.profile');
-					//pr($customer);
-						if($customer->profile == 1)
+					
+						if(Auth::user()->profile == 1)
 						{
 					?>
+					<li class="has-sub">
+						<a href="javascript:;">
+							<b class="caret"></b>
+							<i class="icon-graph"></i>
+							<span>MY ORDERS </span>
+						</a>
+						<ul class="sub-menu">
+							
+							<li><a href="javascript:;"> Approved</a></li>
+							<li><a href="javascript:;"> Pending</a></li>
+							<li><a href="javascript:;"> Rejected</a></li>
+							<li><a href="javascript:;"> Cancelled</a></li>
+							
+							
+						</ul>
+					</li>
+					<li class="has-sub">
+						<a href="javascript:;">
+							<b class="caret"></b>
+							<i class="icon-graph"></i>
+							<span>MY RETURN</span>
+						</a>
+						<ul class="sub-menu">
+							
+							<li><a href="javascript:;"> Approved</a></li>
+							<li><a href="javascript:;"> Pending</a></li>
+							<li><a href="javascript:;"> Rejected</a></li>
+							<li><a href="javascript:;"> Cancelled</a></li>
+							
+							
+						</ul>
+					</li>
+
+					<li class="has-sub">
+						<a href="javascript:;">
+							
+							<i class="icon-graph"></i>
+							<span>TERMS USE</span>
+						</a>
+						
+					</li>
+					<li class="has-sub">
+						<a href="javascript:;">
+							
+							<i class="icon-graph"></i>
+							<span>POLICIES</span>
+						</a>
+						
+					</li>
+					<li class="has-sub">
+						<a href="javascript:;">
+							
+							<i class="icon-graph"></i>
+							<span>SUPPORT & HELP</span>
+						</a>
+						
+					</li>
 
 					<li class="has-sub">
 					<a href="{{route('addresses')}}">
@@ -98,34 +154,10 @@
 						
 					</li>
 
-					<li class="has-sub">
-						<a href="javascript:;">
-							<b class="caret"></b>
-							<i class="icon-graph"></i>
-							<span>ORDERS </span>
-						</a>
-						<ul class="sub-menu">
-							
-							<li><a href="javascript:;"> Orders</a></li>
-							
-							
-						</ul>
-					</li>
 					
 					
-					<li class="has-sub">
-						<a href="javascript:;">
-							<b class="caret"></b>
-							<i class="icon-graph"></i>
-							<span>ORDERS </span>
-						</a>
-						<ul class="sub-menu">
-							
-							<li><a href="javascript:;"> Orders</a></li>
-							
-							
-						</ul>
-					</li>
+					
+					
 
 					<?php
 
@@ -149,7 +181,8 @@
 <?php } else{?>
 
 
-		<!-- begin admin #sidebar -->
+<!--------------------------- begin Admin #sidebar --------------------------------------->
+
 <div id="sidebar" class="sidebar">
 	<!-- begin sidebar scrollbar -->
 	<div data-scrollbar="true" data-height="100%">
@@ -159,7 +192,7 @@
 				<a href="javascript:;" data-toggle="nav-profile">
 					<div class="cover with-shadow"></div>
 					<div class="image">
-						<img src="../assets/img/user/user-13.jpg" alt="" />
+						<img src="" alt="" />
 					</div>
 					
 				</a>
@@ -218,6 +251,7 @@
 				</a>
 				<ul class="sub-menu">
 					
+					<li><a href="{{route('itemCategories')}}">Item Category</a></li>
 					<li><a href="{{route('masterSettingsLayout')}}">Master Setup</a></li>
 					<li><a href="{{route('itemListLayout')}}">Item Master</a></li>
 					

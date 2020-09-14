@@ -18,6 +18,12 @@ Route::get('/', 'HomeController@index')->name('home');
 Auth::routes(['register' => false]);
 Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 
+Route::get('/logout', function(){
+    Auth::logout();
+        session()->forget('customer');
+        return redirect('/');
+});
+
 
 //admin route 
 Route::get('/master-settings', 'UserController@masterSettingsLayout')->name('masterSettingsLayout');
@@ -51,6 +57,10 @@ Route::get('/customers/addresses/edit/{id}', 'UserController@editAddressLayout')
 Route::post('/updateAddress', 'UserController@updateAddress')->name('updateAddress');
 Route::post('/addAddress', 'UserController@addAddress')->name('addAddress');
 
+Route::get('/itemCategories', 'UserController@itemCategories')->name('itemCategories');
+Route::get('/add-categoryLayout', 'UserController@addCategoryLayout')->name('addCategoryLayout');
+Route::post('/addCategoryLayout', 'UserController@addCategory')->name('addCategory');
+
 Route::get('/add-new-customer', 'UserController@addNewCustomerLayout')->name('addNewCustomerLayout'); 
 Route::get('/attributesLayout', 'UserController@attributesLayout')->name('attributesLayout'); 
 Route::get('/addAttributeLayout', 'UserController@addAttributeLayout')->name('addAttributeLayout'); 
@@ -67,6 +77,7 @@ Route::post('/updateAttributeFamily', 'UserController@updateAttributeFamily')->n
 Route::post('/add-new-customer', 'UserController@addNewCustomer')->name('addNewCustomer'); 
 Route::get('/edit-customer/{id}', 'UserController@editCustomerLayout')->name('editCustomerLayout'); 
 Route::post('/update-customer', 'UserController@updateCustomer')->name('updateCustomer'); 
+Route::post('/saveCustomerApproval', 'UserController@saveCustomerApproval')->name('saveCustomerApproval'); 
 Route::post('/delete-customer', 'UserController@deleteCustomer')->name('deleteCustomer'); 
 
 Route::get('/banners', 'UserController@bannerListLayout')->name('bannerListLayout'); 
@@ -92,6 +103,7 @@ Route::get('/delete-brand/{id}', 'UserController@deleteBrand')->name('deleteBran
 Route::group(['prefix'=>'customer'], function(){
     Route::get('login', 'HomeController@showCustomerLoginForm')->name('showCustomerLoginForm');
     Route::post('/sendOtp', 'Auth\RegisterController@sendOtp')->name('sendOtp');
+    Route::post('/resendOtp', 'Auth\RegisterController@resendOtp')->name('resendOtp');
     Route::post('/verifyOtp', 'Auth\RegisterController@verifyOtp')->name('verifyOtp');
     
 });
@@ -99,6 +111,7 @@ Route::group(['prefix'=>'customer'], function(){
 Route::post('/saveCustomerProfileDetails', 'CustomerController@saveCustomerProfileDetails')->name('saveCustomerProfileDetails');
 Route::get('/addresses', 'CustomerController@addresses')->name('addresses');
 Route::post('/saveProfilePic', 'CustomerController@saveProfilePic')->name('saveProfilePic');
+Route::get('/customer-profile', 'CustomerController@customerProfile')->name('customerProfile');
 
 
 

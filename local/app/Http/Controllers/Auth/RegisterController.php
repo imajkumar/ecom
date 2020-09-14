@@ -76,25 +76,99 @@ class RegisterController extends Controller
 
     public function sendOtp(Request $request){
         //echo "<pre>";print_r($request->all());exit;
-        $this->validate($request, [
-            'mobile' => 'required|integer|digits:10',
-        ]);
         $otp = 123456;
-        
-        $customer = User:: updateOrCreate([
-            'mobile' => $request->mobile
-            
-        ],[
-            'mobile' => $request->mobile,
-            'otp' => $otp
-        ]);
+        if (filter_var($request->mobile, FILTER_VALIDATE_EMAIL) !== false) {
+            $this->validate($request, [
+                'mobile' => 'email',
+            ]);
+            $customer = User:: updateOrCreate([
+                'email' => $request->mobile
+                
+            ],[
+                'email' => $request->mobile,
+                'otp' => $otp
+            ]);
+    
+            if($customer){
+                $request->session()->put('customer', $customer);
+                return Response::json(array('status' => 'success', 'msg' => 'OTP send to your email successfully.','mobile' =>$request->mobile));
+            }else{
+                return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again.'));
+            }
 
-        if($customer){
-            $request->session()->put('customer', $customer);
-            return Response::json(array('status' => 'success', 'msg' => 'OTP send to your mobile successfully.','mobile' =>$request->mobile));
         }else{
-            return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again.'));
+
+            $this->validate($request, [
+                'mobile' => 'required|integer|digits:10',
+            ]);
+            $customer = User:: updateOrCreate([
+                'mobile' => $request->mobile
+                
+            ],[
+                'mobile' => $request->mobile,
+                'otp' => $otp
+            ]);
+    
+            if($customer){
+                $request->session()->put('customer', $customer);
+                return Response::json(array('status' => 'success', 'msg' => 'OTP send to your mobile successfully.','mobile' =>$request->mobile));
+            }else{
+                return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again.'));
+            }
         }
+       
+        
+       
+        
+        
+    }
+
+    public function resendOtp(Request $request){
+        $customer = session()->get('customer');
+       $otp = 123456;
+        
+       $otp = 123456;
+        if (filter_var($customer->mobile, FILTER_VALIDATE_EMAIL) !== false) {
+            
+            $customer = User:: updateOrCreate([
+                'email' => $customer->mobile
+                
+            ],[
+                'email' => $customer->mobile,
+                'otp' => $otp
+            ]);
+    
+            if($customer){
+
+                $customer = session()->get('customer'); 
+                $customer->otp = $otp;
+                $customer->save();
+                return Response::json(array('status' => 'success', 'msg' => 'OTP Resend to your email successfully.','mobile' =>$customer->mobile));
+            }else{
+                return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again.'));
+            }
+
+        }else{
+
+            
+            $customer = User:: updateOrCreate([
+                'mobile' => $request->mobile
+                
+            ],[
+                'mobile' => $request->mobile,
+                'otp' => $otp
+            ]);
+    
+            if($customer){
+                $customer = session()->get('customer'); 
+                $customer->otp = $otp;
+                $customer->save();
+                return Response::json(array('status' => 'success', 'msg' => 'OTP Resend to your mobile successfully.','mobile' =>$customer->mobile));
+            }else{
+                return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again.'));
+            }
+        }
+       
         
         
     }
@@ -104,20 +178,17 @@ class RegisterController extends Controller
         $this->validate($request, [
             'otp' => 'required|integer',
         ]);
-        //$credentials = $request->only($request->mobile, $request->otp);
-        //$authSuccess = Auth::attempt(['mobile'=> $request->mobile,'otp' => $request->otp], $request->has('remember'));
+        
+        if(filter_var($request->mobile, FILTER_VALIDATE_EMAIL) !== false){
+            $field = 'email';
+        }else{
+            $field = 'mobile';
+        }
 
-        // if($authSuccess) {
-        //     $request->session()->regenerate();
-        //     return response(['success' => true], Response::HTTP_OK);
-        // }
-
-            $customer = User::where('mobile', $request->mobile)->where('otp', $request->otp)->first();
+        $customer = User::where($field, $request->mobile)->where('otp', $request->otp)->first();
         if ($customer)
         { 
-           
-            $request->session()->regenerate();
-            //return redirect()->intended(route('dashboard'));
+            Auth::login($customer);
             return Response::json(array('status' => 'success', 'msg' => 'You are login successfull.', 'url' => route('dashboard')));
             
         }else{
