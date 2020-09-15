@@ -1082,12 +1082,18 @@ $(document).ready(function() {
 
     $('#saveCustomerProfileDetails').on('submit', function(e) {
         e.preventDefault();
-
+        $.ajaxSetup({
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+        });
         $.ajax({
             type: 'POST',
             url: BASE_URL + '/saveCustomerProfileDetails',
-            data: $(this).serialize(),
-            dataType: 'json',
+            //data: $(this).serialize(),
+            data: new FormData(this),
+            //dataType: 'json',
+            contentType: false,
+            //cache: false,
+            processData: false,
 
             success: function(responce) {
 
@@ -1342,3 +1348,53 @@ $('#status').on('change', function() {
 
 
 });
+
+
+// Start code for Team----------------------------------------
+
+//var MaxInputs = 2;
+var TeamWrapper = $("#teamWrapper");
+var AddMoreTeam = $("#AddMoreTeam");
+var x = TeamWrapper.length;
+var FieldCount = 1;
+
+$(AddMoreTeam).click(function(e) {
+    FieldCount++;
+
+    $(TeamWrapper).append(`<div id="removeTeamParent">
+                    <div class="form-group row m-b-10">
+                            <label class="col-lg-3 text-lg-right col-form-label">Name</label>
+                            <div class="col-lg-9 col-xl-6">
+                            <input type="text" name="team_name[]" placeholder="Please enter name"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row m-b-10">
+                        <label class="col-lg-3 text-lg-right col-form-label">Mobile number</label>
+                        <div class="col-lg-9 col-xl-6">
+                        <input type="text" name="team_mobile[]" placeholder="Please enter mobile number"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row m-b-10">
+                        <label class="col-lg-3 text-lg-right col-form-label">Email id</label>
+                        <div class="col-lg-9 col-xl-6">
+                            <input type="text" name="team_email[]" placeholder="Please enter email id"/>
+                        </div>
+                    </div>
+                    <a href="#" class="removeTeamClass">Remove</a>
+               </div>`);
+    x++;
+    return false;
+});
+$("body").on("click", ".removeTeamClass", function(e) {
+    if (x > 1) {
+        $(this).parent().remove();
+
+        x--;
+
+    }
+    return false;
+})
+
+// End code for team------------------------------------------
