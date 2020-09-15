@@ -4,10 +4,12 @@ if(Auth::user()->user_type == 0){
             if(Auth::user()->profile == 1){
                 $profile = 'true';
             }else{
+               
                 $profile = 'false';
             }
         
             $customerProfile = get_customer_and_address_by__user_id(Auth::user()->id);
+           
 
         if($profile == 'false' || $customerProfile->status == 2 || $customerProfile->status == 0){
 
@@ -55,7 +57,7 @@ if(Auth::user()->user_type == 0){
                         </ol> --}}
                         <!-- end breadcrumb -->
                         <!-- begin page-header -->
-                    <h1 class="page-header form-layout">Profile <small>{{($customerProfile->status == 0)? 'Pending':(($customerProfile->status == 2)? 'Rejected,':'')}} {{($customerProfile->remark)? 'Remark: '.$customerProfile->remark:''}}</small></h1>
+                    <h1 class="page-header form-layout">Profile <small>{{(@$customerProfile->status == 0)? 'Pending':((@$customerProfile->status == 2)? 'Rejected,':'')}} {{(@$customerProfile->remark)? 'Remark: '.@$customerProfile->remark:''}}</small></h1>
                         <!-- end page-header -->
                         <!-- begin wizard-form -->
                     <form action="{{route('saveCustomerProfileDetails')}}" method="POST" id="saveCustomerProfileDetails" class="form-control-with-bg form-layout">

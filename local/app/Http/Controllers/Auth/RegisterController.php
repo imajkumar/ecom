@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Response;
+use App\Mail\CustomerRegistrationOtpMail;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -88,8 +90,11 @@ class RegisterController extends Controller
                 'email' => $request->mobile,
                 'otp' => $otp
             ]);
-    
+            
+           
             if($customer){
+                
+                Mail::to($customer->email)->send(new CustomerRegistrationOtpMail($customer));
                 $request->session()->put('customer', $customer);
                 return Response::json(array('status' => 'success', 'msg' => 'OTP send to your email successfully.','mobile' =>$request->mobile));
             }else{
@@ -137,8 +142,10 @@ class RegisterController extends Controller
                 'email' => $customer->mobile,
                 'otp' => $otp
             ]);
-    
+            
+            
             if($customer){
+                Mail::to($customer->email)->send(new CustomerRegistrationOtpMail($customer));
 
                 $customer = session()->get('customer'); 
                 $customer->otp = $otp;

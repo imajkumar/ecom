@@ -4,11 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#ef8813" />
-
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap" rel="stylesheet">
 <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-<link rel="icon" href="../images/favicon.png" type="image/png" sizes="50x50">
-
 </head>
 <body style="background:#f2f2f2">
 <table style="background: #333333; padding: 5px; width: 800px; display: table; margin:60px auto">
@@ -24,8 +21,11 @@
 <tr>
 <td colspan="4" style="border-top: 1px solid #d8d8d8; font-family: arial">
 <div style="margin-top:10px;"<strong style="font-size: 12px">Dear {{ucfirst($fname.' '.$lname)}},</strong>
-<p style="font-size: 16px; margin: 15px 0px 10px 0px;"><strong>Your registration has been successfully approved by out team.</strong></p>
-<p style="font-size: 16px; margin: 15px 0px 10px 0px;">Click here for login: <strong><a href="{{url('/customer/login')}}" style="color:#00abed">Link</a></strong></p>
+<p style="font-size: 25px; line-height:1.2; margin: 15px 0px 0px 0px;"><strong>Sorry your registration has been rejected by out team <br />
+<span style="font-size: 16px">for following reason: </span></strong></p>
+
+<p style="font-size: 16px; padding: 10px; font-size:14px; line-height:1.7; font-weight:300; border:2px dotted #f1f1f1">{{$remark}}</p>
+
 
 
 </tr>

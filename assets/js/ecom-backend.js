@@ -1087,6 +1087,7 @@ $(document).ready(function() {
             type: 'POST',
             url: BASE_URL + '/saveCustomerProfileDetails',
             data: $(this).serialize(),
+            dataType: 'json',
 
             success: function(responce) {
 

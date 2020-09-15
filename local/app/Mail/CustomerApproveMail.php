@@ -19,6 +19,7 @@ class CustomerApproveMail extends Mailable
     public function __construct($details)
     {
         $this->details = $details;
+        // pr($this->details);
     }
 
     /**
@@ -28,7 +29,12 @@ class CustomerApproveMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Mail from ItSolutionStuff.com')
-        ->view('emails.CustomerApproveMail');
+        // return $this->subject('Mail from ItSolutionStuff.com')
+        // ->view('emails.CustomerApproveMail');
+        return $this->view('emails.CustomerApproveMail')
+                    ->with([
+                        'fname' => $this->details['f_name'],
+                        'lname' => $this->details['l_name'],
+                    ]);
     }
 }

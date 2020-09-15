@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Theme;
 use Cart;
+use Auth;
 class HomeController extends Controller
 {
     /**
@@ -42,7 +43,10 @@ class HomeController extends Controller
         $theme = Theme::uses('backend')->layout('layout');
         
         $data=["name"=>''];
-        return $theme->scope('index', $data)->render();
+       
+            return $theme->scope('index', $data)->render();
+       
+        
     }
 
     

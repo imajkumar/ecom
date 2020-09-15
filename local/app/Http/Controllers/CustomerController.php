@@ -60,6 +60,7 @@ class CustomerController extends Controller
             
         ]);
         $query = 0;
+        $status = 0;
         $customerData = DB::table('tbl_customers')->updateOrInsert(
             [
                 'user_id' => $request->customer_id,
@@ -70,6 +71,7 @@ class CustomerController extends Controller
             'gender' => $request->gender,
             'dob' => $request->dob,
             'phone' => $request->mobile,
+            'status' => $status,
             'customer_type' => $request->customer_type,
             
         ]);
@@ -108,14 +110,15 @@ class CustomerController extends Controller
             $user->profile = 0;
             $user->mobile = $request->mobile;
             $user->name = $request->f_name.' '.$request->l_name;
+            $user->email = $request->email;
             $user->save();
 
             $customer = session()->get('customer'); 
             $customer->profile = 0;
             $customer->mobile = $request->mobile;
             $customer->save();
-
-            return Response::json(array('status' => 'success', 'msg' => 'Profile save successfully.', 'url' => route('addresses')));
+            
+            return Response::json(array('status' => 'success', 'msg' => 'Profile save successfully.', 'url' => route('customerProfile')));
         } else {
             return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again'));
         }
@@ -174,8 +177,11 @@ class CustomerController extends Controller
     public function customerProfile(Request $request)
     {
         $theme = Theme::uses('backend')->layout('layout');
+        
         $customer = get_customer_and_address_by__user_id(Auth::user()->id);
-
+        // if(Auth::user()->profile == 0){
+        //     return redirect()->route('dashboard');
+        // }
         return $theme->scope('admin.customer_profile', compact('customer'))->render();
        
     }

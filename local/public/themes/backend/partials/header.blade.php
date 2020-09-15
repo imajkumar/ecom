@@ -4,7 +4,10 @@
 	//pr(Auth::user());
 	if(Auth::user()->user_type == 0)
 		{
-			
+			// if(Auth::user()->profile == 0){
+			// 	\App\Http\Controllers\HomeController::dashboard();
+			// 	//return redirect()->route('dashboard');
+			// }
 			$userType = 'Customer';
 
 			$customerdetail = get_custumer_by_user_id(Auth::user()->id);

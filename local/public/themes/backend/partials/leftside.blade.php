@@ -86,6 +86,7 @@
 					
 						if(Auth::user()->profile == 1)
 						{
+
 					?>
 					<li class="has-sub">
 						<a href="javascript:;">
@@ -162,7 +163,6 @@
 					<?php
 
 						}
-
 					?>
 		{{-- Start code for menu show when pfofile is completed --}}
 

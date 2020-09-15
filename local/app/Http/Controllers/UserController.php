@@ -11,6 +11,9 @@ use Response;
 use Session;
 use File;
 use App\User;
+use App\Mail\CustomerApproveMail;
+use App\Mail\CustomerRejectedMail;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -642,7 +645,7 @@ class UserController extends Controller
     public function customerListLayout()
     { 
         $theme = Theme::uses('backend')->layout('layout');
-        $dataObjArr = DB::table('tbl_customers')->orderBy('id','DESC')->get();
+        $dataObjArr = DB::table('tbl_customers')->orderBy('created_at','DESC')->get();
 
         return $theme->scope('admin.customer_list', compact('dataObjArr'))->render();
     }
@@ -1447,7 +1450,15 @@ class UserController extends Controller
             $user->mobile = $request->mobile;
             $user->email = $request->email;
             $user->save();
+            
+            if($request->status == 1){
 
+                Mail::to($request->email)->send(new CustomerApproveMail($request->all()));
+            }
+            if($request->status == 2){
+
+                Mail::to($request->email)->send(new CustomerRejectedMail($request->all()));
+            }
             return Response::json(array('status' => 'success', 'msg' => 'Customer '.$status, 'url' => route('customerListLayout')));
         } else {
             return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again', 'url' => route('editCustomerLayout', $request->customer_id)));

@@ -16,9 +16,10 @@ class CustomerRejectedMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($details)
     {
-        //
+        $this->details = $details;
+        // pr($this->details);
     }
 
     /**
@@ -28,6 +29,12 @@ class CustomerRejectedMail extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->view('emails.CustomerRejectedMail')
+                    ->with([
+                        'fname' => $this->details['f_name'],
+                        'lname' => $this->details['l_name'],
+                        'status' => $this->details['status'],
+                        'remark' => $this->details['remark'],
+                    ]);
     }
 }

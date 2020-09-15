@@ -78,6 +78,7 @@ function get_categorys_by_g_id($g_id)
 
 function get_customer_and_address_by__user_id($user_id)
 {
+    
     $customerProfile = DB::table('tbl_customers')->where('user_id', $user_id)
     ->rightjoin('tbl_addresses','tbl_addresses.customer_id','=','tbl_customers.id')
     ->select('tbl_customers.*', 'tbl_customers.f_name as cutomer_fname', 'tbl_customers.l_name as cutomer_lname', 'tbl_addresses.*')

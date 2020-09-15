@@ -73,7 +73,7 @@
                                         <a href="#step-3">
                                             <span class="number">3</span> 
                                             <span class="info">
-                                                ECheck Customer address
+                                                Check Customer address
                                                 <small>Enter your permanent address</small>
                                             </span>
                                         </a>

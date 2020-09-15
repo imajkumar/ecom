@@ -23,9 +23,9 @@
 </tr>
 <tr>
 <td colspan="4" style="border-top: 1px solid #d8d8d8; font-family: arial">
-<div style="margin-top:10px;"<strong style="font-size: 12px">Dear {{ucfirst($fname.' '.$lname)}},</strong>
-<p style="font-size: 16px; margin: 15px 0px 10px 0px;"><strong>Your registration has been successfully approved by out team.</strong></p>
-<p style="font-size: 16px; margin: 15px 0px 10px 0px;">Click here for login: <strong><a href="{{url('/customer/login')}}" style="color:#00abed">Link</a></strong></p>
+<div style="margin-top:10px;"<strong style="font-size: 12px">Dear Customer,</strong>
+<p style="font-size: 16px; margin: 15px 0px 10px 0px;"><strong>{{$otp}} Is Your registration OTP.</strong></p>
+
 
 
 </tr>
