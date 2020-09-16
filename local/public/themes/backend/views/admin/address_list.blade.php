@@ -4,13 +4,14 @@
     <!-- begin breadcrumb -->
     <ol class="breadcrumb float-xl-right">
         <li class="breadcrumb-item"><a href="javascript:;">Dashboar</a></li>
-        <li class="breadcrumb-item"><a href="javascript:;">Customers</a></li>
+        {{-- <li class="breadcrumb-item"><a href="javascript:;">Customers</a></li> --}}
         <li class="breadcrumb-item active">Address</li>
     </ol>
     <!-- end breadcrumb -->
     <!-- begin page-header -->
     
-<h1 class="page-header">{{ucfirst($customer->f_name.' '.$customer->l_name)}} ADDRESS <small>LIST</small></h1>
+{{-- <h1 class="page-header">{{ucfirst($customer->cutomer_fname.' '.$customer->cutomer_lname)}} ADDRESS <small>LIST</small></h1> --}}
+<h1 class="page-header">ADDRESS <small>LIST</small></h1>
 
     <!-- end page-header -->
 
@@ -22,7 +23,8 @@
             
             <div class="panel panel-inverse" data-sortable-id="tree-view-1">
                 <div class="panel-heading">
-                    <h4 class="panel-title">CUSTOMERS</h4>
+                    <h4 class="panel-title">ADDRESSES</h4>
+                    <h4 class="panel-title"></h4>
                     <div class="panel-heading-btn">
                         <a class="btn btn-primary pull-right" href="{{route('addAddressLayout', $customer->id)}}" style="background-color:#0f0f0f;border: none;">Add Address</a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
@@ -46,8 +48,8 @@
                                         <th width="1%">Id</th>
 
                                         <th class="text-nowrap">Name</th>
-                                        <th class="text-nowrap">Company name</th>
-                                        <th class="text-nowrap">Phone</th>
+                                        {{-- <th class="text-nowrap">Company name</th> --}}
+                                        {{-- <th class="text-nowrap">Phone</th> --}}
                                         <th class="text-nowrap">Street address</th>
                                         <th class="text-nowrap">Country</th>
                                         <th class="text-nowrap">State</th>
@@ -63,8 +65,8 @@
                                     <tr>
                                         <td>{{$address->id}}</td>
                                         <td>{{ucfirst($address->f_name.' '.$address->l_name)}}</td>
-                                        <td>{{$address->company_name}}</td>
-                                        <td>{{$address->phone}}</td>
+                                        {{-- <td>{{$address->company_name}}</td> --}}
+                                        {{-- <td>{{$address->phone}}</td> --}}
                                         <td>{{$address->street_address}}</td>
                                         <td>{{$address->country}}</td>
                                         <td>{{$address->state}}</td>

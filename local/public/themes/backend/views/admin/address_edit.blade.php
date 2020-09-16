@@ -4,13 +4,13 @@
     <!-- begin breadcrumb -->
     <ol class="breadcrumb float-xl-right">
         <li class="breadcrumb-item"><a href="javascript:;">Dashboar</a></li>
-        <li class="breadcrumb-item"><a href="javascript:;">Customers</a></li>
-        <li class="breadcrumb-item active">Add address</li>
+        {{-- <li class="breadcrumb-item"><a href="javascript:;">Customers</a></li> --}}
+        <li class="breadcrumb-item active">Edit address</li>
     </ol>
     <!-- end breadcrumb -->
     <!-- begin page-header -->
     
-    <h1 class="page-header">ADDRESS <small>new</small></h1>
+    <h1 class="page-header">ADDRESS <small>Edit</small></h1>
 
     <!-- end page-header -->
 
@@ -22,7 +22,7 @@
             
             <div class="panel panel-inverse" data-sortable-id="tree-view-1">
                 <div class="panel-heading">
-                    <h4 class="panel-title">CUSTOMERS</h4>
+                    <h4 class="panel-title">ADDRESS</h4>
                     <div class="panel-heading-btn">
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
@@ -35,16 +35,17 @@
                 <form method="post" action="{{route('updateAddress')}}" id="updateAddress" name="updateAddress" class="form-layout" data-parsley-validate="true">
                     <input type="hidden" name="customer_id" value="{{$address['customer_id']}}"/>
                     <input type="hidden" name="address_id" value="{{$address['id']}}"/>
+                    <input type="hidden" name="address_user_id" value="{{$address['address_user_id']}}"/>
                     @csrf   
                     <div class="row">
                            
                             <div class="col-md-4 col-sm-8">
-                                <div class="form-group row m-b-15">
+                                {{-- <div class="form-group row m-b-15">
                                     <label class="col-md-12 col-sm-4 col-form-label" for="company_name">Company name</label>
                                     <div class="col-md-12 col-sm-8">
                                         <input class="form-control" type="text" id="company_name" name="company_name" value="{{$address['company_name']}}" placeholder="Please enter company name">
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="form-group row m-b-15">
                                     <label class="col-md-12 col-sm-4 col-form-label" for="f_name">First Name <span class="required-star">* </span></label>
                                     <div class="col-md-12 col-sm-8">
@@ -66,7 +67,7 @@
                                 <div class="form-group row m-b-15">
                                     <label class="col-md-12 col-sm-4 col-form-label" for="default_address"> Default Address</label>
                                     <div class="col-md-12 col-sm-8">
-                                    <input class="form-control" type="checkbox" id="default_address" name="default_address" {{($address['default_address']==1)?'checked':''}}/>
+                                    <input class="form-control" type="checkbox" id="default_address" name="default_address" value="1" {{($address['default_address']==1)?'checked':''}}/>
                                     </div>
                                 </div>
                                 
@@ -74,12 +75,12 @@
 
                             </div>
                             <div class="col-md-4 col-sm-8">
-                                <div class="form-group row m-b-15">
+                                {{-- <div class="form-group row m-b-15">
                                     <label class="col-md-12 col-sm-4 col-form-label" for="phone">Phone</label>
                                     <div class="col-md-12 col-sm-8">
                                     <input class="form-control" type="text" id="phone" name="phone" value="{{$address['phone']}}" placeholder="Please enter phone number">
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="form-group row m-b-15">
                                     <label class="col-md-12 col-sm-4 col-form-label" for="l_name">Last Name <span class="required-star">* </span></label>
@@ -94,7 +95,12 @@
                                     </div>
                                 </div>
                                 
-                               
+                                <div class="form-group row m-b-15">
+                                    <label class="col-md-12 col-sm-4 col-form-label" for="postal_code">Postal Code <span class="required-star">* </span></label>
+                                    <div class="col-md-12 col-sm-8">
+                                        <input class="form-control" type="text" id="postal_code" name="postal_code" value="{{$address['postal_code']}}" placeholder="Please enter your postal code" data-parsley-required="true">
+                                    </div>
+                                </div>
                                 
                        
 
@@ -120,12 +126,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row m-b-15">
-                                    <label class="col-md-12 col-sm-4 col-form-label" for="postal_code">Postal Code <span class="required-star">* </span></label>
-                                    <div class="col-md-12 col-sm-8">
-                                        <input class="form-control" type="text" id="postal_code" name="postal_code" value="{{$address['postal_code']}}" placeholder="Please enter your postal code" data-parsley-required="true">
-                                    </div>
-                                </div>
+                                
                                 
                                
                                 

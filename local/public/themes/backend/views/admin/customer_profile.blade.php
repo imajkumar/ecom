@@ -6,7 +6,9 @@ if(!empty($customer->profile_pic) )
 		}else{
 			
 			$profil_pic = BACKEND.'img/user/user-4.jpg';
-		}
+        }
+        $customerProfile = get_customer_and_address_by__user_id(Auth::user()->id);
+        $default_certificate = asset('/'.ITEM_IMG_PATH.'/default_img.jpg');
 ?>
 <div id="content" class="content content-full-width">
     <!-- begin profile -->
@@ -19,13 +21,13 @@ if(!empty($customer->profile_pic) )
             <div class="profile-header-content">
                 <!-- BEGIN profile-header-img -->
                 <div class="profile-header-img">
-                <img src="{{$profil_pic}}" alt="">
+                <img src="{{$profil_pic}}" class="outputPic" alt="">
                 </div>
                 <!-- END profile-header-img -->
                 <!-- BEGIN profile-header-info -->
                 <div class="profile-header-info">
-                    <h4 class="mt-0 mb-1">{{ucfirst($customer->f_name)}} {{$customer->l_name}}</h4>
-                    <p class="mb-2">UXUI + Frontend Developer</p>
+                    <h4 class="mt-0 mb-1">{{ucfirst($customer->cutomer_fname)}} {{$customer->cutomer_lname}}</h4>
+                    <p class="mb-2">Store name: {{$customerProfile->store_name}}</p>
                     <a href="#" class="btn btn-xs btn-yellow">Edit Profile</a>
                 </div>
                 <!-- END profile-header-info -->
@@ -35,7 +37,10 @@ if(!empty($customer->profile_pic) )
             <ul class="profile-header-tab nav nav-tabs">
                 {{-- <li class="nav-item"><a href="#profile-post" class="nav-link" data-toggle="tab">POSTS</a></li> --}}
                 <li class="nav-item"><a href="#profile-about" class="nav-link active" data-toggle="tab">ABOUT</a></li>
-                <li class="nav-item"><a href="#profile-photos" class="nav-link" data-toggle="tab">Documents</a></li>
+                <li class="nav-item"><a href="#profile-business" class="nav-link" data-toggle="tab">BUSINESS</a></li>
+                <li class="nav-item"><a href="#profile-address" class="nav-link" data-toggle="tab">ADDRESS</a></li>
+                <li class="nav-item"><a href="#profile-team" class="nav-link" data-toggle="tab">TEAM</a></li>
+                <li class="nav-item"><a href="#profile-photos" class="nav-link" data-toggle="tab">DOCUMENTS</a></li>
                 {{-- <li class="nav-item"><a href="#profile-videos" class="nav-link" data-toggle="tab">VIDEOS</a></li>
                 <li class="nav-item"><a href="#profile-friends" class="nav-link active" data-toggle="tab">FRIENDS</a></li> --}}
             </ul>
@@ -237,102 +242,217 @@ if(!empty($customer->profile_pic) )
                 <!-- begin table -->
                 <div class="table-responsive form-inline">
                     <table class="table table-profile">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>
-                                    <h4>{{ucfirst($customer->f_name)}} <small>{{$customer->l_name}}</small></h4>
-                                </th>
-                            </tr>
-                        </thead>
+                        
                         <tbody>
-{{--                             
-                            <tr class="divider">
-                                <td colspan="2"></td>
-                            </tr>
-                            <tr class="highlight">
-                                <td class="field">About Me</td>
-                                <td><a href="javascript:;">Add Description</a></td>
-                            </tr> --}}
+
                             <tr class="divider">
                                 <td colspan="2"></td>
                             </tr>
                             <tr>
-                                <td class="field">City</td>
-                                <td>Los Angeles</td>
+                                <td class="field">First Name</td>
+                                <td>{{$customerProfile->cutomer_fname}}</td>
                             </tr>
                             <tr>
-                                <td class="field valign-middle">Country/Region</td>
-                                <td class="with-form-control">
-                                    <select class="form-control form-control-sm" name="region">
-                                        <option value="US" selected="">United State</option>
-                                        <option value="AF">Afghanistan</option>
-                                        <option value="AL">Albania</option>
-                                        <option value="DZ">Algeria</option>
-                                        <option value="AS">American Samoa</option>
-                                        <option value="AD">Andorra</option>
-                                        <option value="AO">Angola</option>
-                                        <option value="AI">Anguilla</option>
-                                        <option value="AQ">Antarctica</option>
-                                        <option value="AG">Antigua and Barbuda</option>
-                                    </select>
-                                </td>
+                                <td class="field">Last Name</td>
+                                <td>{{$customerProfile->cutomer_lname}}</td>
                             </tr>
                             <tr>
-                                <td class="field">City</td>
-                                <td>Los Angeles</td>
+                                <td class="field">Mobile Number </td>
+                                <?php 
+                                    ///$user = DB::table('users')->where('id', $customerProfile->user_id)->first();
+                                    $user = get_user_by_user_id($customerProfile->user_id);
+                                ?>
+                                <td>{{$user['mobile']}}</td>
                             </tr>
                             <tr>
-                                <td class="field">State</td>
-                                <td><a href="javascript:;">Add State</a></td>
+                                <td class="field">Email Address </td>
+                                
+                                <td>{{$user['email']}}</td>
                             </tr>
-                            <tr>
-                                <td class="field">Website</td>
-                                <td><a href="javascript:;">Add Webpage</a></td>
-                            </tr>
-                            <tr>
-                                <td class="field valign-middle">Gender</td>
-                                <td class="with-form-control">
-                                    <select class="form-control form-control-sm" name="gender">
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="field valign-middle">Birthdate</td>
-                                <td class="with-form-control">
-                                    <select class="form-control form-control-sm" name="day">
-                                        <option value="04" selected="">04</option>
-                                    </select>
-                                    -
-                                    <select class="form-control form-control-sm" name="month">
-                                        <option value="11" selected="">11</option>
-                                    </select>
-                                    -
-                                    <select class="form-control form-control-sm" name="year">
-                                        <option value="1989" selected="">1989</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="field valign-middle">Language</td>
-                                <td class="with-form-control">
-                                    <select class="form-control form-control-sm" name="language">
-                                        <option value="" selected="">English</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr class="divider">
-                                <td colspan="2"></td>
-                            </tr>
-                            <tr class="highlight">
+                            
+                            {{-- <tr class="highlight">
                                 <td class="field">&nbsp;</td>
                                 <td class="p-t-10 p-b-10">
                                     <button type="submit" class="btn btn-primary width-150">Update</button>
                                     <button type="submit" class="btn btn-white btn-white-without-border width-150 m-l-5">Cancel</button>
                                 </td>
+                            </tr> --}}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- end table -->
+            </div>
+            <div class="tab-pane fade" id="profile-business">
+                <!-- begin table -->
+                <div class="table-responsive form-inline">
+                    <table class="table table-profile">
+                        
+                        <tbody>
+
+                            <tr class="divider">
+                                <td colspan="2"></td>
                             </tr>
+                            <tr>
+                                <td class="field">Store name:</td>
+                                <td>{{$customerProfile->store_name}}</td>
+                            </tr>
+                            <tr>
+                                <td class="field">Customer Type:</td>
+                                <td>{{($customerProfile->customer_type == 1)? 'Dealer':(($customerProfile->customer_type==2)? 'Wholesale':'Distibuter')}}</td>
+                            </tr>
+                            <tr>
+                                <td class="field">Countryr: </td>
+                                
+                                <td>{{$customerProfile->business_country}}</td>
+                            </tr>
+                            <tr>
+                                <td class="field">State:</td>
+                                
+                                <td>{{$customerProfile->business_state}}</td>
+                            </tr>
+                            <tr>
+                                <td class="field">City: </td>
+                                
+                                <td>{{$customerProfile->business_city}}</td>
+                            </tr>
+                            <tr>
+                                <td class="field">Postal Code: </td>
+                                
+                                <td>{{$customerProfile->business_postal_code}}</td>
+                            </tr>
+                            
+                                
+                                <?php if($customerProfile->parent_code){?>
+                            <tr>
+                                    <td class="field">Parent organization: </td>
+                                <td>
+                                    <span class="badge badge-md badge-success">Yes</span><br>
+                                    
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="field">Parent code: </td>
+                                <td>
+                                    
+                                    {{$customerProfile->parent_code}}
+
+                                </td>
+                            </tr>
+
+                                <?php }else{?>
+                                <tr>
+                                    <td class="field">Parent organization: </td>
+                                    <td><span class="badge badge-md badge-success">No</span></td>
+                                    
+                                </tr>
+                                <?php }?>
+                            
+                            {{-- <tr class="highlight">
+                                <td class="field">&nbsp;</td>
+                                <td class="p-t-10 p-b-10">
+                                    <button type="submit" class="btn btn-primary width-150">Update</button>
+                                    <button type="submit" class="btn btn-white btn-white-without-border width-150 m-l-5">Cancel</button>
+                                </td>
+                            </tr> --}}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- end table -->
+            </div>
+            <div class="tab-pane fade" id="profile-address">
+                <!-- begin table -->
+                <div class="table-responsive form-inline">
+                    <table class="table table-profile">
+                        
+                        <tbody>
+
+                            <tr class="divider">
+                                <td colspan="2"></td>
+                            </tr>
+                            <tr>
+                                <td class="field">First name:</td>
+                                <td>{{$customerProfile->f_name}}</td>
+                            </tr>
+                            <tr>
+                                <td class="field">Last name:</td>
+                                <td>{{$customerProfile->l_name}}</td>
+                            </tr>
+                            
+                            <tr>
+                                <td class="field">Address : </td>
+                                
+                                <td>{{$customerProfile->street_address}}</td>
+                            </tr>
+                            <tr>
+                                <td class="field">Countryr: </td>
+                                
+                                <td>{{$customerProfile->country}}</td>
+                            </tr>
+                            <tr>
+                                <td class="field">State:</td>
+                                
+                                <td>{{$customerProfile->state}}</td>
+                            </tr>
+                            <tr>
+                                <td class="field">City: </td>
+                                
+                                <td>{{$customerProfile->city}}</td>
+                            </tr>
+                            <tr>
+                                <td class="field">Postal Code: </td>
+                                
+                                <td>{{$customerProfile->business_postal_code}}</td>
+                            </tr>
+                            <tr>
+                                <td class="field">GSTIN: </td>
+                                <td>{{$customerProfile->gst_number}}</td>
+                            </tr>
+                            
+                            {{-- <tr class="highlight">
+                                <td class="field">&nbsp;</td>
+                                <td class="p-t-10 p-b-10">
+                                    <button type="submit" class="btn btn-primary width-150">Update</button>
+                                    <button type="submit" class="btn btn-white btn-white-without-border width-150 m-l-5">Cancel</button>
+                                </td>
+                            </tr> --}}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- end table -->
+            </div>
+            <div class="tab-pane fade" id="profile-team">
+                <!-- begin table -->
+                <div class="table-responsive form-inline">
+                    <table class="table table-profile">
+                        
+                        <tbody>
+
+                            <tr class="divider">
+                                <td colspan="2"></td>
+                            </tr>
+                            <?php
+                                $teams = get_teams_by_customer_id(@$customerProfile->cust_id); 
+                                foreach($teams as $team)
+                                {
+                            ?>
+                           
+                            <tr>
+                                <td class="field">Name: </td>
+                                <td>{{$team->team_name}}</td>
+                            </tr>
+                            <tr>
+                                <td class="field">Mobile number: </td>
+                                <td>{{$team->team_mobile}}</td>
+                            </tr>
+                            <tr>
+                                <td class="field">Email id: </td>
+                                <td>{{$team->team_email}}</td>
+                            </tr>
+                            
+
+                        <?php }?>
+                            
                         </tbody>
                     </table>
                 </div>
@@ -342,6 +462,71 @@ if(!empty($customer->profile_pic) )
             <!-- begin #profile-photos tab -->
             <div class="tab-pane fade" id="profile-photos" data-init="true">
                 <h4 class="m-t-0 m-b-20">Documents </h4>
+                <table class="table table-profile">
+                    <thead>
+                        
+                            
+
+                            <th class="field">GST Certificate:</th>
+                            
+                            <th class="field">Shop establishment license:</th>
+                            <th class="field">MSME udyog adhar:</th>
+                            <th class="field">FSSAI certificate:</th>
+                            <th class="field">Trade certificate:</th>
+                            
+                            
+                        
+                    </thead>
+                    <tbody>
+                <tr>
+                   <td>
+                        
+                        <?php if(!empty(@$customerProfile->gst_certificate)){?>
+                            <a target="_blank" href="{{(@$customerProfile->gst_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->gst_certificate) : $default_certificate}}">
+                                <img src="{{(@$customerProfile->gst_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->gst_certificate) : $default_certificate}}" width="70%" height="70%"/>
+                            </a>
+                        <?php }?>
+                    </td>
+                
+                
+                    
+                    
+                    <td>
+                        
+                        <?php if(!empty(@$customerProfile->shop_establishment_license)){?>
+                            <a target="_blank" href="{{(@$customerProfile->shop_establishment_license)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->shop_establishment_license) : $default_certificate}}">
+                                <img src="{{(@$customerProfile->shop_establishment_license)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->shop_establishment_license) : $default_certificate}}" width="70%" height="70%"/>
+                            </a> 
+                        <?php }?>
+                    </td>
+                    <td>
+                        
+                        <?php if(!empty(@$customerProfile->msme_udyog_adhar)){?>
+                            <a target="_blank" href="{{(@$customerProfile->msme_udyog_adhar)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->msme_udyog_adhar) : $default_certificate}}">
+                                <img src="{{(@$customerProfile->msme_udyog_adhar)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->msme_udyog_adhar) : $default_certificate}}" width="70%" height="70%"/>
+                            </a>
+                        <?php }?>
+                    </td>
+                    <td>
+                        
+                        <?php if(!empty(@$customerProfile->FSSAI_certificate)){?>
+                            <a target="_blank" href="{{(@$customerProfile->FSSAI_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->FSSAI_certificate) : $default_certificate}}">
+                                <img src="{{(@$customerProfile->FSSAI_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->FSSAI_certificate) : $default_certificate}}" width="70%" height="70%"/>
+                            </a>
+                        <?php }?>
+                    </td>
+                    <td>
+                        
+                        <?php if(!empty(@$customerProfile->Trade_certificate)){?>
+
+                            <a target="_blank" href="{{(@$customerProfile->Trade_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->Trade_certificate) : $default_certificate}}">
+                                <img src="{{(@$customerProfile->Trade_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->Trade_certificate) : $default_certificate}}" width="70%" height="70%"/>
+                            </a>
+                        <?php }?>
+                    </td>
+                </tr>
+            </tbody>
+            </table>
                 <!-- begin superbox -->
                 {{-- <div class="superbox superbox-active" data-offset="50">
                     <div class="superbox-list superbox-2">

@@ -16,7 +16,8 @@ class CustomerController extends Controller
 {
    public function saveCustomerProfileDetails(Request $request)
     {
-        //pr($request->all());
+        
+        // pr($request->all());
         $this->validate($request, [
             'f_name' => 'required|string|max:120',
             'l_name' => 'required|string|max:120',
@@ -65,12 +66,12 @@ class CustomerController extends Controller
             [
                 'user_id' => $request->customer_id,
             ],[
-            'f_name' => $request->f_name,
-            'l_name' => $request->l_name,
-            //'email' => $request->email,
+            'cutomer_fname' => $request->cutomer_fname,
+            'cutomer_lname' => $request->cutomer_lname,
+            'email' => $request->email,
             //'gender' => $request->gender,
             //'dob' => $request->dob,
-            //'phone' => $request->mobile,
+            'phone' => $request->mobile,
             'status' => $status,
             'customer_type' => $request->customer_type,
             
@@ -78,6 +79,12 @@ class CustomerController extends Controller
 
         if ($customerData) {
             $query = 1;
+        }
+        
+        if($request->parent_code){
+             $parent_code = get_unique_code();
+        }else{
+            $parent_code = '';
         }
 
         $customer = DB::table('tbl_customers')->where('user_id', $request->customer_id)->first();
@@ -92,7 +99,7 @@ class CustomerController extends Controller
             'business_state' => $request->business_state,
             'business_city' => $request->business_city,
             'business_postal_code' => $request->business_postal_code,
-            'parent_code' => $request->parent_code,
+            'parent_code' => $parent_code,
         ]);
 
         if ($businessData) {
@@ -105,7 +112,6 @@ class CustomerController extends Controller
             [
                 'customer_id' => $customer->id,
                 'id' => $request->address_id,
-                'default_address' => 0,
                 'check_page' => 0,
             ],[
                 'f_name' => $request->f_name,
@@ -122,41 +128,42 @@ class CustomerController extends Controller
            
              ]);
 
-             if ($addressData) {
+            if ($addressData)
+            {
             
                 $query = 1;
             }
          
-             if(!empty($request->addr2_fname) && !empty($request->addr2_lname) && !empty($request->addr2_street_address))
-             {
-                 DB::table('tbl_addresses')->where('customer_id', $customer->id)
-                    ->where('address_user_id', $request->customer_id)
-                    ->where('id', '!=', $request->address_id)->delete();
+            //  if(!empty($request->addr2_fname) && !empty($request->addr2_lname) && !empty($request->addr2_street_address))
+            //  {
+            //      DB::table('tbl_addresses')->where('customer_id', $customer->id)
+            //         ->where('address_user_id', $request->customer_id)
+            //         ->where('id', '!=', $request->address_id)->delete();
 
-                $address2Data = DB::table('tbl_addresses')->Insert(
-                    // [
-                    //     'customer_id' => $customer->id,
-                    //     'id' => $request->address_id,
-                    //     'default_address' => 0,
-                    //     'check_page' => 0,
-                    // ],
-                    [
-                        'f_name' => $request->addr2_fname,
-                        'l_name' => $request->addr2_lname,
-                        'customer_id' => $customer->id,
-                        'address_user_id' => $request->customer_id,
-                        'street_address' => $request->addr2_street_address,
-                        // 'country' => $request->country,
-                        // 'state' => $request->state,
-                        // 'city' => $request->city,
-                        // 'postal_code' => $request->postal_code,
+            //     $address2Data = DB::table('tbl_addresses')->Insert(
+            //         // [
+            //         //     'customer_id' => $customer->id,
+            //         //     'id' => $request->address_id,
+            //         //     'default_address' => 0,
+            //         //     'check_page' => 0,
+            //         // ],
+            //         [
+            //             'f_name' => $request->addr2_fname,
+            //             'l_name' => $request->addr2_lname,
+            //             'customer_id' => $customer->id,
+            //             'address_user_id' => $request->customer_id,
+            //             'street_address' => $request->addr2_street_address,
+            //             // 'country' => $request->country,
+            //             // 'state' => $request->state,
+            //             // 'city' => $request->city,
+            //             // 'postal_code' => $request->postal_code,
                    
-                     ]);
-                     if ($address2Data) {
+            //          ]);
+            //          if ($address2Data) {
             
-                        $query = 1;
-                    }
-             }
+            //             $query = 1;
+            //         }
+            //  }
 
              if(count($request->team_name) > 0 && count($request->team_mobile) > 0 && count($request->team_email) > 0)
              {
@@ -186,7 +193,102 @@ class CustomerController extends Controller
                 }
              }
 
-             //Start code for documents
+            $gst_name = '';
+            $license_name = '';
+            $msme_udyog_adhar_name = '';
+            $FSSAI_certificate_name = '';
+            $Trade_certificate_name = '';
+            if ($request->hasFile('gst_certificate')) 
+            {
+                $img = $request->file('gst_certificate');
+                $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $img->getClientOriginalName());
+                $destinationPath = ITEM_IMG_PATH;
+                $gst_name = 'GST_'.date('mdis').$name;
+                $img->move($destinationPath, $gst_name);
+
+                //$customerdetail = get_custumer_by_user_id($customer->id);
+                if (File::exists($destinationPath.'/'.$request->gst_certificate_old)) {
+                    File::delete($destinationPath.'/'.$request->gst_certificate_old);
+                }
+            }
+
+            if ($request->hasFile('shop_establishment_license')) 
+            {
+                $img = $request->file('shop_establishment_license');
+                $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $img->getClientOriginalName());
+                $destinationPath = ITEM_IMG_PATH;
+                $license_name = 'Shop_license_'.date('mdis').$name;
+                $img->move($destinationPath, $license_name);
+
+                if (File::exists($destinationPath.'/'.$request->shop_establishment_license_old)) {
+                    File::delete($destinationPath.'/'.$request->shop_establishment_license_old);
+                
+                }
+            }
+
+            if ($request->hasFile('msme_udyog_adhar')) 
+            {
+                $img = $request->file('msme_udyog_adhar');
+                $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $img->getClientOriginalName());
+                $destinationPath = ITEM_IMG_PATH;
+                $msme_udyog_adhar_name = 'Udyog_adhar_'.date('mdis').$name;
+                $img->move($destinationPath, $msme_udyog_adhar_name);
+
+                if (File::exists($destinationPath.'/'.$request->msme_udyog_adhar_old)) {
+                    File::delete($destinationPath.'/'.$request->msme_udyog_adhar_old);
+                }
+            }
+
+            if ($request->hasFile('FSSAI_certificate')) 
+            {
+                $img = $request->file('FSSAI_certificate');
+                $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $img->getClientOriginalName());
+                $destinationPath = ITEM_IMG_PATH;
+                $FSSAI_certificate_name = 'FSSAI_certificate_'.date('mdis').$name;
+                $img->move($destinationPath, $FSSAI_certificate_name);
+
+                if (File::exists($destinationPath.'/'.$request->FSSAI_certificate_old)) {
+                    File::delete($destinationPath.'/'.$request->FSSAI_certificate_old);
+                }
+            }
+
+            if ($request->hasFile('Trade_certificate')) 
+            {
+                $img = $request->file('Trade_certificate');
+                $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $img->getClientOriginalName());
+                $destinationPath = ITEM_IMG_PATH;
+                $Trade_certificate_name = 'Trade_certificate_'.date('mdis').$name;
+                $img->move($destinationPath, $Trade_certificate_name);
+
+                if (File::exists($destinationPath.'/'.$request->Trade_certificate_old)) {
+                    File::delete($destinationPath.'/'.$request->Trade_certificate_old);
+                }
+            }
+
+            $documents = DB::table('tbl_customer_documents')->updateOrInsert(
+                [
+                    'customer_id' => $customer->id,
+                    'customer_docs_user_id' => $request->customer_id,
+                ],[
+                    'gst_certificate' => ($gst_name) ? $gst_name : $request->gst_certificate_old,
+
+                    'shop_establishment_license' => ($license_name) ? $license_name : $request->shop_establishment_license_old,
+                    
+                    'msme_udyog_adhar' => ($msme_udyog_adhar_name) ? $msme_udyog_adhar_name : $request->msme_udyog_adhar_old,
+                    
+                    'FSSAI_certificate' => ($FSSAI_certificate_name) ? $FSSAI_certificate_name : $request->FSSAI_certificate_old,
+                    
+                    'Trade_certificate' => ($Trade_certificate_name) ? $Trade_certificate_name : $request->Trade_certificate_old,
+                ]);
+    
+                if ($documents)
+                {
+                
+                    $query = 1;
+                }
+
+            
+            //Start code for documents
              
              //End code for documents
         

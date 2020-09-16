@@ -903,9 +903,12 @@ class UserController extends Controller
             ->leftjoin('tbl_businesses','tbl_businesses.customer_id','=','tbl_customers.id')
 
             ->leftjoin('tbl_addresses','tbl_addresses.customer_id','=','tbl_customers.id')
-            ->select('tbl_customers.id as cust_id','tbl_customers.*', 'tbl_customers.f_name as cutomer_fname', 'tbl_customers.l_name as cutomer_lname', 
-            'tbl_addresses.id as address_id', 'tbl_addresses.*', 'tbl_businesses.*')
+            ->leftjoin('tbl_customer_documents','tbl_customer_documents.customer_id','=','tbl_customers.id')
+            ->select('tbl_customers.id as cust_id','tbl_customers.*', 
+            'tbl_addresses.id as address_id', 'tbl_addresses.*', 'tbl_businesses.*', 'tbl_customer_documents.id as docs_id', 'tbl_customer_documents.*')
             ->first();
+
+            
         
         $user = DB::table('users')->where('id', $customerProfile->user_id)->first();
         return $theme->scope('admin.customer_edit', compact('customer','customerProfile','user'))->render();
@@ -921,7 +924,7 @@ class UserController extends Controller
             'country' => 'required',
             'state' => 'required',
             'city' => 'required',
-            'phone' => 'required|integer',
+            //'phone' => 'required|integer',
             'postal_code' => 'required|integer',
             
         ], [
@@ -933,8 +936,8 @@ class UserController extends Controller
             'street_address.string' => 'Street adrress should be string.',
             
 
-            'phone.required' => 'Phone number is required.',
-            'phone.integer' => 'Phone number should be number.',
+            //'phone.required' => 'Phone number is required.',
+            //'phone.integer' => 'Phone number should be number.',
             'postal_code.required' => 'Postal code is required.',
             'postal_code.integer' => 'Postal code should be number.',
 
@@ -958,10 +961,10 @@ class UserController extends Controller
             'address_user_id' => $request->user_id,
             'f_name' => $request->f_name,
             'l_name' => $request->l_name,
-            'company_name' => $request->company_name,
+            //'company_name' => $request->company_name,
             'street_address' => $request->street_address,
             'country' => $request->country,
-            'phone' => $request->phone,
+            //'phone' => $request->phone,
             'state' => $request->state,
             'city' => $request->city,
             'postal_code' => $request->postal_code,
@@ -986,7 +989,7 @@ class UserController extends Controller
             'country' => 'required',
             'state' => 'required',
             'city' => 'required',
-            'phone' => 'required|integer',
+            //'phone' => 'required|integer',
             'postal_code' => 'required|integer',
             
         ], [
@@ -998,8 +1001,8 @@ class UserController extends Controller
             'street_address.string' => 'Street adrress should be string.',
             
 
-            'phone.required' => 'Phone number is required.',
-            'phone.integer' => 'Phone number should be number.',
+            // 'phone.required' => 'Phone number is required.',
+            // 'phone.integer' => 'Phone number should be number.',
             'postal_code.required' => 'Postal code is required.',
             'postal_code.integer' => 'Postal code should be number.',
 
@@ -1012,8 +1015,10 @@ class UserController extends Controller
             'city.required' => 'City is required.',
         ]);
 
-        $checks = DB::table('tbl_addresses')->where('customer_id', $request->customer_id)->where('default_address', 1)->get();
-        if(count($checks)>0){
+        $checks = DB::table('tbl_addresses')->where('customer_id', $request->customer_id)
+            ->where('default_address', 1)->get();
+
+        if(count($checks)>0 && $request->default_address==1){
             DB::table('tbl_addresses')->where('customer_id', $request->customer_id)->update([
                 'default_address' => 0,
             ]);
@@ -1024,10 +1029,11 @@ class UserController extends Controller
             'customer_id' => $request->customer_id,
             'f_name' => $request->f_name,
             'l_name' => $request->l_name,
-            'company_name' => $request->company_name,
+            'address_user_id' => $request->address_user_id,
+            //'company_name' => $request->company_name,
             'street_address' => $request->street_address,
             'country' => $request->country,
-            'phone' => $request->phone,
+            //'phone' => $request->phone,
             'state' => $request->state,
             'city' => $request->city,
             'postal_code' => $request->postal_code,
@@ -1409,17 +1415,19 @@ class UserController extends Controller
                         $profile = 0;
                         $remark = $request->remark;
                     }
+                    
         $customerData = DB::table('tbl_customers')->updateOrInsert(
             [
                 'user_id' => $request->customer_id,
             ],[
-            'f_name' => $request->f_name,
-            'l_name' => $request->l_name,
-            //'email' => $request->email,
+            'cutomer_fname' => $request->cutomer_fname,
+            'cutomer_lname' => $request->cutomer_lname,
+            'email' => $request->email,
             //'gender' => $request->gender,
             //'dob' => $request->dob,
-            //'phone' => $request->mobile,
+            'phone' => $request->mobile,
             'status' => $request->status,
+            'remark' => $remark,
             'customer_type' => $request->customer_type,
             
         ]);
@@ -1440,7 +1448,7 @@ class UserController extends Controller
             'business_state' => $request->business_state,
             'business_city' => $request->business_city,
             'business_postal_code' => $request->business_postal_code,
-            'parent_code' => $request->parent_code,
+            //'parent_code' => $request->parent_code,
         ]);
 
         if ($businessData) {
@@ -1453,7 +1461,6 @@ class UserController extends Controller
             [
                 'customer_id' => $customer->id,
                 'id' => $request->address_id,
-                'default_address' => 0,
                 'check_page' => 0,
             ],[
                 'f_name' => $request->f_name,
@@ -1475,36 +1482,36 @@ class UserController extends Controller
                 $query = 1;
             }
          
-             if(!empty($request->addr2_fname) && !empty($request->addr2_lname) && !empty($request->addr2_street_address))
-             {
-                 DB::table('tbl_addresses')->where('customer_id', $customer->id)
-                    ->where('address_user_id', $request->customer_id)
-                    ->where('id', '!=', $request->address_id)->delete();
+            //  if(!empty($request->addr2_fname) && !empty($request->addr2_lname) && !empty($request->addr2_street_address))
+            //  {
+            //      DB::table('tbl_addresses')->where('customer_id', $customer->id)
+            //         ->where('address_user_id', $request->customer_id)
+            //         ->where('id', '!=', $request->address_id)->delete();
 
-                $address2Data = DB::table('tbl_addresses')->Insert(
-                    // [
-                    //     'customer_id' => $customer->id,
-                    //     'id' => $request->address_id,
-                    //     'default_address' => 0,
-                    //     'check_page' => 0,
-                    // ],
-                    [
-                        'f_name' => $request->addr2_fname,
-                        'l_name' => $request->addr2_lname,
-                        'customer_id' => $customer->id,
-                        'address_user_id' => $request->customer_id,
-                        'street_address' => $request->addr2_street_address,
-                        // 'country' => $request->country,
-                        // 'state' => $request->state,
-                        // 'city' => $request->city,
-                        // 'postal_code' => $request->postal_code,
+            //     $address2Data = DB::table('tbl_addresses')->Insert(
+            //         // [
+            //         //     'customer_id' => $customer->id,
+            //         //     'id' => $request->address_id,
+            //         //     'default_address' => 0,
+            //         //     'check_page' => 0,
+            //         // ],
+            //         [
+            //             'f_name' => $request->addr2_fname,
+            //             'l_name' => $request->addr2_lname,
+            //             'customer_id' => $customer->id,
+            //             'address_user_id' => $request->customer_id,
+            //             'street_address' => $request->addr2_street_address,
+            //             // 'country' => $request->country,
+            //             // 'state' => $request->state,
+            //             // 'city' => $request->city,
+            //             // 'postal_code' => $request->postal_code,
                    
-                     ]);
-                     if ($address2Data) {
+            //          ]);
+            //          if ($address2Data) {
             
-                        $query = 1;
-                    }
-             }
+            //             $query = 1;
+            //         }
+            //  }
 
              if(count($request->team_name) > 0 && count($request->team_mobile) > 0 && count($request->team_email) > 0)
              {

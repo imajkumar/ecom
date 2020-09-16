@@ -143,14 +143,14 @@
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">First Name <span class="required-star">* </span></label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                        <input class="form-control" type="text" id="f_name" name="f_name" value="{{@$customerProfile->cutomer_fname}}" placeholder="Please enter first name" data-parsley-required="true">
+                                                        <input class="form-control" type="text" id="cutomer_fname" name="cutomer_fname" value="{{@$customerProfile->cutomer_fname}}" placeholder="Please enter first name" data-parsley-required="true">
                                                         </div>
                                                     </div>
                                                     
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">Last Name <span class="required-star">* </span></label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input class="form-control" type="text" id="l_name" name="l_name" value="{{@$customerProfile->cutomer_lname}}" placeholder="Please enter last name" data-parsley-required="true">
+                                                            <input class="form-control" type="text" id="cutomer_lname" name="cutomer_lname" value="{{@$customerProfile->cutomer_lname}}" placeholder="Please enter last name" data-parsley-required="true">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row m-b-10">
@@ -277,7 +277,14 @@
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label" for="parent_code">Do you have parent organization </label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input class="form-control" type="checkbox" id="parent_code" name="parent_code">
+                                                            <input class="form-control" type="checkbox" id="parent_code"  {{(@$customerProfile->parent_code)? 'checked':'' }} name="parent_code" readonly />
+                                                        
+                                                        <style>
+                                                            input[type="checkbox"][readonly] 
+                                                            {
+                                                                pointer-events: none;
+                                                            }
+                                                        </style>
                                                         </div>
                                                     </div>
                                                     
@@ -341,7 +348,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group row m-b-10">
-                                                        <label class="col-lg-3 text-lg-right col-form-label" for="country">Country <span class="required-star">* </span></label>
+                                                    <label class="col-lg-3 text-lg-right col-form-label" for="country">Country <span class="required-star">* </span></label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <select class="form-control" id="country" name="country" placeholder="Please select your country" data-parsley-required="true">
                                                                 <option value="">Please select your country</option>
@@ -381,8 +388,8 @@
                                                         </div>
                                                     </div>
 
-                                                    <h2>Address 2</h2>
-
+                                                    {{-- <h2>Address 2</h2> --}}
+{{-- 
                                                     <?php
                                                     $addressSecound = DB::table('tbl_addresses')->where('customer_id', @$customerProfile->cust_id)
                                                                 ->where('address_user_id', $user->id)
@@ -407,7 +414,7 @@
                                                         <div class="col-lg-9 col-xl-6">
                                                             <input class="form-control" type="text" id="addr2_street_address" name="addr2_street_address" value="{{(@$addressSecound) ? @$addressSecound->street_address:''}}" placeholder="Please enter address">
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                     {{-- <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label" for="default_address"> Default Address</label>
                                                         <div class="col-lg-9 col-xl-6">
@@ -464,9 +471,9 @@
                                                        }
                                                     ?>
 
-                                                        <button type="button" id="AddMoreTeam" class="btn btn-primary pull-right">
+                                                        {{-- <button type="button" id="AddMoreTeam" class="btn btn-primary pull-right">
                                                             Add More
-                                                        </button>
+                                                        </button> --}}
 
                                                     </div>
                                                     
@@ -486,53 +493,52 @@
                                             <div class="row">
                                                
                                                 <div class="col-xl-8 offset-xl-2">
-                                                    <legend class="no-border f-w-700 p-b-0 m-t-0 m-b-20 f-s-16 text-inverse">You document pending</legend>
+                                                    <legend class="no-border f-w-700 p-b-0 m-t-0 m-b-20 f-s-16 text-inverse">Check documents</legend>
                                                 </div>
-                                                {{-- <div class="col-xl-8 offset-xl-2">
-                                                    <legend class="no-border f-w-700 p-b-0 m-t-0 m-b-20 f-s-16 text-inverse">You team info, so that we can easily reach you</legend>
-                                                   
+                                                <?php
+                                                    $default_certificate = asset('/'.ITEM_IMG_PATH.'/default_img.jpg');
                                                     
-                                                    <div class="form-group row m-b-10">
-                                                        <label class="col-lg-3 text-lg-right col-form-label">GST Certificate</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <input type="file" name="gst_certificate"  placeholder="Please upload GST certificate"/>
-                                                        </div>
+                                                ?>
+                                                <div class="form-group row m-b-10">
+                                                    <label class="col-lg-3 text-lg-right col-form-label">GST Certificate</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <a target="_blank" href="{{(@$customerProfile->gst_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->gst_certificate) : $default_certificate}}">
+                                                            <img src="{{(@$customerProfile->gst_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->gst_certificate) : $default_certificate}}" width="80%" height="50%"/>
+                                                        </a>
                                                     </div>
-                                                    <div class="form-group row m-b-10">
-                                                        <label class="col-lg-3 text-lg-right col-form-label">Shop establishment license</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <input type="file" name="shop_establishment_license"  placeholder="Please upload shop establishment license"/>
-                                                        </div>
+                                                </div>
+                                                <div class="form-group row m-b-10">
+                                                    <label class="col-lg-3 text-lg-right col-form-label">Shop establishment license</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <a target="_blank" href="{{(@$customerProfile->shop_establishment_license)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->shop_establishment_license) : $default_certificate}}">
+                                                            <img src="{{(@$customerProfile->shop_establishment_license)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->shop_establishment_license) : $default_certificate}}" width="80%" height="50%"/>
+                                                        </a>  
                                                     </div>
-                                                    
-	
-                                                    <div class="form-group row m-b-10">
-                                                        <label class="col-lg-3 text-lg-right col-form-label">Shop establishment license</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <input type="file" name="shop_establishment_license"  placeholder="Please upload shop establishment license"/>
-                                                        </div>
+                                                </div>
+                                                <div class="form-group row m-b-10">
+                                                    <label class="col-lg-3 text-lg-right col-form-label">MSME udyog adhar</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                        <a target="_blank" href="{{(@$customerProfile->msme_udyog_adhar)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->msme_udyog_adhar) : $default_certificate}}">
+                                                            <img src="{{(@$customerProfile->msme_udyog_adhar)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->msme_udyog_adhar) : $default_certificate}}" width="80%" height="50%"/>
+                                                        </a>
                                                     </div>
-                                                
-                                                    <div class="form-group row m-b-10">
-                                                        <label class="col-lg-3 text-lg-right col-form-label">MSME Registration/Udyog Adhaar</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <input type="file" name="msme_udyog_adhar"  placeholder="Please upload MSME Registration/Udyog Adhaar"/>
-                                                        </div>
+                                                </div>
+                                                <div class="form-group row m-b-10">
+                                                    <label class="col-lg-3 text-lg-right col-form-label">FSSAI certificate</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                    <a target="_blank" href="{{(@$customerProfile->FSSAI_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->FSSAI_certificate) : $default_certificate}}">
+                                                        <img src="{{(@$customerProfile->FSSAI_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->FSSAI_certificate) : $default_certificate}}" width="80%" height="50%"/>
+                                                    </a>
                                                     </div>
-                                                    <div class="form-group row m-b-10">
-                                                        <label class="col-lg-3 text-lg-right col-form-label">FSSAI certificate</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <input type="file" name="FSSAI_certificate"  placeholder="Please upload FSSAI certificate"/>
-                                                        </div>
+                                                </div>
+                                                <div class="form-group row m-b-10">
+                                                    <label class="col-lg-3 text-lg-right col-form-label">Trade certificate</label>
+                                                    <div class="col-lg-9 col-xl-6">
+                                                    <a target="_blank" href="{{(@$customerProfile->Trade_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->Trade_certificate) : $default_certificate}}">
+                                                        <img src="{{(@$customerProfile->Trade_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->Trade_certificate) : $default_certificate}}" width="80%" height="50%"/>
+                                                    </a>
                                                     </div>
-                                                    <div class="form-group row m-b-10">
-                                                        <label class="col-lg-3 text-lg-right col-form-label">Trade certificate</label>
-                                                        <div class="col-lg-9 col-xl-6">
-                                                            <input type="file" name="Trade_certificate"  placeholder="Please upload Trade certificate"/>
-                                                        </div>
-                                                    </div>
-                                                        
-                                                </div> --}}
+                                                </div>
                                                
                                             </div>
                                            

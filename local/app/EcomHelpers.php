@@ -83,8 +83,9 @@ function get_customer_and_address_by__user_id($user_id)
     ->leftjoin('tbl_businesses','tbl_businesses.customer_id','=','tbl_customers.id')
 
     ->leftjoin('tbl_addresses','tbl_addresses.customer_id','=','tbl_customers.id')
-    ->select('tbl_customers.id as cust_id','tbl_customers.*', 'tbl_customers.f_name as cutomer_fname', 'tbl_customers.l_name as cutomer_lname', 
-    'tbl_addresses.id as address_id', 'tbl_addresses.*', 'tbl_businesses.*')
+    ->leftjoin('tbl_customer_documents','tbl_customer_documents.customer_id','=','tbl_customers.id')
+    ->select('tbl_customers.id as cust_id','tbl_customers.*', 
+    'tbl_addresses.id as address_id', 'tbl_addresses.*', 'tbl_businesses.*', 'tbl_customer_documents.id as docs_id', 'tbl_customer_documents.*')
     ->first();
     
     return $customerProfile;
@@ -109,5 +110,20 @@ function get_custumer_by_user_id($user_id)
     $customerAddresses = DB::table('tbl_customers')->where('user_id', $user_id)->first();
     
     return $customerAddresses;
+}
+
+function get_user_by_user_id($user_id)
+{
+    $user = DB::table('users')->where('id', $user_id)->first();
+    //pr(json_decode(json_encode($user), true));
+    return json_decode(json_encode($user), true);
+}
+
+function get_unique_code()
+{
+    $today = date("Ymd");
+    $rand = strtoupper(substr(uniqid(sha1(time())),0,4));
+     $unique = $today . $rand;
+     return $unique;
 }
 

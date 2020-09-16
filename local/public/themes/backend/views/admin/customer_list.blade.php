@@ -47,23 +47,29 @@
 
                                         <th class="text-nowrap">Name</th>
                                         <th class="text-nowrap">Email</th>
-                                        <th class="text-nowrap">Gender</th>
+                                        {{-- <th class="text-nowrap">Gender</th> --}}
                                         <th class="text-nowrap">Phone</th>
-                                        <th class="text-nowrap">Date of birth</th>
+                                        {{-- <th class="text-nowrap">Date of birth</th> --}}
                                         <th class="text-nowrap">Status</th>
                                         <th class="text-nowrap">Action</th>
                                         
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($dataObjArr as $customer)
+                                    <?php
+                                    foreach($dataObjArr as $customer){
+                                        $users = get_user_by_user_id($customer->user_id);
+                                        
+                                        // echo $users['email'];
+                                    ?>
                                     <tr>
                                         <td>{{$customer->id}}</td>
-                                        <td>{{ucfirst($customer->f_name.' '.$customer->l_name)}}</td>
+                                        <td>{{ucfirst($customer->cutomer_fname.' '.$customer->cutomer_lname)}}</td>
+                                        
                                         <td>{{$customer->email}}</td>
-                                        <td>{{$customer->gender}}</td>
+                                        {{-- <td>{{$customer->gender}}</td> --}}
                                         <td>{{$customer->phone}}</td>
-                                        <td>{{$customer->dob}}</td>
+                                        {{-- <td>{{$customer->dob}}</td> --}}
                                         <td>
                                             @if($customer->status == 1)
                                             <span class="badge badge-md badge-success">Approved</span>
@@ -90,7 +96,7 @@
                                         </td>
                                        
                                     </tr>
-                                    @endforeach
+                                <?php }?>
                                 </tbody>
                             </table>
 

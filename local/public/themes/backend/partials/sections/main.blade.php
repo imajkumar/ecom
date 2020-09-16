@@ -65,6 +65,7 @@ if(Auth::user()->user_type == 0){
                         <input type="hidden" name="customer_id" value="{{Auth::user()->id}}"/>
                         <input type="hidden" name="c_id" value="{{@$customerProfile->cust_id}}"/>
                         <input type="hidden" name="address_id" value="{{@$customerProfile->address_id}}"/>
+                        <input type="hidden" name="docs_id" value="{{@$customerProfile->docs_id}}"/>
                             <!-- begin wizard -->
                             <div id="wizard">
                                 <!-- begin wizard-step -->
@@ -158,14 +159,14 @@ if(Auth::user()->user_type == 0){
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">First Name <span class="required-star">* </span></label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                        <input class="form-control" type="text" id="f_name" name="f_name" value="{{@$customerProfile->cutomer_fname}}" placeholder="Please enter first name" data-parsley-required="true">
+                                                        <input class="form-control" type="text" id="cutomer_fname" name="cutomer_fname" value="{{@$customerProfile->cutomer_fname}}" placeholder="Please enter first name" data-parsley-required="true">
                                                         </div>
                                                     </div>
                                                     
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">Last Name <span class="required-star">* </span></label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input class="form-control" type="text" id="l_name" name="l_name" value="{{@$customerProfile->cutomer_lname}}" placeholder="Please enter last name" data-parsley-required="true">
+                                                            <input class="form-control" type="text" id="cutomer_lname" name="cutomer_lname" value="{{@$customerProfile->cutomer_lname}}" placeholder="Please enter last name" data-parsley-required="true">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row m-b-10">
@@ -292,7 +293,7 @@ if(Auth::user()->user_type == 0){
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label" for="parent_code">Do you have parent organization </label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input class="form-control" type="checkbox" id="parent_code" name="parent_code">
+                                                        <input class="form-control" type="checkbox" id="parent_code" {{(@$customerProfile->parent_code)? 'checked':'' }} value="1" name="parent_code">
                                                         </div>
                                                     </div>
                                                     
@@ -396,7 +397,7 @@ if(Auth::user()->user_type == 0){
                                                         </div>
                                                     </div>
 
-                                                    <h2>Address 2</h2>
+                                                    {{-- <h2>Address 2</h2>
 
                                                     <?php
                                                     $addressSecound = DB::table('tbl_addresses')->where('customer_id', @$customerProfile->cust_id)
@@ -423,6 +424,41 @@ if(Auth::user()->user_type == 0){
                                                             <input class="form-control" type="text" id="addr2_street_address" name="addr2_street_address" value="{{(@$addressSecound) ? @$addressSecound->street_address:''}}" placeholder="Please enter address">
                                                         </div>
                                                     </div>
+
+                                                    <div class="form-group row m-b-10">
+                                                        <label class="col-lg-3 text-lg-right col-form-label" for="addr2_country">Country</label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <select class="form-control" id="addr2_country" name="addr2_country" placeholder="Please select your country">
+                                                                <option value="">Please select your country</option>
+                                                                <option value="India" {{(@$addressSecound && @$addressSecound->country == 'India')? 'selected':''}}>India</option>
+                                                                <option value="Pakistan" {{(@$addressSecound && @$addressSecound->country == 'Pakistan')? 'selected':''}}>Pakistan</option>
+                                                                
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    <div class="form-group row m-b-10">
+                                                        <label class="col-lg-3 text-lg-right col-form-label" for="addr2_state">State </label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <select class="form-control" id="addr2_state" name="addr2_state" placeholder="Please select state">
+                                                                <option value="">Please select state</option>
+                                                                <option value="up" {{(@$addressSecound && @$addressSecound->state == 'up')? 'selected':''}}>UP</option>
+                                                                <option value="bihar" {{(@$addressSecound && @$addressSecound->state == 'bihar')? 'selected':''}}>Bihar</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row m-b-10">
+                                                        <label class="col-lg-3 text-lg-right col-form-label" for="addr2_city">City </label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <input class="form-control" type="text" id="addr2_city" name="addr2_city" value="{{(@$addressSecound && @$addressSecound->city)?  @$addressSecound->city:''}}" placeholder="Please enter your city">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row m-b-10">
+                                                        <label class="col-lg-3 text-lg-right col-form-label" for="addr2_postal_code">Postal Code </label>
+                                                        <div class="col-lg-9 col-xl-6">
+                                                            <input class="form-control" type="text" id="addr2_postal_code" name="addr2_postal_code" value="{{ (@$addressSecound && @$addressSecound->postal_code)? @$addressSecound->postal_code:''}}" placeholder="Please enter your postal code">
+                                                        </div>
+                                                    </div> --}}
                                                     {{-- <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label" for="default_address"> Default Address</label>
                                                         <div class="col-lg-9 col-xl-6">
@@ -481,7 +517,7 @@ if(Auth::user()->user_type == 0){
                                                     ?>
 
                                                         <button type="button" id="AddMoreTeam" class="btn btn-primary pull-right">
-                                                            Add More
+                                                            Add Team
                                                         </button>
 
                                                     </div>
@@ -505,47 +541,93 @@ if(Auth::user()->user_type == 0){
                                                
                                                 <div class="col-xl-8 offset-xl-2">
                                                     <legend class="no-border f-w-700 p-b-0 m-t-0 m-b-20 f-s-16 text-inverse">You team info, so that we can easily reach you</legend>
-                                                   
+                                                    <?php
+                                                    $default_certificate = asset('/'.ITEM_IMG_PATH.'/default_img.jpg');
+                                                    
+                                                ?>
                                                     
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">GST Certificate</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <input type="file" name="gst_certificate"  placeholder="Please upload GST certificate"/>
-                                                        </div>
+                                                            <input type="hidden" name="gst_certificate_old"  value="{{@$customerProfile->gst_certificate}}"/>
+                                                            
+                                                            <?php if(!empty(@$customerProfile->gst_certificate)){?>
+                                                                <a target="_blank" href="{{(@$customerProfile->gst_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->gst_certificate) : $default_certificate}}">
+                                                                    <img src="{{(@$customerProfile->gst_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->gst_certificate) : $default_certificate}}" width="80%" height="50%"/>
+                                                                </a>
+                                                            <?php }?>
+                                                    </div>
                                                     </div>
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">Shop establishment license</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <input type="file" name="shop_establishment_license"  placeholder="Please upload shop establishment license"/>
+                                                            <input type="hidden" name="shop_establishment_license_old"  value="{{@$customerProfile->shop_establishment_license}}"/>
+                                                            
+                                                            <?php if(!empty(@$customerProfile->shop_establishment_license)){?>
+                                                                <a target="_blank" href="{{(@$customerProfile->shop_establishment_license)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->shop_establishment_license) : $default_certificate}}">
+                                                                    <img src="{{(@$customerProfile->shop_establishment_license)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->shop_establishment_license) : $default_certificate}}" width="80%" height="50%"/>
+                                                                </a> 
+                                                            <?php }?>
                                                         </div>
                                                     </div>
                                                     
 	
-                                                    <div class="form-group row m-b-10">
+                                                    {{-- <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">Shop establishment license</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <input type="file" name="shop_establishment_license"  placeholder="Please upload shop establishment license"/>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                 
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">MSME Registration/Udyog Adhaar</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <input type="file" name="msme_udyog_adhar"  placeholder="Please upload MSME Registration/Udyog Adhaar"/>
+                                                            <input type="hidden" name="msme_udyog_adhar_old"  value="{{@$customerProfile->msme_udyog_adhar}}"/>
+                                                            
+                                                            <?php if(!empty(@$customerProfile->msme_udyog_adhar)){?>
+                                                                <a target="_blank" href="{{(@$customerProfile->msme_udyog_adhar)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->msme_udyog_adhar) : $default_certificate}}">
+                                                                    <img src="{{(@$customerProfile->msme_udyog_adhar)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->msme_udyog_adhar) : $default_certificate}}" width="80%" height="50%"/>
+                                                                </a>
+                                                            <?php }?>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">FSSAI certificate</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <input type="file" name="FSSAI_certificate"  placeholder="Please upload FSSAI certificate"/>
+                                                            <input type="hidden" name="FSSAI_certificate_old"  value="{{@$customerProfile->FSSAI_certificate}}"/>
+                                                            
+                                                            <?php if(!empty(@$customerProfile->FSSAI_certificate)){?>
+                                                                <a target="_blank" href="{{(@$customerProfile->FSSAI_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->FSSAI_certificate) : $default_certificate}}">
+                                                                    <img src="{{(@$customerProfile->FSSAI_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->FSSAI_certificate) : $default_certificate}}" width="80%" height="50%"/>
+                                                                </a>
+                                                            <?php }?>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">Trade certificate</label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <input type="file" name="Trade_certificate"  placeholder="Please upload Trade certificate"/>
+                                                            <input type="hidden" name="Trade_certificate_old"  value="{{@$customerProfile->Trade_certificate}}"/>
+                                                            
+                                                            <?php if(!empty(@$customerProfile->Trade_certificate)){?>
+
+                                                                <a target="_blank" href="{{(@$customerProfile->Trade_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->Trade_certificate) : $default_certificate}}">
+                                                                    <img src="{{(@$customerProfile->Trade_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->Trade_certificate) : $default_certificate}}" width="80%" height="50%"/>
+                                                                </a>
+                                                            <?php }?>
                                                         </div>
                                                     </div>
+
+
+
+                                                    
+
+
+
                                                         
                                                 </div>
                                                
