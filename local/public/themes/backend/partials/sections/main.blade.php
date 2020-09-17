@@ -11,7 +11,8 @@ if(Auth::user()->user_type == 0){
             $customerProfile = get_customer_and_address_by__user_id(Auth::user()->id);
            
 
-        if($profile == 'false' || $customerProfile->status == 2 || $customerProfile->status == 0){
+        // if($profile == 'false' || $customerProfile->status == 2 || $customerProfile->status == 0){
+        if($customerProfile->status == 2){
 
             
             
@@ -97,7 +98,7 @@ if(Auth::user()->user_type == 0){
                                             </span>
                                         </a>
                                     </li>
-                                    <li>
+                                    {{-- <li>
                                         <a href="#step-4">
                                             <span class="number">4</span> 
                                             <span class="info">
@@ -105,7 +106,7 @@ if(Auth::user()->user_type == 0){
                                                 <small>Enter your Team Info</small>
                                             </span>
                                         </a>
-                                    </li>
+                                    </li> --}}
                                     <li>
                                         <a href="#step-5">
                                             <span class="number">5</span> 
@@ -255,7 +256,7 @@ if(Auth::user()->user_type == 0){
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row m-b-10">
+                                                    {{-- <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label" for="business_country">Country <span class="required-star">* </span></label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <select class="form-control" id="business_country" name="business_country" placeholder="Please select country" data-parsley-required="true">
@@ -295,7 +296,7 @@ if(Auth::user()->user_type == 0){
                                                         <div class="col-lg-9 col-xl-6">
                                                         <input class="form-control" type="checkbox" id="parent_code" {{(@$customerProfile->parent_code)? 'checked':'' }} value="1" name="parent_code">
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                     
                                                     {{-- <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">Email Address <span class="required-star">* </span></label>
@@ -475,7 +476,7 @@ if(Auth::user()->user_type == 0){
                                     </div>
                                     <!-- end step-3 -->
                                     <!-- begin step-4 -->
-                                    <div id="step-4">
+                                    {{-- <div id="step-4">
                                         
                                         <fieldset>
                                            
@@ -530,7 +531,7 @@ if(Auth::user()->user_type == 0){
                                            
                                         </fieldset>
                                        
-                                    </div>
+                                    </div> --}}
                                     <!-- end step-4 -->
                                     <!-- begin step-5 -->
                                     <div id="step-5">
@@ -549,7 +550,7 @@ if(Auth::user()->user_type == 0){
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">GST Certificate</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input type="file" name="gst_certificate"  placeholder="Please upload GST certificate"/>
+                                                            <input type="file" name="gst_certificate" class="docsValidation" placeholder="Please upload GST certificate"/>
                                                             <input type="hidden" name="gst_certificate_old"  value="{{@$customerProfile->gst_certificate}}"/>
                                                             
                                                             <?php if(!empty(@$customerProfile->gst_certificate)){?>
@@ -562,7 +563,7 @@ if(Auth::user()->user_type == 0){
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">Shop establishment license</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input type="file" name="shop_establishment_license"  placeholder="Please upload shop establishment license"/>
+                                                            <input type="file" name="shop_establishment_license" class="docsValidation" placeholder="Please upload shop establishment license"/>
                                                             <input type="hidden" name="shop_establishment_license_old"  value="{{@$customerProfile->shop_establishment_license}}"/>
                                                             
                                                             <?php if(!empty(@$customerProfile->shop_establishment_license)){?>
@@ -584,7 +585,7 @@ if(Auth::user()->user_type == 0){
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">MSME Registration/Udyog Adhaar</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input type="file" name="msme_udyog_adhar"  placeholder="Please upload MSME Registration/Udyog Adhaar"/>
+                                                            <input type="file" name="msme_udyog_adhar" class="docsValidation" placeholder="Please upload MSME Registration/Udyog Adhaar"/>
                                                             <input type="hidden" name="msme_udyog_adhar_old"  value="{{@$customerProfile->msme_udyog_adhar}}"/>
                                                             
                                                             <?php if(!empty(@$customerProfile->msme_udyog_adhar)){?>
@@ -597,7 +598,7 @@ if(Auth::user()->user_type == 0){
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">FSSAI certificate</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input type="file" name="FSSAI_certificate"  placeholder="Please upload FSSAI certificate"/>
+                                                            <input type="file" name="FSSAI_certificate"  class="docsValidation" placeholder="Please upload FSSAI certificate"/>
                                                             <input type="hidden" name="FSSAI_certificate_old"  value="{{@$customerProfile->FSSAI_certificate}}"/>
                                                             
                                                             <?php if(!empty(@$customerProfile->FSSAI_certificate)){?>
@@ -610,7 +611,7 @@ if(Auth::user()->user_type == 0){
                                                     <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">Trade certificate</label>
                                                         <div class="col-lg-9 col-xl-6">
-                                                            <input type="file" name="Trade_certificate"  placeholder="Please upload Trade certificate"/>
+                                                            <input type="file" name="Trade_certificate"  class="docsValidation" placeholder="Please upload Trade certificate"/>
                                                             <input type="hidden" name="Trade_certificate_old"  value="{{@$customerProfile->Trade_certificate}}"/>
                                                             
                                                             <?php if(!empty(@$customerProfile->Trade_certificate)){?>
@@ -780,6 +781,85 @@ if(Auth::user()->user_type == 0){
 {{-- </div> --}}
 <!-- end #content -->
 
-<?php }}else{?>
-    {{-- <h1>Admin</h1> --}}
-<?php }?>
+<?php } else if($customerProfile->status == 1) { ?>
+    
+    {{-- Start After approve customer --}}
+    <link href="{{ BACKEND.'plugins/countdown/jquery.countdown.css'}}" rel="stylesheet" />
+       <!-- begin #page-container -->
+	<div id="page-container" class="page-container">
+        <!-- begin coming-soon -->
+          <div class="coming-soon">
+              <!-- begin coming-soon-header -->
+              <div class="coming-soon-header">
+                  <div class="bg-cover"></div>
+                  <div class="brand">
+                      <span class="logo"><i class="ion-ios-cloud"></i></span> <b>Congratulation your profile aprroved from admin</b> 
+                  </div>
+                  <div class="desc">
+                      {{-- You are register successfully, Please wait admin approvel. --}}
+                  </div>
+                  {{-- <div class="timer">
+                      <div id="timer"></div>
+                  </div> --}}
+              </div>
+              <!-- end coming-soon-header -->
+              <!-- begin coming-soon-content -->
+              
+              <!-- end coming-soon-content -->
+          </div>
+          <!-- end coming-soon -->
+          
+          
+          
+          <!-- begin scroll to top btn -->
+          <a href="javascript:;" class="btn btn-icon btn-circle btn-primary btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+          <!-- end scroll to top btn -->
+      </div>
+      <!-- end page container -->
+          
+    {{-- Start After approve customer --}}
+
+
+
+<?php }else{ ?>
+
+    {{-- Start After approve customer --}}
+    <link href="{{ BACKEND.'plugins/countdown/jquery.countdown.css'}}" rel="stylesheet" />
+       <!-- begin #page-container -->
+	<div id="page-container" class="page-container">
+        <!-- begin coming-soon -->
+          <div class="coming-soon">
+              <!-- begin coming-soon-header -->
+              <div class="coming-soon-header">
+                  <div class="bg-cover"></div>
+                  <div class="brand">
+                      <span class="logo"><i class="ion-ios-cloud"></i></span> <b>Wellcome</b> 
+                  </div>
+                  <div class="desc">
+                      {{-- You are register successfully, Please wait admin approvel. --}}
+                  </div>
+                  <div class="timer">
+                      <div id="timer"></div>
+                  </div>
+              </div>
+              <!-- end coming-soon-header -->
+              <!-- begin coming-soon-content -->
+              
+              <!-- end coming-soon-content -->
+          </div>
+          <!-- end coming-soon -->
+          
+          
+          
+          <!-- begin scroll to top btn -->
+          <a href="javascript:;" class="btn btn-icon btn-circle btn-primary btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+          <!-- end scroll to top btn -->
+      </div>
+      <!-- end page container -->
+          
+    {{-- Start After approve customer --}}
+
+<?php } } else{ ?>
+
+    <h1>Admin Admin </h1>
+<?php } ?>

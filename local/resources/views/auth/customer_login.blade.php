@@ -13,8 +13,32 @@
 	<link href="{{BACKEND.'css/apple/app.min.css'}}" rel="stylesheet" />
 	<link href="{{BACKEND.'plugins/ionicons/css/ionicons.min.css'}}" rel="stylesheet" />
 	<!-- ================== END BASE CSS STYLE ================== -->
+	<style>
+        .modal {
+            display:    none;
+            position:   fixed;
+            z-index:    1000;
+            top:        0;
+            left:       0;
+            height:     100%;
+            width:      100%;
+            background: rgba( 255, 255, 255, .8 ) 
+                        url("{{ BACKEND.'img/coming-soon/ajax-loader1.gif'}}") 
+                        50% 50% 
+                        no-repeat;
+        }
+
+        body.loading .modal {
+            overflow: hidden;   
+        }
+
+        body.loading .modal {
+            display: block;
+        }
+    </style>
 </head>
 <body class="pace-top">
+	<div class="modal"><!-- Place at bottom of page --></div>
 	<!-- begin #page-loader -->
 	<div id="page-loader" class="fade show">
 		<span class="spinner"></span>
@@ -267,6 +291,7 @@
 <script>
 	//start send otp for customer
 	BASE_URL = "{{URL::to('/')}}"; 
+	body = $("body");
 	
 	//alert(BASE_URL);
     
@@ -283,6 +308,8 @@
                 data: {
 					'_token': $('meta[name="csrf-token"]').attr('content'),
 				},
+				beforeSend: function() { body.addClass("loading"); },
+            	complete: function() { body.removeClass("loading"); },
 
                 success: function(responce) {
 
@@ -322,7 +349,9 @@
             $.ajax({
                 type: 'POST',
                 url: BASE_URL + '/customer/sendOtp',
-                data: $(this).serialize(),
+				data: $(this).serialize(),
+				beforeSend: function() { body.addClass("loading"); },
+            	complete: function() { body.removeClass("loading"); },
 
                 success: function(responce) {
 
@@ -368,7 +397,10 @@
             $.ajax({
                 type: 'POST',
                 url: BASE_URL + '/customer/verifyOtp',
-                data: $(this).serialize(),
+				data: $(this).serialize(),
+				beforeSend: function() { body.addClass("loading"); },
+            	complete: function() { body.removeClass("loading"); },
+				
 
                 success: function(responce) {
 

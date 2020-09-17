@@ -1477,16 +1477,16 @@ class UserController extends Controller
             [
                 'busines_user_id' => $request->customer_id,
                 'customer_id' => $customer->id,
-            ],
-            [
-                'store_name' => $request->store_name,
-                'business_country' => $request->business_country,
-                'business_state' => $request->business_state,
-                'business_city' => $request->business_city,
-                'business_postal_code' => $request->business_postal_code,
-                //'parent_code' => $request->parent_code,
-            ]
-        );
+
+            ],[
+            'store_name' => $request->store_name,
+            //'business_country' => $request->business_country,
+            //'business_state' => $request->business_state,
+            //'business_city' => $request->business_city,
+            //'business_postal_code' => $request->business_postal_code,
+            //'parent_code' => $request->parent_code,
+        ]);
+
 
         if ($businessData) {
             $query = 1;
@@ -1521,53 +1521,31 @@ class UserController extends Controller
             $query = 1;
         }
 
-        //  if(!empty($request->addr2_fname) && !empty($request->addr2_lname) && !empty($request->addr2_street_address))
-        //  {
-        //      DB::table('tbl_addresses')->where('customer_id', $customer->id)
-        //         ->where('address_user_id', $request->customer_id)
-        //         ->where('id', '!=', $request->address_id)->delete();
+            
+            //  if(count($request->team_name) > 0 && count($request->team_mobile) > 0 && count($request->team_email) > 0)
+            //  {
+            //     $detTeams = DB::table('tbl_teams')->where('customer_id', $customer->id)
+            //     ->where('team_user_id', $request->customer_id)->delete();
+            //     for($n = 0; $n < count($request->team_name); $n++)
+            //     {
 
-        //     $address2Data = DB::table('tbl_addresses')->Insert(
-        //         // [
-        //         //     'customer_id' => $customer->id,
-        //         //     'id' => $request->address_id,
-        //         //     'default_address' => 0,
-        //         //     'check_page' => 0,
-        //         // ],
-        //         [
-        //             'f_name' => $request->addr2_fname,
-        //             'l_name' => $request->addr2_lname,
-        //             'customer_id' => $customer->id,
-        //             'address_user_id' => $request->customer_id,
-        //             'street_address' => $request->addr2_street_address,
-        //             // 'country' => $request->country,
-        //             // 'state' => $request->state,
-        //             // 'city' => $request->city,
-        //             // 'postal_code' => $request->postal_code,
+            //         $teamData = DB::table('tbl_teams')->insert(
+            //             [
+            //                 'customer_id' => $customer->id,
+            //                 'team_user_id' =>$request->customer_id,
+            //                 'team_name' => $request->team_name[$n],
+            //                 'team_mobile' => $request->team_mobile[$n],
+            //                 'team_email' => $request->team_email[$n],
+                            
+            //             ]);
+            //     }
 
-        //          ]);
-        //          if ($address2Data) {
+            //     if ($teamData) {
+            
+            //         $query = 1;
+            //     }
+            //  }
 
-        //             $query = 1;
-        //         }
-        //  }
-
-        if (count($request->team_name) > 0 && count($request->team_mobile) > 0 && count($request->team_email) > 0) {
-            $detTeams = DB::table('tbl_teams')->where('customer_id', $customer->id)
-                ->where('team_user_id', $request->customer_id)->delete();
-            for ($n = 0; $n < count($request->team_name); $n++) {
-
-                //    echo  $request->team_name[$n];
-                //    pr($request->team_name);
-
-
-                $teamData = DB::table('tbl_teams')->insert(
-                    [
-                        'customer_id' => $customer->id,
-                        'team_user_id' => $request->customer_id,
-                        'team_name' => $request->team_name[$n],
-                        'team_mobile' => $request->team_mobile[$n],
-                        'team_email' => $request->team_email[$n],
 
                     ]
                 );

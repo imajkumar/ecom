@@ -31,61 +31,31 @@ if (Auth::user()->user_type == 0) {
 			border-radius: 50px;
 		}
 
-		.sidebar .nav>li.nav-profile>a {
-			/* margin: -20px; */
-			padding-left: 50px;
-			display: block;
-			color: #fff;
-			font-weight: 600;
-		}
-	</style>
-	<!-- begin customer #sidebar -->
-	<div id="sidebar" class="sidebar">
-		<!-- begin sidebar scrollbar -->
-		<div data-scrollbar="true" data-height="100%">
-			<!-- begin sidebar user -->
-			<ul class="nav">
-				<li class="nav-profile">
-					<a href="javascript:;" data-toggle="nav-profile">
-						<div class="cover with-shadow"></div>
-						<div class="image" id="pic">
-							<img src="{{$profil_pic}}" id="output" class="outputPic" alt="" />
 
-
-						</div>
-
-					</a>
-					<form method="post" id="saveProfilePic" enctype="multipart/form-data">
-						@csrf
-						<input type="file" name="customer_pic" id="customerPic" accept="image/*" onchange="loadFile(event)" hidden />
-
-					</form>
-				</li>
+					
+					
+				</ul>
+				<!-- end sidebar user -->
+				<!-- begin sidebar nav -->
+				<ul class="nav">
+					
+					
+					
+					
 
 
 
-			</ul>
-			<!-- end sidebar user -->
-			<!-- begin sidebar nav -->
-			<ul class="nav">
 
+					?>
+					<li class="active">
+						<a href="{{route('customerProfile')}}">
+							
+							<i class="icon-user"></i>
+							<span>MY PROFILE </span>
+						</a>
+						
+					</li>
 
-
-				<li class="active">
-					<a href="{{route('customerProfile')}}">
-
-						<i class="icon-user"></i>
-						<span>MY PROFILE </span>
-					</a>
-
-				</li>
-
-				{{-- Start code for menu show when pfofile is completed --}}
-				<?php
-
-				if (Auth::user()->profile == 1) {
-
-				?>
 					<li class="has-sub">
 						<a href="javascript:;">
 							<b class="caret"></b>
@@ -144,14 +114,17 @@ if (Auth::user()->user_type == 0) {
 
 					</li>
 
-					<li class="has-sub">
-						<a href="{{route('addresses')}}">
 
+					{{-- <li class="has-sub">
+						<a href="{{route('addresses')}}">
+							
 							<i class="fas fa-lg fa-fw m-r-10 fa-address-book"></i>
 							<span>ADDRESSES </span>
 						</a>
+						
+					</li> --}}
+					
 
-					</li>
 
 
 

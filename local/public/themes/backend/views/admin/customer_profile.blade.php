@@ -28,7 +28,7 @@ if(!empty($customer->profile_pic) )
                 <div class="profile-header-info">
                     <h4 class="mt-0 mb-1">{{ucfirst($customer->cutomer_fname)}} {{$customer->cutomer_lname}}</h4>
                     <p class="mb-2">Store name: {{$customerProfile->store_name}}</p>
-                    <a href="#" class="btn btn-xs btn-yellow">Edit Profile</a>
+                <a href="{{route('customerProfile')}}" class="btn btn-xs btn-yellow">Edit Profile</a>
                 </div>
                 <!-- END profile-header-info -->
             </div>
@@ -39,7 +39,7 @@ if(!empty($customer->profile_pic) )
                 <li class="nav-item"><a href="#profile-about" class="nav-link active" data-toggle="tab">ABOUT</a></li>
                 <li class="nav-item"><a href="#profile-business" class="nav-link" data-toggle="tab">BUSINESS</a></li>
                 <li class="nav-item"><a href="#profile-address" class="nav-link" data-toggle="tab">ADDRESS</a></li>
-                <li class="nav-item"><a href="#profile-team" class="nav-link" data-toggle="tab">TEAM</a></li>
+                {{-- <li class="nav-item"><a href="#profile-team" class="nav-link" data-toggle="tab">TEAM</a></li> --}}
                 <li class="nav-item"><a href="#profile-photos" class="nav-link" data-toggle="tab">DOCUMENTS</a></li>
                 {{-- <li class="nav-item"><a href="#profile-videos" class="nav-link" data-toggle="tab">VIDEOS</a></li>
                 <li class="nav-item"><a href="#profile-friends" class="nav-link active" data-toggle="tab">FRIENDS</a></li> --}}
@@ -49,194 +49,16 @@ if(!empty($customer->profile_pic) )
     </div>
     <!-- end profile -->
     <!-- begin profile-content -->
+<form action="{{route('updateCustomerProfileDetails')}}" method="post" id="updateCustomerProfileDetails">
+    
+    <input type="hidden" name="user_id" value="{{Auth::user()->id}}"/>
+    <input type="hidden" name="c_id" value="{{@$customerProfile->cust_id}}"/>
+    <input type="hidden" name="address_id" value="{{@$customerProfile->address_id}}"/>
+    <input type="hidden" name="docs_id" value="{{@$customerProfile->docs_id}}"/>
     <div class="profile-content">
         <!-- begin tab-content -->
         <div class="tab-content p-0">
-            <!-- begin #profile-post tab -->
-            {{-- <div class="tab-pane fade" id="profile-post">
-                <!-- begin timeline -->
-                <ul class="timeline">
-                    <li>
-                        <!-- begin timeline-time -->
-                        <div class="timeline-time">
-                            <span class="date">today</span>
-                            <span class="time">04:20</span>
-                        </div>
-                        <!-- end timeline-time -->
-                        <!-- begin timeline-icon -->
-                        <div class="timeline-icon">
-                            <a href="javascript:;">&nbsp;</a>
-                        </div>
-                        <!-- end timeline-icon -->
-                        <!-- begin timeline-body -->
-                        <div class="timeline-body">
-                            <div class="timeline-header">
-                                <span class="userimage"><img src="../assets/img/user/user-12.jpg" alt=""></span>
-                                <span class="username"><a href="javascript:;">Sean Ngu</a> <small></small></span>
-                                <span class="pull-right text-muted">18 Views</span>
-                            </div>
-                            <div class="timeline-content">
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.
-                                    Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis.
-                                </p>
-                            </div>
-                            <div class="timeline-likes">
-                                <div class="stats">
-                                    <span class="fa-stack fa-fw stats-icon">
-                                    <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                                    <i class="fa fa-heart fa-stack-1x fa-inverse t-plus-1"></i>
-                                    </span>
-                                    <span class="fa-stack fa-fw stats-icon">
-                                    <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                    <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                    <span class="stats-total">4.3k</span>
-                                </div>
-                                <div class="stats-right">
-                                    <span class="stats-text">259 Shares</span>
-                                    <span class="stats-text">21 Comments</span>
-                                </div>
-                            </div>
-                            <div class="timeline-footer">
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i> Like</a>
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-comments fa-fw fa-lg m-r-3"></i> Comment</a> 
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
-                            </div>
-                            <div class="timeline-comment-box">
-                                <div class="user"><img src="../assets/img/user/user-12.jpg"></div>
-                                <div class="input">
-                                    <form action="">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control rounded-corner" placeholder="Write a comment...">
-                                            <span class="input-group-btn p-l-10">
-                                            <button class="btn btn-primary f-s-12 rounded-corner" type="button">Comment</button>
-                                            </span>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end timeline-body -->
-                    </li>
-                    <li>
-                        <!-- begin timeline-time -->
-                        <div class="timeline-time">
-                            <span class="date">yesterday</span>
-                            <span class="time">20:17</span>
-                        </div>
-                        <!-- end timeline-time -->
-                        <!-- begin timeline-icon -->
-                        <div class="timeline-icon">
-                            <a href="javascript:;">&nbsp;</a>
-                        </div>
-                        <!-- end timeline-icon -->
-                        <!-- begin timeline-body -->
-                        <div class="timeline-body">
-                            <div class="timeline-header">
-                                <span class="userimage"><img src="../assets/img/user/user-12.jpg" alt=""></span>
-                                <span class="username">Sean Ngu</span>
-                                <span class="pull-right text-muted">82 Views</span>
-                            </div>
-                            <div class="timeline-content">
-                                <p>Location: United States</p>
-                                <div id="google-map" class="height-sm m-b-10" style="position: relative; overflow: hidden;"><div style="height: 100%; width: 100%; position: absolute; top: 0px; left: 0px; background-color: rgb(229, 227, 223);"><div class="gm-style" style="position: absolute; z-index: 0; left: 0px; top: 0px; height: 100%; width: 100%; padding: 0px; border-width: 0px; margin: 0px;"><div tabindex="0" style="position: absolute; z-index: 0; left: 0px; top: 0px; height: 100%; width: 100%; padding: 0px; border-width: 0px; margin: 0px; cursor: url(&quot;https://maps.gstatic.com/mapfiles/openhand_8_8.cur&quot;), default; touch-action: pan-x pan-y;"><div style="z-index: 1; position: absolute; left: 50%; top: 50%; width: 100%; transform: translate(0px, 0px);"><div style="position: absolute; left: 0px; top: 0px; z-index: 100; width: 100%;"><div style="position: absolute; left: 0px; top: 0px; z-index: 0;"><div style="position: absolute; z-index: 996; transform: matrix(1, 0, 0, 1, -191, -57);"><div style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px;"><div style="width: 256px; height: 256px;"></div></div><div style="position: absolute; left: -256px; top: 0px; width: 256px; height: 256px;"><div style="width: 256px; height: 256px;"></div></div><div style="position: absolute; left: -256px; top: -256px; width: 256px; height: 256px;"><div style="width: 256px; height: 256px;"></div></div><div style="position: absolute; left: 0px; top: -256px; width: 256px; height: 256px;"><div style="width: 256px; height: 256px;"></div></div><div style="position: absolute; left: 256px; top: -256px; width: 256px; height: 256px;"><div style="width: 256px; height: 256px;"></div></div><div style="position: absolute; left: 256px; top: 0px; width: 256px; height: 256px;"><div style="width: 256px; height: 256px;"></div></div></div></div></div><div style="position: absolute; left: 0px; top: 0px; z-index: 101; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 102; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 103; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 0;"><div style="position: absolute; z-index: 996; transform: matrix(1, 0, 0, 1, -191, -57);"><div style="position: absolute; left: 0px; top: 0px; width: 256px; height: 256px; transition: opacity 200ms linear 0s;"><img draggable="false" alt="" role="presentation" src="https://maps.googleapis.com/maps/vt?pb=!1m5!1m4!1i4!2i3!3i6!4i256!2m3!1e0!2sm!3i524245408!2m3!1e2!6m1!3e5!3m17!2sen-GB!3sUS!5e18!12m4!1e68!2m2!1sset!2sRoadmap!12m3!1e37!2m1!1ssmartmaps!12m4!1e26!2m2!1sstyles!2zcC5zOi02MHxwLmw6LTYw!4e0&amp;token=41332" style="width: 256px; height: 256px; user-select: none; border: 0px; padding: 0px; margin: 0px; max-width: none;"></div><div style="position: absolute; left: -256px; top: 0px; width: 256px; height: 256px; transition: opacity 200ms linear 0s;"><img draggable="false" alt="" role="presentation" src="https://maps.googleapis.com/maps/vt?pb=!1m5!1m4!1i4!2i2!3i6!4i256!2m3!1e0!2sm!3i524245408!2m3!1e2!6m1!3e5!3m17!2sen-GB!3sUS!5e18!12m4!1e68!2m2!1sset!2sRoadmap!12m3!1e37!2m1!1ssmartmaps!12m4!1e26!2m2!1sstyles!2zcC5zOi02MHxwLmw6LTYw!4e0&amp;token=120036" style="width: 256px; height: 256px; user-select: none; border: 0px; padding: 0px; margin: 0px; max-width: none;"></div><div style="position: absolute; left: -256px; top: -256px; width: 256px; height: 256px; transition: opacity 200ms linear 0s;"><img draggable="false" alt="" role="presentation" src="https://maps.googleapis.com/maps/vt?pb=!1m5!1m4!1i4!2i2!3i5!4i256!2m3!1e0!2sm!3i524245408!2m3!1e2!6m1!3e5!3m17!2sen-GB!3sUS!5e18!12m4!1e68!2m2!1sset!2sRoadmap!12m3!1e37!2m1!1ssmartmaps!12m4!1e26!2m2!1sstyles!2zcC5zOi02MHxwLmw6LTYw!4e0&amp;token=84342" style="width: 256px; height: 256px; user-select: none; border: 0px; padding: 0px; margin: 0px; max-width: none;"></div><div style="position: absolute; left: 0px; top: -256px; width: 256px; height: 256px; transition: opacity 200ms linear 0s;"><img draggable="false" alt="" role="presentation" src="https://maps.googleapis.com/maps/vt?pb=!1m5!1m4!1i4!2i3!3i5!4i256!2m3!1e0!2sm!3i524245408!2m3!1e2!6m1!3e5!3m17!2sen-GB!3sUS!5e18!12m4!1e68!2m2!1sset!2sRoadmap!12m3!1e37!2m1!1ssmartmaps!12m4!1e26!2m2!1sstyles!2zcC5zOi02MHxwLmw6LTYw!4e0&amp;token=5638" style="width: 256px; height: 256px; user-select: none; border: 0px; padding: 0px; margin: 0px; max-width: none;"></div><div style="position: absolute; left: 256px; top: -256px; width: 256px; height: 256px; transition: opacity 200ms linear 0s;"><img draggable="false" alt="" role="presentation" src="https://maps.googleapis.com/maps/vt?pb=!1m5!1m4!1i4!2i4!3i5!4i256!2m3!1e0!2sm!3i524245408!2m3!1e2!6m1!3e5!3m17!2sen-GB!3sUS!5e18!12m4!1e68!2m2!1sset!2sRoadmap!12m3!1e37!2m1!1ssmartmaps!12m4!1e26!2m2!1sstyles!2zcC5zOi02MHxwLmw6LTYw!4e0&amp;token=58005" style="width: 256px; height: 256px; user-select: none; border: 0px; padding: 0px; margin: 0px; max-width: none;"></div><div style="position: absolute; left: 256px; top: 0px; width: 256px; height: 256px; transition: opacity 200ms linear 0s;"><img draggable="false" alt="" role="presentation" src="https://maps.googleapis.com/maps/vt?pb=!1m5!1m4!1i4!2i4!3i6!4i256!2m3!1e0!2sm!3i524245408!2m3!1e2!6m1!3e5!3m17!2sen-GB!3sUS!5e18!12m4!1e68!2m2!1sset!2sRoadmap!12m3!1e37!2m1!1ssmartmaps!12m4!1e26!2m2!1sstyles!2zcC5zOi02MHxwLmw6LTYw!4e0&amp;token=93699" style="width: 256px; height: 256px; user-select: none; border: 0px; padding: 0px; margin: 0px; max-width: none;"></div></div></div></div><div class="gm-style-pbc" style="z-index: 2; position: absolute; height: 100%; width: 100%; padding: 0px; border-width: 0px; margin: 0px; left: 0px; top: 0px; opacity: 0;"><p class="gm-style-pbt"></p></div><div style="z-index: 3; position: absolute; height: 100%; width: 100%; padding: 0px; border-width: 0px; margin: 0px; left: 0px; top: 0px; touch-action: pan-x pan-y;"><div style="z-index: 4; position: absolute; left: 50%; top: 50%; width: 100%; transform: translate(0px, 0px);"><div style="position: absolute; left: 0px; top: 0px; z-index: 104; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 105; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 106; width: 100%;"></div><div style="position: absolute; left: 0px; top: 0px; z-index: 107; width: 100%;"></div></div></div></div><iframe aria-hidden="true" frameborder="0" tabindex="-1" style="z-index: -1; position: absolute; width: 100%; height: 100%; top: 0px; left: 0px; border: none;"></iframe><div style="margin-left: 5px; margin-right: 5px; z-index: 1000000; position: absolute; left: 0px; bottom: 0px;"><a target="_blank" rel="noopener" href="https://maps.google.com/maps?ll=37.09024,-95.712891&amp;z=4&amp;t=m&amp;hl=en-GB&amp;gl=US&amp;mapclient=apiv3" title="Open this area in Google Maps (opens a new window)" style="position: static; overflow: visible; float: none; display: inline;"><div style="width: 66px; height: 26px; cursor: pointer;"><img alt="" src="https://maps.gstatic.com/mapfiles/api-3/images/google4.png" draggable="false" style="position: absolute; left: 0px; top: 0px; width: 66px; height: 26px; user-select: none; border: 0px; padding: 0px; margin: 0px;"></div></a></div><div style="background-color: white; padding: 15px 21px; border: 1px solid rgb(171, 171, 171); font-family: Roboto, Arial, sans-serif; color: rgb(34, 34, 34); box-sizing: border-box; box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px; z-index: 10000002; display: none; width: 300px; height: 180px; position: absolute; left: 149px; top: 60px;"><div style="padding: 0px 0px 10px; font-size: 16px; box-sizing: border-box;">Map Data</div><div style="font-size: 13px;">Map data ©2020 Google, INEGI</div><button draggable="false" title="Close" aria-label="Close" type="button" class="gm-ui-hover-effect" style="background: none; display: block; border: 0px; margin: 0px; padding: 0px; position: absolute; cursor: pointer; user-select: none; top: 0px; right: 0px; width: 37px; height: 37px;"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224px%22%20height%3D%2224px%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23000000%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M19%206.41L17.59%205%2012%2010.59%206.41%205%205%206.41%2010.59%2012%205%2017.59%206.41%2019%2012%2013.41%2017.59%2019%2019%2017.59%2013.41%2012z%22%2F%3E%0A%20%20%20%20%3Cpath%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%0A%3C%2Fsvg%3E%0A" style="pointer-events: none; display: block; width: 13px; height: 13px; margin: 12px;"></button></div><div class="gmnoprint" style="z-index: 1000001; position: absolute; right: 71px; bottom: 0px; width: 150px;"><div draggable="false" class="gm-style-cc" style="user-select: none; height: 14px; line-height: 14px;"><div style="opacity: 0.7; width: 100%; height: 100%; position: absolute;"><div style="width: 1px;"></div><div style="background-color: rgb(245, 245, 245); width: auto; height: 100%; margin-left: 1px;"></div></div><div style="position: relative; padding-right: 6px; padding-left: 6px; box-sizing: border-box; font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); white-space: nowrap; direction: ltr; text-align: right; vertical-align: middle; display: inline-block;"><a style="text-decoration: none; cursor: pointer; display: none;">Map Data</a><span>Map data ©2020 Google, INEGI</span></div></div></div><div class="gmnoscreen" style="position: absolute; right: 0px; bottom: 0px;"><div style="font-family: Roboto, Arial, sans-serif; font-size: 11px; color: rgb(68, 68, 68); direction: ltr; text-align: right; background-color: rgb(245, 245, 245);">Map data ©2020 Google, INEGI</div></div><div class="gmnoprint gm-style-cc" draggable="false" style="z-index: 1000001; user-select: none; height: 14px; line-height: 14px; position: absolute; right: 0px; bottom: 0px;"><div style="opacity: 0.7; width: 100%; height: 100%; position: absolute;"><div style="width: 1px;"></div><div style="background-color: rgb(245, 245, 245); width: auto; height: 100%; margin-left: 1px;"></div></div><div style="position: relative; padding-right: 6px; padding-left: 6px; box-sizing: border-box; font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); white-space: nowrap; direction: ltr; text-align: right; vertical-align: middle; display: inline-block;"><a href="https://www.google.com/intl/en-GB_US/help/terms_maps.html" target="_blank" rel="noopener" style="text-decoration: none; cursor: pointer; color: rgb(68, 68, 68);">Terms of Use</a></div></div><button draggable="false" title="Toggle fullscreen view" aria-label="Toggle fullscreen view" type="button" class="gm-control-active gm-fullscreen-control" style="background: none rgb(255, 255, 255); border: 0px; margin: 10px; padding: 0px; position: absolute; cursor: pointer; user-select: none; border-radius: 2px; height: 40px; width: 40px; box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; overflow: hidden; display: none; top: 0px; right: 0px;"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%20018%2018%22%3E%0A%20%20%3Cpath%20fill%3D%22%23666%22%20d%3D%22M0%2C0v2v4h2V2h4V0H2H0z%20M16%2C0h-4v2h4v4h2V2V0H16z%20M16%2C16h-4v2h4h2v-2v-4h-2V16z%20M2%2C12H0v4v2h2h4v-2H2V12z%22%2F%3E%0A%3C%2Fsvg%3E%0A" style="height: 18px; width: 18px;"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2018%2018%22%3E%0A%20%20%3Cpath%20fill%3D%22%23333%22%20d%3D%22M0%2C0v2v4h2V2h4V0H2H0z%20M16%2C0h-4v2h4v4h2V2V0H16z%20M16%2C16h-4v2h4h2v-2v-4h-2V16z%20M2%2C12H0v4v2h2h4v-2H2V12z%22%2F%3E%0A%3C%2Fsvg%3E%0A" style="height: 18px; width: 18px;"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2218%22%20height%3D%2218%22%20viewBox%3D%220%200%2018%2018%22%3E%0A%20%20%3Cpath%20fill%3D%22%23111%22%20d%3D%22M0%2C0v2v4h2V2h4V0H2H0z%20M16%2C0h-4v2h4v4h2V2V0H16z%20M16%2C16h-4v2h4h2v-2v-4h-2V16z%20M2%2C12H0v4v2h2h4v-2H2V12z%22%2F%3E%0A%3C%2Fsvg%3E%0A" style="height: 18px; width: 18px;"></button><div draggable="false" class="gm-style-cc" style="user-select: none; height: 14px; line-height: 14px; display: none; position: absolute; right: 0px; bottom: 0px;"><div style="opacity: 0.7; width: 100%; height: 100%; position: absolute;"><div style="width: 1px;"></div><div style="background-color: rgb(245, 245, 245); width: auto; height: 100%; margin-left: 1px;"></div></div><div style="position: relative; padding-right: 6px; padding-left: 6px; box-sizing: border-box; font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); white-space: nowrap; direction: ltr; text-align: right; vertical-align: middle; display: inline-block;"><a target="_blank" rel="noopener" title="Report errors in the road map or imagery to Google" href="https://www.google.com/maps/@37.09024,-95.712891,4z/data=!10m1!1e1!12b1?source=apiv3&amp;rapsrc=apiv3" style="font-family: Roboto, Arial, sans-serif; font-size: 10px; color: rgb(68, 68, 68); text-decoration: none; position: relative;">Report a map error</a></div></div></div></div><div style="background-color: white; font-weight: 500; font-family: Roboto, sans-serif; padding: 15px 25px; box-sizing: border-box; top: 5px; border: 1px solid rgba(0, 0, 0, 0.12); border-radius: 5px; left: 50%; max-width: 375px; position: absolute; transform: translateX(-50%); width: calc(100% - 10px); z-index: 1;"><div><img alt="" src="https://maps.gstatic.com/mapfiles/api-3/images/google_gray.svg" draggable="false" style="padding: 0px; margin: 0px; border: 0px; height: 17px; vertical-align: middle; width: 52px; user-select: none;"></div><div style="line-height: 20px; margin: 15px 0px;"><span style="color: rgba(0, 0, 0, 0.87); font-size: 14px;">This page can't load Google Maps correctly.</span></div><table style="width: 100%;"><tr><td style="line-height: 16px; vertical-align: middle;"><a href="https://developers.google.com/maps/documentation/javascript/error-messages?utm_source=maps_js&amp;utm_medium=degraded&amp;utm_campaign=keyless#api-key-and-billing-errors" target="_blank" rel="noopener" style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Do you own this website?</a></td><td style="text-align: right;"><button class="dismissButton">OK</button></td></tr></table></div></div>
-                            </div>
-                            <div class="timeline-footer">
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i> Like</a>
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-comments fa-fw fa-lg m-r-3"></i> Comment</a> 
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
-                            </div>
-                        </div>
-                        <!-- end timeline-body -->
-                    </li>
-                    <li>
-                        <!-- begin timeline-time -->
-                        <div class="timeline-time">
-                            <span class="date">24 February 2014</span>
-                            <span class="time">08:17</span>
-                        </div>
-                        <!-- end timeline-time -->
-                        <!-- begin timeline-icon -->
-                        <div class="timeline-icon">
-                            <a href="javascript:;">&nbsp;</a>
-                        </div>
-                        <!-- end timeline-icon -->
-                        <!-- begin timeline-body -->
-                        <div class="timeline-body">
-                            <div class="timeline-header">
-                                <span class="userimage"><img src="../assets/img/user/user-12.jpg" alt=""></span>
-                                <span class="username">Sean Ngu</span>
-                                <span class="pull-right text-muted">1,282 Views</span>
-                            </div>
-                            <div class="timeline-content">
-                                <p class="lead">
-                                    <i class="fa fa-quote-left fa-fw pull-left"></i>
-                                    Quisque sed varius nisl. Nulla facilisi. Phasellus consequat sapien sit amet nibh molestie placerat. Donec nulla quam, ullamcorper ut velit vitae, lobortis condimentum magna. Suspendisse mollis in sem vel mollis.
-                                    <i class="fa fa-quote-right fa-fw pull-right"></i>
-                                </p>
-                            </div>
-                            <div class="timeline-footer">
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i> Like</a>
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-comments fa-fw fa-lg m-r-3"></i> Comment</a> 
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
-                            </div>
-                        </div>
-                        <!-- end timeline-body -->
-                    </li>
-                    <li>
-                        <!-- begin timeline-time -->
-                        <div class="timeline-time">
-                            <span class="date">10 January 2014</span>
-                            <span class="time">20:43</span>
-                        </div>
-                        <!-- end timeline-time -->
-                        <!-- begin timeline-icon -->
-                        <div class="timeline-icon">
-                            <a href="javascript:;">&nbsp;</a>
-                        </div>
-                        <!-- end timeline-icon -->
-                        <!-- begin timeline-body -->
-                        <div class="timeline-body">
-                            <div class="timeline-header">
-                                <span class="userimage"><img src="../assets/img/user/user-12.jpg" alt=""></span>
-                                <span class="username">Sean Ngu</span>
-                                <span class="pull-right text-muted">1,021,282 Views</span>
-                            </div>
-                            <div class="timeline-content">
-                                <h4 class="template-title">
-                                    <i class="fa fa-map-marker-alt text-danger fa-fw"></i>
-                                    795 Folsom Ave, Suite 600 San Francisco, CA 94107
-                                </h4>
-                                <p>In hac habitasse platea dictumst. Pellentesque bibendum id sem nec faucibus. Maecenas molestie, augue vel accumsan rutrum, massa mi rutrum odio, id luctus mauris nibh ut leo.</p>
-                                <p class="m-t-20">
-                                    <img src="../assets/img/gallery/gallery-5.jpg" alt="">
-                                </p>
-                            </div>
-                            <div class="timeline-footer">
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i> Like</a>
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-comments fa-fw fa-lg m-r-3"></i> Comment</a> 
-                                <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
-                            </div>
-                        </div>
-                        <!-- end timeline-body -->
-                    </li>
-                    <li>
-                        <!-- begin timeline-icon -->
-                        <div class="timeline-icon">
-                            <a href="javascript:;">&nbsp;</a>
-                        </div>
-                        <!-- end timeline-icon -->
-                        <!-- begin timeline-body -->
-                        <div class="timeline-body">
-                            Loading...
-                        </div>
-                        <!-- begin timeline-body -->
-                    </li>
-                </ul>
-                <!-- end timeline -->
-            </div> --}}
-            <!-- end #profile-post tab -->
+            
             <!-- begin #profile-about tab -->
             <div class="tab-pane fade active show" id="profile-about">
                 <!-- begin table -->
@@ -249,25 +71,40 @@ if(!empty($customer->profile_pic) )
                                 <td colspan="2"></td>
                             </tr>
                             <tr>
-                                <td class="field">First Name</td>
-                                <td>{{$customerProfile->cutomer_fname}}</td>
+                                <td class="field">First Name<span class="required-star">* </span>: </td>
+                                <td>
+                                    {{-- {{$customerProfile->cutomer_fname}} --}}
+                                    <input class="form-control" type="text" id="cutomer_fname" name="cutomer_fname" value="{{@$customerProfile->cutomer_fname}}" placeholder="Please enter first name" data-parsley-required="true">
+                                </td>
                             </tr>
                             <tr>
-                                <td class="field">Last Name</td>
-                                <td>{{$customerProfile->cutomer_lname}}</td>
+                                <td class="field">Last Name<span class="required-star">* </span>: </td>
+                                <td>
+                                    {{-- {{$customerProfile->cutomer_lname}} --}}
+                                    <input class="form-control" type="text" id="cutomer_lname" name="cutomer_lname" value="{{@$customerProfile->cutomer_lname}}" placeholder="Please enter last name" data-parsley-required="true">
+
+                                </td>
                             </tr>
                             <tr>
-                                <td class="field">Mobile Number </td>
+                                <td class="field">Mobile Number<span class="required-star">* </span>: </td>
                                 <?php 
                                     ///$user = DB::table('users')->where('id', $customerProfile->user_id)->first();
                                     $user = get_user_by_user_id($customerProfile->user_id);
                                 ?>
-                                <td>{{$user['mobile']}}</td>
+                                <td>
+                                    {{-- {{$user['mobile']}} --}}
+                                    <input class="form-control" type="text" id="phone" name="mobile" value="{{Auth::user()->mobile}}" {{(Auth::user()->mobile)? 'readonly':''}} placeholder="Please enter phone number" data-parsley-required="true">
+
+                                </td>
                             </tr>
                             <tr>
-                                <td class="field">Email Address </td>
+                                <td class="field">Email Address<span class="required-star">* </span>: </td>
                                 
-                                <td>{{$user['email']}}</td>
+                                <td>
+                                    {{-- {{$user['email']}} --}}
+                                    <input class="form-control" type="email" id="email" name="email" value="{{Auth::user()->email}}" {{(Auth::user()->email)? 'readonly':''}} placeholder="Please enter your email" data-parsley-required="true">
+
+                                </td>
                             </tr>
                             
                             {{-- <tr class="highlight">
@@ -293,40 +130,73 @@ if(!empty($customer->profile_pic) )
                                 <td colspan="2"></td>
                             </tr>
                             <tr>
-                                <td class="field">Store name:</td>
-                                <td>{{$customerProfile->store_name}}</td>
+                                <td class="field">Store name<span class="required-star">* </span>:</td>
+                                <td>
+                                    {{-- {{$customerProfile->store_name}} --}}
+                                    <input class="form-control" type="text" id="store_name" name="store_name"  value="{{@$customerProfile->store_name}}" placeholder="Please enter your store name" data-parsley-required="true">
+
+                                </td>
                             </tr>
                             <tr>
-                                <td class="field">Customer Type:</td>
-                                <td>{{($customerProfile->customer_type == 1)? 'Dealer':(($customerProfile->customer_type==2)? 'Wholesale':'Distibuter')}}</td>
+                                <td class="field">Customer Type<span class="required-star">* </span>: </td>
+                                <td>
+                                    {{-- {{($customerProfile->customer_type == 1)? 'Dealer':(($customerProfile->customer_type==2)? 'Wholesale':'Distibuter')}} --}}
+                                    <select class="form-control" id="customer_type" name="customer_type" placeholder="Please select customer type">
+                                        <option value="">Please select customer type</option>
+                                        <option value="1" {{(@$customerProfile->customer_type == 1)? 'selected':''}}>Dealer</option>
+                                        <option value="2" {{(@$customerProfile->customer_type == 2)? 'selected':''}}>Wholesale</option>
+                                        <option value="3" {{(@$customerProfile->customer_type == 3)? 'selected':''}}>Distibuter</option>
+                                    </select>
+                                </td>
                             </tr>
-                            <tr>
-                                <td class="field">Countryr: </td>
+                            {{-- <tr>
+                                <td class="field">Country: </td>
                                 
-                                <td>{{$customerProfile->business_country}}</td>
-                            </tr>
-                            <tr>
+                                <td>
+                                    <select class="form-control" id="business_country" name="business_country" placeholder="Please select country" data-parsley-required="true">
+                                        <option value="">Please select country</option>
+                                        <option value="India" {{(@$customerProfile->business_country == 'India')? 'selected':''}}>India</option>
+                                        <option value="Pakistan" {{(@$customerProfile->business_country == 'Pakistan')? 'selected':''}}>Pakistan</option>
+                                        
+                                    </select>
+                                </td>
+                            </tr> --}}
+                            {{-- <tr>
                                 <td class="field">State:</td>
                                 
-                                <td>{{$customerProfile->business_state}}</td>
-                            </tr>
-                            <tr>
+                                <td>
+                                     <select class="form-control" id="business_state" name="business_state" placeholder="Please select state" data-parsley-required="true">
+                                        <option value="">Please select state</option>
+                                        <option value="up" {{(@$customerProfile->business_state == 'up')? 'selected':''}}>UP</option>
+                                        <option value="bihar" {{(@$customerProfile->business_state == 'bihar')? 'selected':''}}>Bihar</option>
+                                    </select>
+                                </td>
+                            </tr> --}}
+                            {{-- <tr>
                                 <td class="field">City: </td>
                                 
-                                <td>{{$customerProfile->business_city}}</td>
-                            </tr>
-                            <tr>
+                                <td>
+                                    <input class="form-control" type="text" id="business_city" name="business_city" value="{{ @$customerProfile->business_city }}" placeholder="Please enter city" data-parsley-required="true">
+
+                                </td>
+                            </tr> --}}
+                            {{-- <tr>
                                 <td class="field">Postal Code: </td>
                                 
-                                <td>{{$customerProfile->business_postal_code}}</td>
-                            </tr>
+                                <td>
+                                    
+                                    <input class="form-control" type="text" id="business_postal_code" name="business_postal_code" value="{{ @$customerProfile->business_postal_code }}" placeholder="Please enter postal code" data-parsley-required="true">
+
+                                </td>
+                            </tr> --}}
                             
                                 
-                                <?php if($customerProfile->parent_code){?>
+                                <?php /*if($customerProfile->parent_code){?>
                             <tr>
                                     <td class="field">Parent organization: </td>
                                 <td>
                                     <span class="badge badge-md badge-success">Yes</span><br>
+                                    {{-- <input class="form-control" type="checkbox" id="parent_code" {{(@$customerProfile->parent_code)? 'checked':'' }} value="1" name="parent_code"> --}}
                                     
 
                                 </td>
@@ -346,7 +216,7 @@ if(!empty($customer->profile_pic) )
                                     <td><span class="badge badge-md badge-success">No</span></td>
                                     
                                 </tr>
-                                <?php }?>
+                                <?php } */?>
                             
                             {{-- <tr class="highlight">
                                 <td class="field">&nbsp;</td>
@@ -371,42 +241,81 @@ if(!empty($customer->profile_pic) )
                                 <td colspan="2"></td>
                             </tr>
                             <tr>
-                                <td class="field">First name:</td>
-                                <td>{{$customerProfile->f_name}}</td>
+                                <td class="field">First name<span class="required-star">* </span>:</td>
+                                <td>
+                                    {{-- {{$customerProfile->f_name}} --}}
+                                    <input type="text" name="f_name" value="{{@$customerProfile->f_name}}" placeholder="Please enter first name" class="form-control"  data-parsley-required="true"/>
+
+                                </td>
                             </tr>
                             <tr>
-                                <td class="field">Last name:</td>
-                                <td>{{$customerProfile->l_name}}</td>
+                                <td class="field">Last name<span class="required-star">* </span>: </td>
+                                <td>
+                                    {{-- {{$customerProfile->l_name}} --}}
+                                    <input type="text" name="l_name" value="{{@$customerProfile->l_name}}" placeholder="Please enter last name" class="form-control"  data-parsley-required="true"/>
+
+                                </td>
                             </tr>
                             
                             <tr>
-                                <td class="field">Address : </td>
+                                <td class="field">Address<span class="required-star">* </span>: </td>
                                 
-                                <td>{{$customerProfile->street_address}}</td>
+                                <td>
+                                    {{-- {{$customerProfile->street_address}} --}}
+                                    <input class="form-control" type="text" id="street_address" name="street_address" value="{{@$customerProfile->street_address}}" placeholder="Please enter address" data-parsley-required="true">
+
+                                </td>
                             </tr>
                             <tr>
-                                <td class="field">Countryr: </td>
+                                <td class="field">Country<span class="required-star">* </span>: </td>
                                 
-                                <td>{{$customerProfile->country}}</td>
+                                <td>
+                                    {{-- {{$customerProfile->country}} --}}
+                                    <select class="form-control" id="country" name="country" placeholder="Please select your country" data-parsley-required="true">
+                                        <option value="">Please select your country</option>
+                                        <option value="India" {{(@$customerProfile->country == 'India')? 'selected':''}}>India</option>
+                                        <option value="Pakistan" {{(@$customerProfile->country == 'Pakistan')? 'selected':''}}>Pakistan</option>
+                                        
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
-                                <td class="field">State:</td>
+                                <td class="field">State<span class="required-star">* </span>: </td>
                                 
-                                <td>{{$customerProfile->state}}</td>
+                                <td>
+                                    {{-- {{$customerProfile->state}} --}}
+                                    <select class="form-control" id="state" name="state" placeholder="Please select state" data-parsley-required="true">
+                                        <option value="">Please select state</option>
+                                        <option value="up" {{(@$customerProfile->state == 'up')? 'selected':''}}>UP</option>
+                                        <option value="bihar" {{(@$customerProfile->state == 'bihar')? 'selected':''}}>Bihar</option>
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
-                                <td class="field">City: </td>
+                                <td class="field">City<span class="required-star">* </span>: </td>
                                 
-                                <td>{{$customerProfile->city}}</td>
+                                <td>
+                                    {{-- {{$customerProfile->city}} --}}
+                                    <input class="form-control" type="text" id="city" name="city" value="{{ @$customerProfile->city }}" placeholder="Please enter your city" data-parsley-required="true">
+
+                                </td>
                             </tr>
                             <tr>
-                                <td class="field">Postal Code: </td>
+                                <td class="field">Postal Code<span class="required-star">* </span>: </td>
                                 
-                                <td>{{$customerProfile->business_postal_code}}</td>
+                                <td>
+                                    {{-- {{$customerProfile->business_postal_code}} --}}
+                                    <input class="form-control" type="text" id="postal_code" name="postal_code" value="{{ @$customerProfile->postal_code }}" placeholder="Please enter your postal code" data-parsley-required="true">
+
+                                </td>
                             </tr>
                             <tr>
-                                <td class="field">GSTIN: </td>
-                                <td>{{$customerProfile->gst_number}}</td>
+                                <td class="field">GSTIN<span class="required-star">* </span>: </td>
+                                <td>
+                                    {{-- {{$customerProfile->gst_number}} --}}
+                                    <input class="form-control" type="text" id="gst_number" name="gst_number" value="{{ @$customerProfile->gst_number }}" placeholder="Please enter your GSTIN">
+
+                                </td>
                             </tr>
                             
                             {{-- <tr class="highlight">
@@ -421,7 +330,7 @@ if(!empty($customer->profile_pic) )
                 </div>
                 <!-- end table -->
             </div>
-            <div class="tab-pane fade" id="profile-team">
+            {{-- <div class="tab-pane fade" id="profile-team">
                 <!-- begin table -->
                 <div class="table-responsive form-inline">
                     <table class="table table-profile">
@@ -457,7 +366,7 @@ if(!empty($customer->profile_pic) )
                     </table>
                 </div>
                 <!-- end table -->
-            </div>
+            </div> --}}
             <!-- end #profile-about tab -->
             <!-- begin #profile-photos tab -->
             <div class="tab-pane fade" id="profile-photos" data-init="true">
@@ -467,12 +376,12 @@ if(!empty($customer->profile_pic) )
                         
                             
 
-                            <th class="field">GST Certificate:</th>
+                            <th class="field">GST Certificate<span class="required-star">* </span>:</th>
                             
-                            <th class="field">Shop establishment license:</th>
-                            <th class="field">MSME udyog adhar:</th>
-                            <th class="field">FSSAI certificate:</th>
-                            <th class="field">Trade certificate:</th>
+                            <th class="field">Shop establishment license<span class="required-star">* </span>:</th>
+                            <th class="field">MSME udyog adhar<span class="required-star">* </span>:</th>
+                            <th class="field">FSSAI certificate<span class="required-star">* </span>:</th>
+                            <th class="field">Trade certificate<span class="required-star">* </span>:</th>
                             
                             
                         
@@ -486,6 +395,10 @@ if(!empty($customer->profile_pic) )
                                 <img src="{{(@$customerProfile->gst_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->gst_certificate) : $default_certificate}}" width="70%" height="70%"/>
                             </a>
                         <?php }?>
+
+                        <input type="file" class="docsValidation" name="gst_certificate"  placeholder="Please upload GST certificate"/>
+                        <input type="hidden" name="gst_certificate_old"  value="{{@$customerProfile->gst_certificate}}"/>
+                    
                     </td>
                 
                 
@@ -498,6 +411,9 @@ if(!empty($customer->profile_pic) )
                                 <img src="{{(@$customerProfile->shop_establishment_license)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->shop_establishment_license) : $default_certificate}}" width="70%" height="70%"/>
                             </a> 
                         <?php }?>
+
+                        <input type="file" class="docsValidation" name="shop_establishment_license"  placeholder="Please upload shop establishment license"/>
+                        <input type="hidden" name="shop_establishment_license_old"  value="{{@$customerProfile->shop_establishment_license}}"/>
                     </td>
                     <td>
                         
@@ -506,6 +422,8 @@ if(!empty($customer->profile_pic) )
                                 <img src="{{(@$customerProfile->msme_udyog_adhar)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->msme_udyog_adhar) : $default_certificate}}" width="70%" height="70%"/>
                             </a>
                         <?php }?>
+                        <input type="file" class="docsValidation" name="msme_udyog_adhar"  placeholder="Please upload MSME Registration/Udyog Adhaar"/>
+                        <input type="hidden" name="msme_udyog_adhar_old"  value="{{@$customerProfile->msme_udyog_adhar}}"/>
                     </td>
                     <td>
                         
@@ -514,6 +432,8 @@ if(!empty($customer->profile_pic) )
                                 <img src="{{(@$customerProfile->FSSAI_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->FSSAI_certificate) : $default_certificate}}" width="70%" height="70%"/>
                             </a>
                         <?php }?>
+                        <input type="file" class="docsValidation" name="FSSAI_certificate"  placeholder="Please upload FSSAI certificate"/>
+                        <input type="hidden" name="FSSAI_certificate_old"  value="{{@$customerProfile->FSSAI_certificate}}"/>
                     </td>
                     <td>
                         
@@ -523,8 +443,18 @@ if(!empty($customer->profile_pic) )
                                 <img src="{{(@$customerProfile->Trade_certificate)? asset('/'.ITEM_IMG_PATH.'/'.@$customerProfile->Trade_certificate) : $default_certificate}}" width="70%" height="70%"/>
                             </a>
                         <?php }?>
+                        <input type="file" class="docsValidation" name="Trade_certificate" id="Trade_certificate"  placeholder="Please upload Trade certificate"/>
+                        <input type="hidden" name="Trade_certificate_old"  value="{{@$customerProfile->Trade_certificate}}"/>
                     </td>
                 </tr>
+                
+                {{-- <tr class="highlight">
+                                <td class="field">&nbsp;</td>
+                                <td class="p-t-10 p-b-10">
+                                    <button type="submit" class="btn btn-primary width-150">Update</button>
+                                    <button type="submit" class="btn btn-white btn-white-without-border width-150 m-l-5">Cancel</button>
+                                </td>
+                            </tr> --}}
             </tbody>
             </table>
                 <!-- begin superbox -->
@@ -951,6 +881,10 @@ if(!empty($customer->profile_pic) )
                     </div>
                 <div class="superbox-float"></div></div> --}}
                 <!-- end superbox -->
+                <div class="" id="updateCustomerPro" style="margin-left: 373px; margin-top: 151px;">
+                    <button type="submit" class="btn btn-primary width-150">Update</button>
+                    {{-- <button type="submit" class="btn btn-white btn-white-without-border width-150 m-l-5">Cancel</button> --}}
+                </div>
             </div>
             <!-- end #profile-photos tab -->
             <!-- begin #profile-videos tab -->
@@ -1463,6 +1397,9 @@ if(!empty($customer->profile_pic) )
             <!-- end #profile-friends tab -->
         </div>
         <!-- end tab-content -->
+        
     </div>
+    
+</form>
     <!-- end profile-content -->
 </div>

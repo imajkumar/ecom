@@ -40,7 +40,7 @@
                         <!-- end breadcrumb -->
                         <!-- begin page-header -->
                         
-                    <h1 class="page-header form-layout">Customer <small>{{($customerProfile->status == 0)? 'Pending':(($customerProfile->status == 2)? 'Rejected':'Approved')}}</small></h1>
+                    <h1 class="page-header form-layout">Customer <small>{{($customerProfile->status == 0)? 'Pending':(($customerProfile->status == 2)? 'Rejected':(($customerProfile->status == 3)? 'Updated':'Approve'))}}</small></h1>
                         <!-- end page-header -->
                         <!-- begin wizard-form -->
                        
@@ -81,7 +81,7 @@
                                             </span>
                                         </a>
                                     </li>
-                                    <li>
+                                    {{-- <li>
                                         <a href="#step-4">
                                             <span class="number">4</span> 
                                             <span class="info">
@@ -89,7 +89,7 @@
                                                 <small>Enter your Team Info</small>
                                             </span>
                                         </a>
-                                    </li>
+                                    </li> --}}
                                     <li>
                                         <a href="#step-5">
                                             <span class="number">5</span> 
@@ -239,7 +239,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row m-b-10">
+                                                    {{-- <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label" for="business_country">Country <span class="required-star">* </span></label>
                                                         <div class="col-lg-9 col-xl-6">
                                                             <select class="form-control" id="business_country" name="business_country" placeholder="Please select country" data-parsley-required="true">
@@ -286,7 +286,7 @@
                                                             }
                                                         </style>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                     
                                                     {{-- <div class="form-group row m-b-10">
                                                         <label class="col-lg-3 text-lg-right col-form-label">Email Address <span class="required-star">* </span></label>
@@ -389,7 +389,7 @@
                                                     </div>
 
                                                     {{-- <h2>Address 2</h2> --}}
-{{-- 
+                                                    {{-- 
                                                     <?php
                                                     $addressSecound = DB::table('tbl_addresses')->where('customer_id', @$customerProfile->cust_id)
                                                                 ->where('address_user_id', $user->id)
@@ -430,7 +430,7 @@
                                        
                                     </div>
                                     <!-- end step-3 -->
-                                    <div id="step-4">
+                                    {{-- <div id="step-4">
                                         
                                         <fieldset>
                                            
@@ -471,9 +471,7 @@
                                                        }
                                                     ?>
 
-                                                        {{-- <button type="button" id="AddMoreTeam" class="btn btn-primary pull-right">
-                                                            Add More
-                                                        </button> --}}
+                                                        
 
                                                     </div>
                                                     
@@ -485,7 +483,7 @@
                                            
                                         </fieldset>
                                        
-                                    </div>
+                                    </div> --}}
                                     <div id="step-5">
                                         
                                         <fieldset>

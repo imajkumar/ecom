@@ -81,11 +81,12 @@ class CustomerController extends Controller
             $query = 1;
         }
         
-        if($request->parent_code){
-             $parent_code = get_unique_code();
-        }else{
-            $parent_code = '';
-        }
+        $parent_code = get_unique_code();
+        // if($request->parent_code){
+        //      $parent_code = get_unique_code();
+        // }else{
+        //     $parent_code = '';
+        // }
 
         $customer = DB::table('tbl_customers')->where('user_id', $request->customer_id)->first();
 
@@ -95,10 +96,10 @@ class CustomerController extends Controller
                 'customer_id' => $customer->id,
             ],[
             'store_name' => $request->store_name,
-            'business_country' => $request->business_country,
-            'business_state' => $request->business_state,
-            'business_city' => $request->business_city,
-            'business_postal_code' => $request->business_postal_code,
+            //'business_country' => $request->business_country,
+            //'business_state' => $request->business_state,
+            //'business_city' => $request->business_city,
+            //'business_postal_code' => $request->business_postal_code,
             'parent_code' => $parent_code,
         ]);
 
@@ -165,33 +166,37 @@ class CustomerController extends Controller
             //         }
             //  }
 
-             if(count($request->team_name) > 0 && count($request->team_mobile) > 0 && count($request->team_email) > 0)
-             {
-                $detTeams = DB::table('tbl_teams')->where('customer_id', $customer->id)
-                ->where('team_user_id', $request->customer_id)->delete();
-                for($n = 0; $n < count($request->team_name); $n++)
-                {
 
-                //    echo  $request->team_name[$n];
-                //    pr($request->team_name);
+
+            // Start code for team
+            //  if(count($request->team_name) > 0 && count($request->team_mobile) > 0 && count($request->team_email) > 0)
+            //  {
+            //     $detTeams = DB::table('tbl_teams')->where('customer_id', $customer->id)
+            //     ->where('team_user_id', $request->customer_id)->delete();
+            //     for($n = 0; $n < count($request->team_name); $n++)
+            //     {
+
+            //     //    echo  $request->team_name[$n];
+            //     //    pr($request->team_name);
                     
 
-                    $teamData = DB::table('tbl_teams')->insert(
-                        [
-                            'customer_id' => $customer->id,
-                            'team_user_id' =>$request->customer_id,
-                            'team_name' => $request->team_name[$n],
-                            'team_mobile' => $request->team_mobile[$n],
-                            'team_email' => $request->team_email[$n],
+            //         $teamData = DB::table('tbl_teams')->insert(
+            //             [
+            //                 'customer_id' => $customer->id,
+            //                 'team_user_id' =>$request->customer_id,
+            //                 'team_name' => $request->team_name[$n],
+            //                 'team_mobile' => $request->team_mobile[$n],
+            //                 'team_email' => $request->team_email[$n],
                             
-                        ]);
-                }
+            //             ]);
+            //     }
 
-                if ($teamData) {
+            //     if ($teamData) {
             
-                    $query = 1;
-                }
-             }
+            //         $query = 1;
+            //     }
+            //  }
+            // End code for team
 
             $gst_name = '';
             $license_name = '';
@@ -306,6 +311,281 @@ class CustomerController extends Controller
             $customer->mobile = $request->mobile;
             $customer->save();
             
+            return Response::json(array('status' => 'success', 'msg' => 'Profile save successfully.', 'url' => route('dashboard')));
+        } else {
+            return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again'));
+        }
+
+    }
+
+
+   public function updateCustomerProfileDetails(Request $request)
+    {
+        
+        // pr($request->all());
+        $this->validate($request, [
+            'f_name' => 'required|string|max:120',
+            'l_name' => 'required|string|max:120',
+            'email' => 'required|string|max:50',
+            'mobile' => 'required|integer|digits:10',
+            'street_address' => 'required|string',
+            'country' => 'required',
+            'state' => 'required',
+            'city' => 'required',
+            'postal_code' => 'required|integer',
+            
+            'customer_type' => 'required',
+            'store_name' => 'required|max:120',
+            'gst_number' => 'required|max:60',
+            'gst_certificate' => 'required',
+            'shop_establishment_license' => 'required',
+            'msme_udyog_adhar' => 'required',
+            'FSSAI_certificate' => 'required',
+            'Trade_certificate' => 'required',
+            
+            
+        ], [
+
+            'gst_certificate.required' => 'GST Certificate is required.',
+            'shop_establishment_license.required' => 'Shop establishment license is required.',
+            'msme_udyog_adhar.required' => 'MSME Udyog adhar is required.',
+            'FSSAI_certificate.required' => 'FSSAI Certificate is required.',
+            'Trade_certificate.required' => 'Trade certificate is required.',
+
+            'customer_type.required' => 'Customer type is required.',
+           
+
+            'f_name.required' => 'First name is required.',
+            'f_name.string' => 'First name should be string.',
+            'f_name.max' => 'First name should not be grater than 120 Character.',
+
+            'store_name.required' => 'Store name is required.',
+            'store_name.max' => 'Store name should not be grater than 120 Character.',
+
+            'gst_number.required' => 'GST Number is required.',
+            'gst_number.max' => 'GST Number should not be grater than 120 Character.',
+
+            'mobile.required' => 'Phone name is required.',
+            'mobile.integer' => 'Phone number should be number.',
+            'mobile.digit' => 'Phone should not be grater than 10 Character.',
+
+            'l_name.required' => 'Last name is required.',
+            'l_name.string' => 'Last name should be string.',
+            'l_name.max' => 'Last name should not be grater than 120 Character.',
+            'email.required' => 'Email is required.',
+            'email.string' => 'Email should be string.',
+            'email.max' => 'Email should not be grater than 50 Character.',
+
+            'street_address.required' => 'Street adrress is required.',
+            'street_address.string' => 'Street adrress should be string.',
+            
+            'postal_code.required' => 'Postal code is required.',
+            'postal_code.integer' => 'Postal code should be number.',
+            'country.required' => 'Country is required.',
+            'state.required' => 'State is required.',
+            'city.required' => 'City is required.',
+            
+        ]);
+        $query = 0;
+        $status = 3;
+        $customerData = DB::table('tbl_customers')->updateOrInsert(
+            [
+                'user_id' => $request->user_id,
+            ],[
+            'cutomer_fname' => $request->cutomer_fname,
+            'cutomer_lname' => $request->cutomer_lname,
+            'user_id' => $request->user_id,
+            'email' => $request->email,
+            //'gender' => $request->gender,
+            //'dob' => $request->dob,
+            'phone' => $request->mobile,
+            'status' => $status,
+            'customer_type' => $request->customer_type,
+            
+        ]);
+
+        if ($customerData) {
+            $query = 1;
+        }
+        
+        
+
+        $customer = DB::table('tbl_customers')->where('user_id', $request->user_id)->first();
+
+        $businessData = DB::table('tbl_businesses')->updateOrInsert(
+            [
+                'busines_user_id' => $request->user_id,
+                'customer_id' => $customer->id,
+            ],[
+            'store_name' => $request->store_name,
+            //'business_country' => $request->business_country,
+            //'business_state' => $request->business_state,
+            //'business_city' => $request->business_city,
+            //'business_postal_code' => $request->business_postal_code,
+            // 'parent_code' => $parent_code,
+        ]);
+
+        if ($businessData) {
+            $query = 1;
+        }
+
+        
+
+        $addressData = DB::table('tbl_addresses')->updateOrInsert(
+            [
+                'customer_id' => $customer->id,
+                'id' => $request->address_id,
+                'check_page' => 0,
+            ],[
+                'f_name' => $request->f_name,
+                'l_name' => $request->l_name,
+                'customer_id' => $customer->id,
+                'address_user_id' => $request->user_id,
+                //'company_name' => $request->company_name,
+                'street_address' => $request->street_address,
+                'gst_number' => $request->gst_number,
+                'country' => $request->country,
+                'state' => $request->state,
+                'city' => $request->city,
+                'postal_code' => $request->postal_code,
+           
+             ]);
+
+            if ($addressData)
+            {
+            
+                $query = 1;
+            }
+         
+            
+            // if(count($request->team_name) > 0 && count($request->team_mobile) > 0 && count($request->team_email) > 0)
+            //  {
+            //     $detTeams = DB::table('tbl_teams')->where('customer_id', $customer->id)
+            //     ->where('team_user_id', $request->customer_id)->delete();
+            //     for($n = 0; $n < count($request->team_name); $n++)
+            //     {
+            //         $teamData = DB::table('tbl_teams')->insert(
+            //         [
+            //             'customer_id' => $customer->id,
+            //             'team_user_id' =>$request->user_id,
+            //             'team_name' => $request->team_name[$n],
+            //             'team_mobile' => $request->team_mobile[$n],
+            //             'team_email' => $request->team_email[$n],
+                            
+            //         ]);
+            //     }
+
+            //     if ($teamData) {
+            
+            //         $query = 1;
+            //     }
+            //  }
+
+            
+            //Start code for documents
+
+            $gst_name = '';
+            $license_name = '';
+            $msme_udyog_adhar_name = '';
+            $FSSAI_certificate_name = '';
+            $Trade_certificate_name = '';
+            if ($request->hasFile('gst_certificate')) 
+            {
+                $img = $request->file('gst_certificate');
+                $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $img->getClientOriginalName());
+                $destinationPath = ITEM_IMG_PATH;
+                $gst_name = 'GST_'.date('mdis').$name;
+                $img->move($destinationPath, $gst_name);
+
+                //$customerdetail = get_custumer_by_user_id($customer->id);
+                if (File::exists($destinationPath.'/'.$request->gst_certificate_old)) {
+                    File::delete($destinationPath.'/'.$request->gst_certificate_old);
+                }
+            }
+
+            if ($request->hasFile('shop_establishment_license')) 
+            {
+                $img = $request->file('shop_establishment_license');
+                $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $img->getClientOriginalName());
+                $destinationPath = ITEM_IMG_PATH;
+                $license_name = 'Shop_license_'.date('mdis').$name;
+                $img->move($destinationPath, $license_name);
+
+                if (File::exists($destinationPath.'/'.$request->shop_establishment_license_old)) {
+                    File::delete($destinationPath.'/'.$request->shop_establishment_license_old);
+                
+                }
+            }
+
+            if ($request->hasFile('msme_udyog_adhar')) 
+            {
+                $img = $request->file('msme_udyog_adhar');
+                $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $img->getClientOriginalName());
+                $destinationPath = ITEM_IMG_PATH;
+                $msme_udyog_adhar_name = 'Udyog_adhar_'.date('mdis').$name;
+                $img->move($destinationPath, $msme_udyog_adhar_name);
+
+                if (File::exists($destinationPath.'/'.$request->msme_udyog_adhar_old)) {
+                    File::delete($destinationPath.'/'.$request->msme_udyog_adhar_old);
+                }
+            }
+
+            if ($request->hasFile('FSSAI_certificate')) 
+            {
+                $img = $request->file('FSSAI_certificate');
+                $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $img->getClientOriginalName());
+                $destinationPath = ITEM_IMG_PATH;
+                $FSSAI_certificate_name = 'FSSAI_certificate_'.date('mdis').$name;
+                $img->move($destinationPath, $FSSAI_certificate_name);
+
+                if (File::exists($destinationPath.'/'.$request->FSSAI_certificate_old)) {
+                    File::delete($destinationPath.'/'.$request->FSSAI_certificate_old);
+                }
+            }
+
+            if ($request->hasFile('Trade_certificate')) 
+            {
+                $img = $request->file('Trade_certificate');
+                $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $img->getClientOriginalName());
+                $destinationPath = ITEM_IMG_PATH;
+                $Trade_certificate_name = 'Trade_certificate_'.date('mdis').$name;
+                $img->move($destinationPath, $Trade_certificate_name);
+
+                if (File::exists($destinationPath.'/'.$request->Trade_certificate_old)) {
+                    File::delete($destinationPath.'/'.$request->Trade_certificate_old);
+                }
+            }
+
+            $documents = DB::table('tbl_customer_documents')->updateOrInsert(
+                [
+                    'customer_id' => $customer->id,
+                    'customer_docs_user_id' => $request->user_id,
+                ],[
+                    'gst_certificate' => ($gst_name) ? $gst_name : $request->gst_certificate_old,
+
+                    'shop_establishment_license' => ($license_name) ? $license_name : $request->shop_establishment_license_old,
+                    
+                    'msme_udyog_adhar' => ($msme_udyog_adhar_name) ? $msme_udyog_adhar_name : $request->msme_udyog_adhar_old,
+                    
+                    'FSSAI_certificate' => ($FSSAI_certificate_name) ? $FSSAI_certificate_name : $request->FSSAI_certificate_old,
+                    
+                    'Trade_certificate' => ($Trade_certificate_name) ? $Trade_certificate_name : $request->Trade_certificate_old,
+                ]);
+    
+                if ($documents)
+                {
+                
+                    $query = 1;
+                }
+
+             //End code for documents
+        
+        if ($query ==1) {
+
+            $user = User::find($request->user_id);
+            $user->name = $request->f_name.' '.$request->l_name;
+            $user->save();
+
             return Response::json(array('status' => 'success', 'msg' => 'Profile save successfully.', 'url' => route('customerProfile')));
         } else {
             return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again'));
@@ -321,6 +601,18 @@ class CustomerController extends Controller
         {
             $addresses = get_addresses_by_user_id($customer->id);
             $customer = DB::table('tbl_customers')->where('user_id', $customer->id)->first();
+            return $theme->scope('admin.address_list', compact('addresses', 'customer'))->render();
+        }
+    }
+
+    public function businesses()
+    {
+        $theme = Theme::uses('backend')->layout('layout');
+        $customer = session()->get('customer'); 
+        if($customer)
+        {
+            $addresses = get_addresses_by_user_id($customer->id);
+            ///$customer = DB::table('tbl_customers')->where('user_id', $customer->id)->first();
             return $theme->scope('admin.address_list', compact('addresses', 'customer'))->render();
         }
     }

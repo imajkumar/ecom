@@ -91,6 +91,7 @@ var Dashboard = function() {
 }();
 
 $(document).ready(function() {
+    body = $("body");
     Dashboard.init();
 
     //save attribur group
@@ -1094,6 +1095,54 @@ $(document).ready(function() {
             contentType: false,
             //cache: false,
             processData: false,
+            beforeSend: function() { body.addClass("loading"); },
+            complete: function() { body.removeClass("loading"); },
+
+            success: function(responce) {
+
+                if (responce['status'] == 'success') {
+
+                    toastr.success(responce['msg']);
+                    window.location.replace(responce['url']);
+
+                } else {
+
+                    toastr.warning(responce['msg']);
+
+                }
+            },
+            error: function(xhr, status, error) {
+
+                let errorHtml = '';
+                $.each(xhr.responseJSON.errors, function(key, item) {
+                    errorHtml += `<strong>${item}</strong></br>`;
+                });
+                toastr.error(errorHtml);
+
+            }
+
+        })
+
+    });
+
+
+    $('#updateCustomerProfileDetails').on('submit', function(e) {
+        e.preventDefault();
+
+
+        $.ajaxSetup({
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+        });
+        $.ajax({
+            type: 'POST',
+            url: BASE_URL + '/updateCustomerProfileDetails',
+            data: new FormData(this),
+            contentType: false,
+            processData: false,
+            // beforeSend: function() { body.addClass("loading"); },
+            // complete: function() { body.removeClass("loading"); },
+            beforeSend: function() { body.addClass("loading"); },
+            complete: function() { body.removeClass("loading"); },
 
             success: function(responce) {
 
@@ -1129,6 +1178,8 @@ $(document).ready(function() {
             type: 'POST',
             url: BASE_URL + '/saveCustomerApproval',
             data: $(this).serialize(),
+            beforeSend: function() { body.addClass("loading"); },
+            complete: function() { body.removeClass("loading"); },
 
             success: function(responce) {
 
@@ -1398,3 +1449,8 @@ $("body").on("click", ".removeTeamClass", function(e) {
 })
 
 // End code for team------------------------------------------
+
+
+$(".docsValidation").on("click", function() {
+    $(this).attr('accept', '.xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf');
+});
