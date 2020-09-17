@@ -40,7 +40,7 @@
 			<!-- begin navbar-header -->
 			<div class="navbar-header">
 				
-			<a href="{{url('/')}}" class="navbar-brand"><span class="navbar-logo"><i class="ion-ios-cloud"></i></span> <b class="mr-1">Bartanwale</b> {{$userType}}</a>
+			<a href="{{url('/')}}" class="navbar-brand"><span class="navbar-logo"><i class="ion-ios-cloud"></i></span> <b class="mr-1">---</b> {{$userType}}</a>
 				<button type="button" class="navbar-toggle" data-click="sidebar-toggled">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>

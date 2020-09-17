@@ -1261,8 +1261,8 @@ $(document).ready(function() {
     });
 
 
-
     e.preventDefault();
+   
     $.ajax({
         type: 'POST',
         url: BASE_URL + '/saveCustomerApproval',

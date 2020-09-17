@@ -60,18 +60,18 @@
                         <span class="d-sm-block d-none">GROUP</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="#default-tab-3" data-toggle="tab" class="nav-link">
                         <span class="d-sm-none">Tab 3</span>
                         <span class="d-sm-block d-none">ITEM GROUP</span>
                     </a>
-                </li>
-                <li class="nav-item">
+                </li> -->
+                <!-- <li class="nav-item">
                     <a href="#measurement" data-toggle="tab" class="nav-link">
                         <span class="d-sm-none">Tab 3</span>
                         <span class="d-sm-block d-none">MEASUREMENT</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
             <!-- end nav-tabs -->
             <!-- begin tab-content -->
