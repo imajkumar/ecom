@@ -42,16 +42,13 @@ class UserController extends Controller
         $is_unique = $request->is_unique;
         $is_comparable = $request->is_comparable;
 
-        
-       
-
         $itemcatObject = new ItemCategory();
-        $itemcatObject ->item_name = $item_category_name;
-        $itemcatObject ->item_under_group_id = $UnderGroup;
-        $itemcatObject ->item_description = $desc_message;        
-        $itemcatObject ->created_by = Auth::user()->id;
-        $itemcatObject ->save();
-        $itemCatID= $itemcatObject->id;
+        $itemcatObject->item_name = $item_category_name;
+        $itemcatObject->item_under_group_id = $UnderGroup;
+        $itemcatObject->item_description = $desc_message;
+        $itemcatObject->created_by = Auth::user()->id;
+        $itemcatObject->save();
+        $itemCatID = $itemcatObject->id;
 
         foreach ($attribute as $key => $row) {
             $attrID = $attribute[$key];
@@ -73,11 +70,9 @@ class UserController extends Controller
         $res_arr = array(
             'status' => 1,
             'msg' => 'Save Successfully'
-            
-          );
-          return response()->json($res_arr);
 
-
+        );
+        return response()->json($res_arr);
     }
     //saveItemCategory
     //getAjaxAttributes
@@ -87,9 +82,6 @@ class UserController extends Controller
         $attributes = get_attributes();
         $html = "";
         foreach ($attributes as $attribute) {
-
-
-
             $html .= '<option value=' . $attribute['id'] . '>' . $attribute['admin_name_lable'] . '</option>';
         }
 
@@ -374,37 +366,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    // public function addItenImage(Request $request)  //item gallary uploads
-    // {
-    //     $photos = $request->file('files');
-
-    //     $destinationPath = ITEM_IMG_PATH;
-    //     for ($i = 0; $i < count($photos); $i++) {
-    //         $photo = $photos[$i];
-    //         //$name = sha1(date('YmdHis') . microtime());
-    //         $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $photo->getClientOriginalName()).'_'.$i;
-
-    //         $image_name = $name . '.' . $photo->getClientOriginalExtension();
-    //         $photo->move($destinationPath, $image_name);
-
-    //         $user_id = Auth::user()->id;
-    //         $itemData = DB::table('tbl_item_gallery')->insert([
-    //             'item_id' => $request->item_id,
-    //             'img_name' => $image_name,
-    //             'alt_tag' => $photo->getClientOriginalName(),
-    //             'created_by' => $user_id,
-    //         ]);
-
-
-    //     }
-    //     $defaultImg = DB::table('tbl_item_gallery')->where('item_id', $request->item_id)->first();
-    //     DB::table('tbl_item_gallery')->where('item_id', $request->item_id)->where('id', $defaultImg->id)
-    //     ->update(['default'=> 1]);
-
-    //     return Response::json([
-    //         'message' => 'Image saved Successfully'
-    //     ], 200);
-    // }
+   
 
     public function saveAttribute(Request $request)
     {
@@ -437,19 +399,19 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'item_name' => 'required|string|max:255',
-            'itemCategory' => 'required'          
-           
+            'itemCategory' => 'required'
+
         ], [
-           
+
             'item_name.required' => 'Product name is required.',
-            'itemCategory.string' => 'Select Category',            
-           
+            'itemCategory.string' => 'Select Category',
+
         ]);
         $user_id = Auth::user()->id;
         $itemData = DB::table('tbl_items')->insertGetId([
-            'item_name' => $request->item_name,            
-            'cat_id' => $request->itemCategory           
-        ]);        
+            'item_name' => $request->item_name,
+            'cat_id' => $request->itemCategory
+        ]);
         if ($itemData) {
             return Response::json(array('status' => 'success', 'msg' => 'Save successfully', 'url' => route('itemEditLayout', $itemData)));
         } else {
@@ -1251,10 +1213,10 @@ class UserController extends Controller
             ->first();
         //pr($item);
         //$item = json_decode(json_encode($item), true);
-        
 
-        
-        
+
+
+
 
         $attributeAndOptions = DB::table('tbl_item_attributes')->where('item_id', $item_id)->get();
         $attributeAndOptions = json_decode(json_encode($attributeAndOptions), true);
@@ -1269,7 +1231,7 @@ class UserController extends Controller
 
         $brands = DB::table('tbl_brands')->get();
 
-        return $theme->scope('admin.item_edit', compact('attributeAndOptions', 'brands', 'item', 'itemImages', 'attrFamilyGroups'))->render();
+        return $theme->scope('admin.item_edit', compact('attributeAndOptions', 'brands', 'item', 'itemImages'))->render();
     }
 
     public function saveGroupAttribute(Request $request)
@@ -1392,332 +1354,5 @@ class UserController extends Controller
 
     public function saveCustomerApproval(Request $request)
     {
-        //pr($request->all());
-        $this->validate($request, [
-            'f_name' => 'required|string|max:120',
-            'l_name' => 'required|string|max:120',
-            'email' => 'required|string|max:50',
-            //'gender' => 'required',
-            //'dob' => 'max:15',
-            'mobile' => 'required|integer|digits:10',
-            'street_address' => 'required|string',
-            'country' => 'required',
-            'state' => 'required',
-            'city' => 'required',
-            'postal_code' => 'required|integer',
-
-        ], [
-            'f_name.required' => 'First name is required.',
-            'f_name.string' => 'First name should be string.',
-            'f_name.max' => 'First name should not be grater than 120 Character.',
-
-            'mobile.required' => 'Phone name is required.',
-            'mobile.integer' => 'Phone number should be number.',
-            'mobile.digit' => 'Phone should not be grater than 10 Character.',
-
-            'l_name.required' => 'Last name is required.',
-            'l_name.string' => 'Last name should be string.',
-            'l_name.max' => 'Last name should not be grater than 120 Character.',
-            //'dob.max' => 'Date of birth should not be grater than 15 Character.',
-
-            //'gender.required' => 'Gender is required.',
-            'email.required' => 'Email is required.',
-            'email.string' => 'Email should be string.',
-            'email.max' => 'Email should not be grater than 50 Character.',
-
-            'street_address.required' => 'Street adrress is required.',
-            'street_address.string' => 'Street adrress should be string.',
-
-            'postal_code.required' => 'Postal code is required.',
-            'postal_code.integer' => 'Postal code should be number.',
-            'country.required' => 'Country is required.',
-            'state.required' => 'State is required.',
-            'city.required' => 'City is required.',
-
-        ]);
-        $query = 0;
-        $status = 'Pending';
-        $remark = '';
-        $profile = 0;
-        if ($request->status == 1) {
-            $status = 'Approved';
-            $profile = 1;
-        }
-        if ($request->status == 2) {
-            $status = 'Rejected';
-            $profile = 0;
-            $remark = $request->remark;
-        }
-
-        $customerData = DB::table('tbl_customers')->updateOrInsert(
-            [
-                'user_id' => $request->customer_id,
-            ],
-            [
-                'cutomer_fname' => $request->cutomer_fname,
-                'cutomer_lname' => $request->cutomer_lname,
-                'email' => $request->email,
-                //'gender' => $request->gender,
-                //'dob' => $request->dob,
-                'phone' => $request->mobile,
-                'status' => $request->status,
-                'remark' => $remark,
-                'customer_type' => $request->customer_type,
-
-            ]
-        );
-
-        if ($customerData) {
-            $query = 1;
-        }
-
-        $customer = DB::table('tbl_customers')->where('user_id', $request->customer_id)->first();
-
-        $businessData = DB::table('tbl_businesses')->updateOrInsert(
-            [
-                'busines_user_id' => $request->customer_id,
-                'customer_id' => $customer->id,
-
-            ],[
-            'store_name' => $request->store_name,
-            //'business_country' => $request->business_country,
-            //'business_state' => $request->business_state,
-            //'business_city' => $request->business_city,
-            //'business_postal_code' => $request->business_postal_code,
-            //'parent_code' => $request->parent_code,
-        ]);
-
-
-        if ($businessData) {
-            $query = 1;
-        }
-
-
-
-        $addressData = DB::table('tbl_addresses')->updateOrInsert(
-            [
-                'customer_id' => $customer->id,
-                'id' => $request->address_id,
-                'check_page' => 0,
-            ],
-            [
-                'f_name' => $request->f_name,
-                'l_name' => $request->l_name,
-                'customer_id' => $customer->id,
-                'address_user_id' => $request->customer_id,
-                //'company_name' => $request->company_name,
-                'street_address' => $request->street_address,
-                'gst_number' => $request->gst_number,
-                'country' => $request->country,
-                'state' => $request->state,
-                'city' => $request->city,
-                'postal_code' => $request->postal_code,
-
-            ]
-        );
-
-        if ($addressData) {
-
-            $query = 1;
-        }
-
-            
-            //  if(count($request->team_name) > 0 && count($request->team_mobile) > 0 && count($request->team_email) > 0)
-            //  {
-            //     $detTeams = DB::table('tbl_teams')->where('customer_id', $customer->id)
-            //     ->where('team_user_id', $request->customer_id)->delete();
-            //     for($n = 0; $n < count($request->team_name); $n++)
-            //     {
-
-            //         $teamData = DB::table('tbl_teams')->insert(
-            //             [
-            //                 'customer_id' => $customer->id,
-            //                 'team_user_id' =>$request->customer_id,
-            //                 'team_name' => $request->team_name[$n],
-            //                 'team_mobile' => $request->team_mobile[$n],
-            //                 'team_email' => $request->team_email[$n],
-                            
-            //             ]);
-            //     }
-
-            //     if ($teamData) {
-            
-            //         $query = 1;
-            //     }
-            //  }
-
-
-                    ]
-                );
-            }
-
-            if ($teamData) {
-
-                $query = 1;
-            }
-        }
-
-        //Start code for documents
-
-        //End code for documents
-
-        if ($query == 1) {
-
-            // $user = User::find($request->customer_id);
-            // $user->profile = 0;
-            // $user->mobile = $request->mobile;
-            // $user->name = $request->f_name.' '.$request->l_name;
-            // $user->email = $request->email;
-            // $user->save();
-
-            // $customer = session()->get('customer'); 
-            // $customer->profile = 0;
-            // $customer->mobile = $request->mobile;
-            // $customer->save();
-
-            //     return Response::json(array('status' => 'success', 'msg' => 'Profile save successfully.', 'url' => route('customerProfile')));
-            // } else {
-            //     return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again'));
-            // }
-
-            $user = User::find($customer->user_id);
-            $user->profile = $profile;
-            $user->mobile = $request->mobile;
-            $user->email = $request->email;
-            $user->save();
-
-            if ($request->status == 1) {
-
-                Mail::to($request->email)->send(new CustomerApproveMail($request->all()));
-            }
-            if ($request->status == 2) {
-
-                Mail::to($request->email)->send(new CustomerRejectedMail($request->all()));
-            }
-            return Response::json(array('status' => 'success', 'msg' => 'Customer ' . $status, 'url' => route('customerListLayout')));
-        } else {
-            return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again', 'url' => route('editCustomerLayout', $request->customer_id)));
-        }
     }
-
-    // public function saveCustomerApproval(Request $request)
-    // {
-    //     $this->validate($request, [
-    //         'f_name' => 'required|string|max:120',
-    //         'l_name' => 'required|string|max:120',
-    //         'email' => 'required|string|max:50',
-    //         'gender' => 'required',
-    //         'dob' => 'max:15',
-    //         'mobile' => 'required|integer|digits:10',
-    //         'street_address' => 'required|string',
-    //         'country' => 'required',
-    //         'state' => 'required',
-    //         'city' => 'required',
-    //         'postal_code' => 'required|integer',
-
-    //     ], [
-    //         'f_name.required' => 'First name is required.',
-    //         'f_name.string' => 'First name should be string.',
-    //         'f_name.max' => 'First name should not be grater than 120 Character.',
-
-    //         'mobile.required' => 'Phone name is required.',
-    //         'mobile.integer' => 'Phone number should be number.',
-    //         'mobile.digit' => 'Phone should not be grater than 10 Character.',
-
-    //         'l_name.required' => 'Last name is required.',
-    //         'l_name.string' => 'Last name should be string.',
-    //         'l_name.max' => 'Last name should not be grater than 120 Character.',
-    //         'dob.max' => 'Date of birth should not be grater than 15 Character.',
-
-    //         'gender.required' => 'Gender is required.',
-    //         'email.required' => 'Email is required.',
-    //         'email.string' => 'Email should be string.',
-    //         'email.max' => 'Email should not be grater than 50 Character.',
-
-    //         'street_address.required' => 'Street adrress is required.',
-    //         'street_address.string' => 'Street adrress should be string.',
-
-    //         'postal_code.required' => 'Postal code is required.',
-    //         'postal_code.integer' => 'Postal code should be number.',
-    //         'country.required' => 'Country is required.',
-    //         'state.required' => 'State is required.',
-    //         'city.required' => 'City is required.',
-
-    //     ]);
-    //     $query = 0;
-    //     $status = 'Pending';
-    //     $remark = '';
-    //         $profile = 0;
-    //         if($request->status == 1){
-    //             $status = 'Approved';
-    //             $profile = 1;
-    //         }
-    //         if($request->status == 2){
-    //             $status = 'Rejected';
-    //             $profile = 0;
-    //             $remark = $request->remark;
-    //         }
-    //     $customerData = DB::table('tbl_customers')->where('id', $request->customer_id)->update(
-    //         [
-    //         'f_name' => $request->f_name,
-    //         'l_name' => $request->l_name,
-    //         'email' => $request->email,
-    //         'gender' => $request->gender,
-    //         'dob' => $request->dob,
-    //         'phone' => $request->mobile,
-    //         'status' => $request->status,
-    //         'remark' => $remark,
-    //         'customer_type' => $request->customer_type,
-
-    //     ]);
-    //     if ($customerData || !$customerData) {
-    //         $query = 1;
-    //     }
-    //     $customer = DB::table('tbl_customers')->where('id', $request->customer_id)->first();
-
-    //     $addressData = DB::table('tbl_addresses')->where('customer_id', $customer->id)->update(
-    //        [
-    //             'f_name' => $request->f_name,
-    //             'l_name' => $request->l_name,
-    //             'customer_id' => $customer->id,
-    //             'address_user_id' => $customer->user_id,
-    //             'company_name' => $request->company_name,
-    //             'street_address' => $request->street_address,
-    //             'country' => $request->country,
-    //             'state' => $request->state,
-    //             'city' => $request->city,
-    //             'postal_code' => $request->postal_code,
-
-    //          ]);
-
-    //     if ($addressData || !$addressData) {
-
-    //         $query = 1;
-    //     }
-
-    //     if ($query ==1) {
-
-
-
-
-
-    //         $user = User::find($customer->user_id);
-    //         $user->profile = $profile;
-    //         $user->mobile = $request->mobile;
-    //         $user->email = $request->email;
-    //         $user->save();
-
-    //         if($request->status == 1){
-
-    //             Mail::to($request->email)->send(new CustomerApproveMail($request->all()));
-    //         }
-    //         if($request->status == 2){
-
-    //             Mail::to($request->email)->send(new CustomerRejectedMail($request->all()));
-    //         }
-    //         return Response::json(array('status' => 'success', 'msg' => 'Customer '.$status, 'url' => route('customerListLayout')));
-    //     } else {
-    //         return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again', 'url' => route('editCustomerLayout', $request->customer_id)));
-    //     }
-    // }
 }

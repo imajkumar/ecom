@@ -1,10 +1,9 @@
 var max_fields = 50; //maximum input boxes allowed
-var wrapper = $( ".input_fields_wrap" ); //Fields wrapper
-var add_button = $( ".add_field_button" ); //Add button ID
+var wrapper = $(".input_fields_wrap"); //Fields wrapper
+var add_button = $(".add_field_button"); //Add button ID
 
 var x = 1; //initlal text box count
-$( add_button ).click( function ( e )
-{ //on add input button click
+$(add_button).click(function (e) { //on add input button click
     e.preventDefault();
     // ajax 
     var formData = {
@@ -15,12 +14,11 @@ $( add_button ).click( function ( e )
         url: BASE_URL + '/getAjaxAttributes',
         type: 'POST',
         data: formData,
-        success: function(res) {
-            if ( x < max_fields )
-            { //max input box allowed
+        success: function (res) {
+            if (x < max_fields) { //max input box allowed
                 x++; //text box increment
-               
-                $( wrapper ).append(`<div class="row">
+
+                $(wrapper).append(`<div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Attribute</label>
@@ -71,52 +69,42 @@ $( add_button ).click( function ( e )
         }
     });
 
-   
-    
-} );
 
-$( wrapper ).on( "click", ".remove_field", function ( e )
-{ //user click on remove text
-    e.preventDefault(); $( this ).parent( 'div' ).remove(); x--;
-} )
+
+});
+
+$(wrapper).on("click", ".remove_field", function (e) { //user click on remove text
+    e.preventDefault(); $(this).parent('div').remove(); x--;
+})
 
 
 
 //save 
 
 // process the form
-$("#saveItemCategory").submit(function(event){
-	event.preventDefault(); //prevent default action 
-	var post_url = $(this).attr("action"); //get form action url
-	var request_method = $(this).attr("method"); //get form GET/POST method
-	var form_data = $(this).serialize(); //Encode form elements for submission
-	
-	$.ajax({
-		url : post_url,
-		type: request_method,
-		data : form_data
-    }).done(function(response){ //
-        
-        if(response.status==1){
-           
-                $.gritter.add({
-                    title: 'Item Category',
-                    text: response.msg
-                });
-           
+$("#saveItemCategory").submit(function (event) {
+    event.preventDefault(); //prevent default action 
+    var post_url = $(this).attr("action"); //get form action url
+    var request_method = $(this).attr("method"); //get form GET/POST method
+    var form_data = $(this).serialize(); //Encode form elements for submission
+
+    $.ajax({
+        url: post_url,
+        type: request_method,
+        data: form_data
+    }).done(function (response) { //
+
+        if (response.status == 1) {
+
+            $.gritter.add({
+                title: 'Item Category',
+                text: response.msg
+            });
+            //location.reload(1);
+
         }
-		
-	});
+
+    });
 });
 
 
-//product tags
-$('#tags').select2({
-	tags: true,
-    data: ["Clare","Cork","South Dublin"],
-    tokenSeparators: [','], 
-    placeholder: "Add your tags here",
-    /* the next 2 lines make sure the user can click away after typing and not lose the new tag */
-    selectOnClose: true, 
-    closeOnSelect: false
-});

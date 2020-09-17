@@ -31,22 +31,13 @@ if (Auth::user()->user_type == 0) {
 			border-radius: 50px;
 		}
 
-
+</style>
 					
 					
 				</ul>
 				<!-- end sidebar user -->
 				<!-- begin sidebar nav -->
 				<ul class="nav">
-					
-					
-					
-					
-
-
-
-
-					?>
 					<li class="active">
 						<a href="{{route('customerProfile')}}">
 							
@@ -115,14 +106,7 @@ if (Auth::user()->user_type == 0) {
 					</li>
 
 
-					{{-- <li class="has-sub">
-						<a href="{{route('addresses')}}">
-							
-							<i class="fas fa-lg fa-fw m-r-10 fa-address-book"></i>
-							<span>ADDRESSES </span>
-						</a>
-						
-					</li> --}}
+					
 					
 
 
@@ -131,11 +115,7 @@ if (Auth::user()->user_type == 0) {
 
 
 
-				<?php
-
-				}
-				?>
-				{{-- Start code for menu show when pfofile is completed --}}
+				
 
 				<!-- begin sidebar minify button -->
 				<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="ion-ios-arrow-back"></i> <span>Collapse</span></a></li>
@@ -148,8 +128,10 @@ if (Auth::user()->user_type == 0) {
 	<div class="sidebar-bg"></div>
 	<!-- end customer #sidebar -->
 
+<?php 
+}
 
-<?php } else { ?>
+ else { ?>
 
 
 	<!--------------------------- begin Admin #sidebar --------------------------------------->
