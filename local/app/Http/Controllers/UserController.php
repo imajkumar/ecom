@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use Response;
 use Session;
 use File;
 use App\User;
+use App\ItemCategory;
 use App\Mail\CustomerApproveMail;
 use App\Mail\CustomerRejectedMail;
 use Illuminate\Support\Facades\Mail;
@@ -24,20 +26,85 @@ class UserController extends Controller
         //   $this->middleware('auth');
         // } else {
         //     $this->middleware('guest');
-             
+
         // }
-        
+
     }
+    //saveItemCategory
+    public function saveItemCategory(Request  $request)
+    {
+        $item_category_name = $request->item_category_name;
+        $UnderGroup = $request->UnderGroup;
+        $desc_message = $request->message;
+
+        $attribute = $request->attribute;
+        $is_required = $request->is_required;
+        $is_unique = $request->is_unique;
+        $is_comparable = $request->is_comparable;
+
+        
+       
+
+        $itemcatObject = new ItemCategory();
+        $itemcatObject ->item_name = $item_category_name;
+        $itemcatObject ->item_under_group_id = $UnderGroup;
+        $itemcatObject ->item_description = $desc_message;        
+        $itemcatObject ->created_by = Auth::user()->id;
+        $itemcatObject ->save();
+        $itemCatID= $itemcatObject->id;
+
+        foreach ($attribute as $key => $row) {
+            $attrID = $attribute[$key];
+            $is_requiredVal = $is_required[$key];
+            $is_uniqueVal = $is_unique[$key];
+            $is_comparableVal = $is_comparable[$key];
+            DB::table('tbl_item_category_child')->insert(
+                [
+                    'item_category_id' => $itemCatID,
+                    'item_attr_id' => $attrID,
+                    'is_required' => $is_requiredVal,
+                    'is_unique' => $is_uniqueVal,
+                    'is_compareable' => $is_comparableVal,
+
+                ]
+            );
+        }
+
+        $res_arr = array(
+            'status' => 1,
+            'msg' => 'Save Successfully'
+            
+          );
+          return response()->json($res_arr);
+
+
+    }
+    //saveItemCategory
+    //getAjaxAttributes
+    public function getAjaxAttributes(Request  $request)
+    {
+
+        $attributes = get_attributes();
+        $html = "";
+        foreach ($attributes as $attribute) {
+
+
+
+            $html .= '<option value=' . $attribute['id'] . '>' . $attribute['admin_name_lable'] . '</option>';
+        }
+
+        return $html;
+    }
+    //getAjaxAttributes
 
     public function bannerListLayout()
     {
         $theme = Theme::uses('backend')->layout('layout');
-        $bannerLists = DB::table('tbl_banners')->leftjoin('tbl_banner_size', function($join){
-            $join->on('tbl_banners.size','=','tbl_banner_size.id');
-            
+        $bannerLists = DB::table('tbl_banners')->leftjoin('tbl_banner_size', function ($join) {
+            $join->on('tbl_banners.size', '=', 'tbl_banner_size.id');
         })
-        ->select('tbl_banner_size.id as banner_size_id','tbl_banner_size.banner_size','tbl_banners.*')
-        ->get();
+            ->select('tbl_banner_size.id as banner_size_id', 'tbl_banner_size.banner_size', 'tbl_banners.*')
+            ->get();
         //dd($bannerLists);
         return $theme->scope('admin.banner.banner_list', compact('bannerLists'))->render();
     }
@@ -84,14 +151,14 @@ class UserController extends Controller
         $theme = Theme::uses('backend')->layout('layout');
         $bannerSizes = DB::table('tbl_banner_size')->get();
         $banner = DB::table('tbl_banners')->where('id', $id)->first();
-        return $theme->scope('admin.banner.banner_edit', compact('bannerSizes','banner'))->render();
+        return $theme->scope('admin.banner.banner_edit', compact('bannerSizes', 'banner'))->render();
     }
 
     public function editBrandLayout($id)
     {
         $theme = Theme::uses('backend')->layout('layout');
         $brand = DB::table('tbl_brands')->first();
-        
+
         return $theme->scope('admin.brand.brand_edit', compact('brand'))->render();
     }
 
@@ -103,10 +170,10 @@ class UserController extends Controller
             //'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
         $banner = $request->file('banner');
-        
+
         $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $banner->getClientOriginalName());
         $destinationPath = ITEM_IMG_PATH;
-        $image_name = 'banner_'.date('mdis').$name;
+        $image_name = 'banner_' . date('mdis') . $name;
         $banner->move($destinationPath, $image_name);
 
         $user_id = Auth::user()->id;
@@ -116,16 +183,15 @@ class UserController extends Controller
             'created_by' => $user_id
         ]);
 
-        if($bannerData){
+        if ($bannerData) {
             $request->session()->flash('message', 'Banner save successfully.');
             $request->session()->flash('message-type', 'success');
             return redirect()->route('bannerListLayout');
-        }else{
+        } else {
             $request->session()->flash('message', 'Something is wrong try again.');
             $request->session()->flash('message-type', 'warning');
             return redirect()->route('addBannerLayout');
         }
-        
     }
 
     public function saveBrand(Request $request)
@@ -136,10 +202,10 @@ class UserController extends Controller
             //'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
         $banner = $request->file('brand_img');
-        
+
         $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $banner->getClientOriginalName());
         $destinationPath = ITEM_IMG_PATH;
-        $image_name = 'brand_'.date('mdis').$name;
+        $image_name = 'brand_' . date('mdis') . $name;
         $banner->move($destinationPath, $image_name);
 
         $user_id = Auth::user()->id;
@@ -147,19 +213,18 @@ class UserController extends Controller
             'brand_img' => $image_name,
             'name' => $request->name,
             'description' => $request->description
-            
+
         ]);
 
-        if($bannerData){
+        if ($bannerData) {
             $request->session()->flash('message', 'Brand save successfully.');
             $request->session()->flash('message-type', 'success');
             return redirect()->route('brandListLayout');
-        }else{
+        } else {
             $request->session()->flash('message', 'Something is wrong try again.');
             $request->session()->flash('message-type', 'warning');
             return redirect()->route('addBrandLayout');
         }
-        
     }
 
     public function updateBrand(Request $request, $id)
@@ -169,18 +234,18 @@ class UserController extends Controller
             'name' => 'required|max:120',
             //'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
-        
+
         if ($request->hasFile('brand_img')) {
             $banner = $request->file('brand_img');
             $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $banner->getClientOriginalName());
             $destinationPath = ITEM_IMG_PATH;
-            $image_name = 'brand_'.date('mdis').$name;
+            $image_name = 'brand_' . date('mdis') . $name;
             $banner->move($destinationPath, $image_name);
-            if (File::exists($destinationPath.'/'.$request->input('old_brand'))) {
-				File::delete($destinationPath.'/'.$request->input('old_brand'));
-			}
-		} else {
-			$image_name = $request->input('old_brand');
+            if (File::exists($destinationPath . '/' . $request->input('old_brand'))) {
+                File::delete($destinationPath . '/' . $request->input('old_brand'));
+            }
+        } else {
+            $image_name = $request->input('old_brand');
         }
 
         $user_id = Auth::user()->id;
@@ -188,19 +253,18 @@ class UserController extends Controller
             'brand_img' => $image_name,
             'name' => $request->name,
             'description' => $request->description
-            
+
         ]);
 
-        if($bannerData){
+        if ($bannerData) {
             $request->session()->flash('message', 'Brand updated successfully.');
             $request->session()->flash('message-type', 'success');
             return redirect()->route('brandListLayout');
-        }else{
+        } else {
             $request->session()->flash('message', 'Something is wrong try again.');
             $request->session()->flash('message-type', 'warning');
             return redirect()->route('editBrandLayout', $id);
         }
-        
     }
 
     public function updateBanner(Request $request, $id)
@@ -209,18 +273,18 @@ class UserController extends Controller
             //'banner' => 'required|image',
             'size' => 'required',
         ]);
-        
+
         if ($request->hasFile('banner')) {
             $banner = $request->file('banner');
             $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $banner->getClientOriginalName());
             $destinationPath = ITEM_IMG_PATH;
-            $image_name = 'banner_'.date('mdis').$name;
+            $image_name = 'banner_' . date('mdis') . $name;
             $banner->move($destinationPath, $image_name);
-            if (File::exists($destinationPath.'/'.$request->input('old_banner'))) {
-				File::delete($destinationPath.'/'.$request->input('old_banner'));
-			}
-		} else {
-			$image_name = $request->input('old_banner');
+            if (File::exists($destinationPath . '/' . $request->input('old_banner'))) {
+                File::delete($destinationPath . '/' . $request->input('old_banner'));
+            }
+        } else {
+            $image_name = $request->input('old_banner');
         }
         $user_id = Auth::user()->id;
         $data = [
@@ -228,14 +292,14 @@ class UserController extends Controller
             'size' => $request->size,
             'created_by' => $user_id
         ];
-        
+
         $bannerData = DB::table('tbl_banners')->where('id', $id)->update($data);
 
-        if($bannerData){
+        if ($bannerData) {
             $request->session()->flash('message', 'Banner updated successfully.');
             $request->session()->flash('message-type', 'success');
             return redirect()->route('bannerListLayout');
-        }else{
+        } else {
             $request->session()->flash('message', 'Something is wrong try again.');
             $request->session()->flash('message-type', 'warning');
             return redirect()->route('editBannerLayout', $id);
@@ -249,16 +313,16 @@ class UserController extends Controller
         $banner = DB::table('tbl_banners')->where('id', $id)->delete();
         if ($banner) {
             $destinationPath = ITEM_IMG_PATH;
-            if (File::exists($destinationPath.'/'.$bannerImgForDel)) {
-                File::delete($destinationPath.'/'.$bannerImgForDel);
+            if (File::exists($destinationPath . '/' . $bannerImgForDel)) {
+                File::delete($destinationPath . '/' . $bannerImgForDel);
             }
-                return redirect()->route('bannerListLayout')
-                        ->with(['message' =>'Banner deleted successfully.','message-type' => 'success']);
+            return redirect()->route('bannerListLayout')
+                ->with(['message' => 'Banner deleted successfully.', 'message-type' => 'success']);
         } else {
-            
-                return redirect()->route('bannerListLayout')
-                    ->with(['message' =>'Something is wrong try again.','message-type' => 'warning']);
-            }
+
+            return redirect()->route('bannerListLayout')
+                ->with(['message' => 'Something is wrong try again.', 'message-type' => 'warning']);
+        }
     }
 
     public function deleteBrand($id)
@@ -268,16 +332,16 @@ class UserController extends Controller
         $brand = DB::table('tbl_brands')->where('id', $id)->delete();
         if ($brand) {
             $destinationPath = ITEM_IMG_PATH;
-            if (File::exists($destinationPath.'/'.$brandImgForDel)) {
-                File::delete($destinationPath.'/'.$brandImgForDel);
+            if (File::exists($destinationPath . '/' . $brandImgForDel)) {
+                File::delete($destinationPath . '/' . $brandImgForDel);
             }
-                return redirect()->route('brandListLayout')
-                        ->with(['message' =>'Brand deleted successfully.','message-type' => 'success']);
+            return redirect()->route('brandListLayout')
+                ->with(['message' => 'Brand deleted successfully.', 'message-type' => 'success']);
         } else {
-            
-                return redirect()->route('brandListLayout')
-                    ->with(['message' =>'Something is wrong try again.','message-type' => 'warning']);
-            }
+
+            return redirect()->route('brandListLayout')
+                ->with(['message' => 'Something is wrong try again.', 'message-type' => 'warning']);
+        }
     }
 
     public function uploadGalleryImage(Request $request)  //item gallary uploads
@@ -288,11 +352,11 @@ class UserController extends Controller
         for ($i = 0; $i < count($photos); $i++) {
             $photo = $photos[$i];
             //$name = sha1(date('YmdHis') . microtime());
-            $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $photo->getClientOriginalName()).'_'.$i;
-            
+            $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $photo->getClientOriginalName()) . '_' . $i;
+
             $image_name = $name . '.' . $photo->getClientOriginalExtension();
             $photo->move($destinationPath, $image_name);
-            
+
             $user_id = Auth::user()->id;
             $itemData = DB::table('tbl_item_gallery')->insert([
                 'item_id' => $request->item_id,
@@ -300,12 +364,10 @@ class UserController extends Controller
                 'alt_tag' => $photo->getClientOriginalName(),
                 'created_by' => $user_id,
             ]);
-
-            
         }
         $defaultImg = DB::table('tbl_item_gallery')->where('item_id', $request->item_id)->first();
         DB::table('tbl_item_gallery')->where('item_id', $request->item_id)->where('id', $defaultImg->id)
-        ->update(['default'=> 1]);
+            ->update(['default' => 1]);
 
         return Response::json([
             'message' => 'Image saved Successfully'
@@ -321,10 +383,10 @@ class UserController extends Controller
     //         $photo = $photos[$i];
     //         //$name = sha1(date('YmdHis') . microtime());
     //         $name = preg_replace('/[^a-zA-Z0-9_.]/', '_', $photo->getClientOriginalName()).'_'.$i;
-            
+
     //         $image_name = $name . '.' . $photo->getClientOriginalExtension();
     //         $photo->move($destinationPath, $image_name);
-            
+
     //         $user_id = Auth::user()->id;
     //         $itemData = DB::table('tbl_item_gallery')->insert([
     //             'item_id' => $request->item_id,
@@ -333,7 +395,7 @@ class UserController extends Controller
     //             'created_by' => $user_id,
     //         ]);
 
-            
+
     //     }
     //     $defaultImg = DB::table('tbl_item_gallery')->where('item_id', $request->item_id)->first();
     //     DB::table('tbl_item_gallery')->where('item_id', $request->item_id)->where('id', $defaultImg->id)
@@ -345,7 +407,7 @@ class UserController extends Controller
     // }
 
     public function saveAttribute(Request $request)
-    { 
+    {
         $this->validate($request, [
             'attr_name' => 'required|string|unique:tbl_attribute|max:120',
         ], [
@@ -353,15 +415,14 @@ class UserController extends Controller
             'attr_name.string' => 'Attribute name should be string.',
             'attr_name.max' => 'Attribute name Should be Minimum of 120 Character.',
         ]);
-        $attrTable = 'tbl_'.strtolower(trim($request->attr_name));
+        $attrTable = 'tbl_' . strtolower(trim($request->attr_name));
         $itemData = DB::table('tbl_attribute')->insert([
             'attr_name' => ucfirst($request->attr_name),
             'table_name' => $attrTable,
-            
+
         ]);
         if ($itemData) {
-            Schema::create($attrTable, function($table)
-            {           
+            Schema::create($attrTable, function ($table) {
                 $table->increments('id');
                 $table->string('attr_name');
                 $table->integer('is_active')->default(1);
@@ -373,7 +434,7 @@ class UserController extends Controller
     }
 
     public function saveItem(Request $request)
-    { 
+    {
         $this->validate($request, [
             'item_name' => 'required|string|max:120',
             'item_sku' => 'required|string|unique:tbl_items,item_sku',
@@ -422,9 +483,9 @@ class UserController extends Controller
     }
 
     public function deleteItemImgByAjax(Request $request)
-    { 
-       $itemData = DB::table('tbl_item_gallery')->where('id', $request->imgId)
-        ->where('item_id', $request->itemId)->delete();
+    {
+        $itemData = DB::table('tbl_item_gallery')->where('id', $request->imgId)
+            ->where('item_id', $request->itemId)->delete();
         if ($itemData) {
             return Response::json(array('status' => 'success', 'msg' => 'Item image deleted successfull.'));
         } else {
@@ -433,12 +494,12 @@ class UserController extends Controller
     }
 
     public function addPrimaryImgByAjax(Request $request)
-    { 
-        if($request->defaultVal == 1){
-            $removeAnyPrimary =  DB::table('tbl_item_gallery')->where('item_id', $request->itemId)->update(['default'=> 0]);
+    {
+        if ($request->defaultVal == 1) {
+            $removeAnyPrimary =  DB::table('tbl_item_gallery')->where('item_id', $request->itemId)->update(['default' => 0]);
         }
-       $itemData = DB::table('tbl_item_gallery')->where('id', $request->imgId)
-        ->where('item_id', $request->itemId)->update(['default'=> $request->defaultVal]);
+        $itemData = DB::table('tbl_item_gallery')->where('id', $request->imgId)
+            ->where('item_id', $request->itemId)->update(['default' => $request->defaultVal]);
         if ($itemData) {
             return Response::json(array('status' => 'success', 'msg' => 'Item image have been changed successfull.'));
         } else {
@@ -447,9 +508,9 @@ class UserController extends Controller
     }
 
     public function updateItem(Request $request, $item_id)
-    {  
-       
-        
+    {
+
+
         //echo"<pre>".$item_id; print_r(json_decode($request->categorys));exit;
         $this->validate($request, [
             'item_name' => 'required|string|max:120',
@@ -490,51 +551,49 @@ class UserController extends Controller
             'open_qty' => $request->open_qty,
             'min_qty' => $request->min_qty,
         ]);
-        
+
         if ($itemData) {
             $query = 1;
         }
-            if($request->categorys){
-                $cats = json_decode($request->categorys);
-                //echo count($cats); dd($cats);
-                DB::table('tbl_item_groups')->where('item_id', $item_id)->delete();
-                for($i=0; $i < count($cats); $i++)
-                {
-                    DB::table('tbl_item_groups')->insert([
+        if ($request->categorys) {
+            $cats = json_decode($request->categorys);
+            //echo count($cats); dd($cats);
+            DB::table('tbl_item_groups')->where('item_id', $item_id)->delete();
+            for ($i = 0; $i < count($cats); $i++) {
+                DB::table('tbl_item_groups')->insert([
+                    'item_id' => $item_id,
+                    'g_id' => $cats[$i],
+                ]);
+            }
+            $query = 1;
+        }
+
+
+        if (count($request->option) > 0) {
+
+            foreach ($request->option as $code => $attrOptions) {
+                DB::table('tbl_item_attributes')->where('item_id', $item_id)->where('attr_code', $code)->delete();
+                //echo $code;
+                foreach ($attrOptions as $attrOption) {
+                    DB::table('tbl_item_attributes')->insert([
                         'item_id' => $item_id,
-                        'g_id' => $cats[$i],
+                        'attr_code' => $code,
+                        'attr_option' => $attrOption,
                     ]);
                 }
-                $query = 1;
             }
-
-            
-            if(count($request->option)>0){
-                
-                foreach($request->option as $code => $attrOptions){
-                    DB::table('tbl_item_attributes')->where('item_id', $item_id)->where('attr_code', $code)->delete();
-                    //echo $code;
-                    foreach($attrOptions as $attrOption){
-                        DB::table('tbl_item_attributes')->insert([
-                            'item_id' => $item_id,
-                            'attr_code' => $code,
-                            'attr_option' => $attrOption,
-                        ]);
-                    }
-                }
-                $query = 1;
-            }
-        if($query ==1)
-        {  
-            return Response::json(array('status' => 'success', 'msg' => 'Item updated successfully.', 'url' => route('itemListLayout') ));
+            $query = 1;
+        }
+        if ($query == 1) {
+            return Response::json(array('status' => 'success', 'msg' => 'Item updated successfully.', 'url' => route('itemListLayout')));
         } else {
             return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again', 'url' => route('itemEditLayout', $item_id)));
         }
-        
+
         // if ($itemData) {
         //     $request->session()->flash('message', 'Item updated successfully.');
         //     $request->session()->flash('message-type', 'success');
-            
+
         //     return redirect()->route('itemEditLayout', $item_id);
         //     //return Response::json(array('status' => 'success', 'msg' => 'Item details updated successfull.'));
         // } else {
@@ -554,16 +613,16 @@ class UserController extends Controller
         })->leftJoin('tbl_item_gallery', function ($join) {
             $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
             $join->DISTINCT('tbl_items.item_id');
-            $join->orderBy('tbl_items.item_id','DESC');
-            $join->where('tbl_item_gallery.default',1);
+            $join->orderBy('tbl_items.item_id', 'DESC');
+            $join->where('tbl_item_gallery.default', 1);
             // SELECT DISTINCT(column_name) FROM table_name ORDER BY column_name DESC limit 2,1;
             // $join->orderBy('tbl_items.item_id','DESC');
-             $join->limit(2,1);
+            $join->limit(2, 1);
         })
-        //->orderBy('DESC')
-        
-        ->select('tbl_items.*','tbl_group.g_id','tbl_group.g_name','tbl_item_gallery.img_name','tbl_item_gallery.default')
-        ->get();
+            //->orderBy('DESC')
+
+            ->select('tbl_items.*', 'tbl_group.g_id', 'tbl_group.g_name', 'tbl_item_gallery.img_name', 'tbl_item_gallery.default')
+            ->get();
 
         $brands = DB::table('tbl_brands')->get();
         //echo"<pre>"; print_r(DB::getQueryLog());exit;
@@ -573,9 +632,9 @@ class UserController extends Controller
 
         $attrFamilys = DB::table('tbl_attribute_families')->where('status', 1)->get();
 
-        return $theme->scope('admin.item_master', compact('dataObjArr','galleryImages','brands','attrFamilys'))->render();
+        return $theme->scope('admin.item_master', compact('dataObjArr', 'galleryImages', 'brands', 'attrFamilys'))->render();
     }
-    
+
     public function itemListLayout()
     { //viewLayout
         DB::enableQueryLog();
@@ -586,41 +645,39 @@ class UserController extends Controller
             $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
             $join->DISTINCT('tbl_items.item_id');
             //$join->orderBy('tbl_items.item_id','DESC');
-            $join->where('tbl_item_gallery.default',1);
+            $join->where('tbl_item_gallery.default', 1);
             // SELECT DISTINCT(column_name) FROM table_name ORDER BY column_name DESC limit 2,1;
-             //$join->orderBy('tbl_items.item_id','DESC');
-             $join->limit(2,1);
-        })->leftjoin('tbl_brands', function($brand){
-            $brand->on('tbl_items.brand_id','=','tbl_brands.id');
+            //$join->orderBy('tbl_items.item_id','DESC');
+            $join->limit(2, 1);
+        })->leftjoin('tbl_brands', function ($brand) {
+            $brand->on('tbl_items.brand_id', '=', 'tbl_brands.id');
         })
-        ->orderBy('tbl_items.item_id','DESC')
-        
-        ->select('tbl_items.*','tbl_brands.id as brandId','tbl_brands.name as brandName','tbl_group.g_id','tbl_group.g_name','tbl_item_gallery.img_name','tbl_item_gallery.default')
-        ->get();
+            ->orderBy('tbl_items.item_id', 'DESC')
+
+            ->select('tbl_items.*', 'tbl_brands.id as brandId', 'tbl_brands.name as brandName', 'tbl_group.g_id', 'tbl_group.g_name', 'tbl_item_gallery.img_name', 'tbl_item_gallery.default')
+            ->get();
         //echo"<pre>"; print_r($dataObjArr);exit;
         $galleryImages = DB::table('tbl_item_gallery')->rightJoin('tbl_items', function ($join) {
             $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
         })->get();
 
-        return $theme->scope('admin.item_list', compact('dataObjArr','galleryImages'))->render();
+        return $theme->scope('admin.item_list', compact('dataObjArr', 'galleryImages'))->render();
     }
 
     public function getItembyAjax()
-    { 
+    {
         $dataObjArr = DB::table('tbl_items')->leftJoin('tbl_group', function ($join) {
             $join->on('tbl_items.group_id', '=', 'tbl_group.g_id');
-
         })->leftJoin('tbl_item_gallery', function ($join) {
 
             $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
-            $join->where('tbl_item_gallery.default',1);
-
-        })->select('tbl_items.*','tbl_group.g_id','tbl_group.g_name','tbl_item_gallery.img_name','tbl_item_gallery.default')
-        ->get();
+            $join->where('tbl_item_gallery.default', 1);
+        })->select('tbl_items.*', 'tbl_group.g_id', 'tbl_group.g_name', 'tbl_item_gallery.img_name', 'tbl_item_gallery.default')
+            ->get();
         $galleryImages = DB::table('tbl_item_gallery')->get();
         return Response::json(array(
             'status' => 'success',
-            'dataForTable' => $dataObjArr, 
+            'dataForTable' => $dataObjArr,
             'galleryImages' => $galleryImages
         ));
     }
@@ -643,40 +700,40 @@ class UserController extends Controller
     }
 
     public function customerListLayout()
-    { 
+    {
         $theme = Theme::uses('backend')->layout('layout');
-        $dataObjArr = DB::table('tbl_customers')->orderBy('created_at','DESC')->get();
+        $dataObjArr = DB::table('tbl_customers')->orderBy('created_at', 'DESC')->get();
 
         return $theme->scope('admin.customer_list', compact('dataObjArr'))->render();
     }
 
     public function addressListLayout($id)
-    { 
+    {
         $theme = Theme::uses('backend')->layout('layout');
-        $addresses = DB::table('tbl_addresses')->orderBy('id','DESC')->where('customer_id', $id)->get();
+        $addresses = DB::table('tbl_addresses')->orderBy('id', 'DESC')->where('customer_id', $id)->get();
         $customer = DB::table('tbl_customers')->where('id', $id)->first();
-        
+
         return $theme->scope('admin.address_list', compact('addresses', 'customer'))->render();
     }
 
     public function addAddressLayout($id)
-    { 
+    {
         $theme = Theme::uses('backend')->layout('layout');
         $customer = DB::table('tbl_customers')->where('id', $id)->first();
-        
+
         return $theme->scope('admin.address_add', compact('customer'))->render();
     }
 
     public function editAttributeLayout($id)
-    { 
+    {
         $theme = Theme::uses('backend')->layout('layout');
         $attribute = DB::table('tbl_attributes')->where('id', $id)->first();
         $attributeOptions = DB::table('tbl_attribute_options')->where('attribute_id', $attribute->id)->get();
-        return $theme->scope('admin.attribute.attribute_edit', compact('attribute','attributeOptions'))->render();
+        return $theme->scope('admin.attribute.attribute_edit', compact('attribute', 'attributeOptions'))->render();
     }
 
     public function attributesLayout()
-    { 
+    {
         $theme = Theme::uses('backend')->layout('layout');
         $attributes = DB::table('tbl_attributes')->get();
         //pr($customers);
@@ -684,7 +741,7 @@ class UserController extends Controller
     }
 
     public function attributeFamiliesLayout()
-    { 
+    {
         $theme = Theme::uses('backend')->layout('layout');
         $attributeFamilies = DB::table('tbl_attribute_families')->get();
         //pr($customers);
@@ -692,14 +749,14 @@ class UserController extends Controller
     }
 
     public function addAttrFamilyLayout()
-    { 
+    {
         $theme = Theme::uses('backend')->layout('layout');
         $attributes = DB::table('tbl_attributes')->get();
         return $theme->scope('admin.attribute.attribute_families_add', compact('attributes'))->render();
     }
 
     public function editAttributeFamilyLayout($id)
-    { 
+    {
         $theme = Theme::uses('backend')->layout('layout');
         $attrFamily = DB::table('tbl_attribute_families')->where('id', $id)->first();
 
@@ -708,19 +765,19 @@ class UserController extends Controller
 
         $attrFamily = DB::table('tbl_attribute_families')->where('id', $id)->first();
         $attributes = DB::table('tbl_attributes')->get();
-        
-        return $theme->scope('admin.attribute.edit_attribute_family', compact('attributes','attrFamily','attrFamilyGroups'))->render();
+
+        return $theme->scope('admin.attribute.edit_attribute_family', compact('attributes', 'attrFamily', 'attrFamilyGroups'))->render();
     }
 
     public function addAttributeLayout()
-    { 
+    {
         $theme = Theme::uses('backend')->layout('layout');
-        
+
         return $theme->scope('admin.attribute.attribute_add')->render();
     }
 
     public function updateAttribute(Request $request)
-    { 
+    {
         $this->validate($request, [
             'attribute_code' => 'required|string|max:191',
             'type' => 'required|max:191',
@@ -733,7 +790,7 @@ class UserController extends Controller
             'admin_name_lable.required' => 'Lable is required.',
             'admin_name_lable.string' => 'Lable should be string.',
             'admin_name_lable.max' => 'Lable should not be grater than 191 Character.',
-            
+
             'type.required' => 'Type is required.',
             'type.max' => 'Last name should not be grater than 191 Character.',
 
@@ -747,13 +804,13 @@ class UserController extends Controller
             'input_validation' => $request->input_validation,
             'is_comparable' => $request->is_comparable,
             'is_visible_on_front' => $request->is_visible_on_front,
-            
+
         ]);
-        
+
         if ($addressData) {
             $delOption = DB::table('tbl_attribute_options')->where('attribute_id', $request->attribute_id)->delete();
-            
-             for($i=0; $i<count($request->options); $i++){
+
+            for ($i = 0; $i < count($request->options); $i++) {
                 $option = DB::table('tbl_attribute_options')->insert([
                     'attribute_option_name' => $request->options[$i],
                     'attribute_id' => $request->attribute_id,
@@ -766,31 +823,31 @@ class UserController extends Controller
     }
 
     public function updateAttributeFamily(Request $request)
-    { 
-        
-       $this->validate($request, [
+    {
+
+        $this->validate($request, [
             'code' => 'required|string|max:191',
             'name' => 'required|string|max:191',
         ]);
-        
+
         $addressData = DB::table('tbl_attribute_families')->where('id', $request->attribute_families_id)->update([
             'code' => $request->code,
             'name' => $request->name,
             'status' => $request->status,
-            
+
         ]);
-        
+
         if ($addressData) {
             $delFamilyGroup = DB::table('tbl_attribute_families_group')->where('attribute_family_id', $request->attribute_families_id)->delete();
 
             $attr = $request->request->get('attributes');
-            for($i=0; $i<count($attr); $i++){
+            for ($i = 0; $i < count($attr); $i++) {
                 $option = DB::table('tbl_attribute_families_group')->insert([
                     'attribute_id' => $attr[$i],
                     'attribute_family_id' => $request->attribute_families_id,
                 ]);
             }
-            
+
             return Response::json(array('status' => 'success', 'msg' => 'Attribute Family updated successfully.', 'url' => route('attributeFamiliesLayout')));
         } else {
             return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again', 'url' => route('editAttributeFamilyLayout', $request->attribute_families_id)));
@@ -798,30 +855,30 @@ class UserController extends Controller
     }
 
     public function addAttributeFamily(Request $request)
-    { 
-        
-       $this->validate($request, [
+    {
+
+        $this->validate($request, [
             'code' => 'required|string|max:191|unique:tbl_attribute_families,code',
             'name' => 'required|string|max:191|unique:tbl_attribute_families,name',
         ]);
-        
+
         $addressData = DB::table('tbl_attribute_families')->insertGetId([
             'code' => $request->code,
             'name' => $request->name,
             'status' => $request->status,
-            
+
         ]);
-        
+
         if ($addressData) {
             $attr = $request->request->get('attributes');
-            for($i=0; $i<count($attr); $i++){
+            for ($i = 0; $i < count($attr); $i++) {
                 //echo $attr[$i];
                 $option = DB::table('tbl_attribute_families_group')->insert([
                     'attribute_id' => $attr[$i],
                     'attribute_family_id' => $addressData,
                 ]);
             }
-            
+
             return Response::json(array('status' => 'success', 'msg' => 'Attribute Family saved successfully.', 'url' => route('attributeFamiliesLayout')));
         } else {
             return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again'));
@@ -829,8 +886,8 @@ class UserController extends Controller
     }
 
     public function addAttribute(Request $request)
-    { 
-        
+    {
+
         $this->validate($request, [
             'attribute_code' => 'required|string|max:191|unique:tbl_attributes,attribute_code',
             'type' => 'required|max:191',
@@ -843,12 +900,12 @@ class UserController extends Controller
             'admin_name_lable.required' => 'Lable is required.',
             'admin_name_lable.string' => 'Lable should be string.',
             'admin_name_lable.max' => 'Lable should not be grater than 191 Character.',
-            
+
             'type.required' => 'Type is required.',
             'type.max' => 'Last name should not be grater than 191 Character.',
 
         ]);
-        
+
         $addressData = DB::table('tbl_attributes')->insertGetId([
             'attribute_code' => $request->attribute_code,
             'type' => $request->type,
@@ -858,17 +915,17 @@ class UserController extends Controller
             'input_validation' => $request->input_validation,
             'is_comparable' => $request->is_comparable,
             'is_visible_on_front' => $request->is_visible_on_front,
-            
+
         ]);
-        
+
         if ($addressData) {
-            for($i=0; $i<count($request->options); $i++){
+            for ($i = 0; $i < count($request->options); $i++) {
                 $option = DB::table('tbl_attribute_options')->insertGetId([
                     'attribute_option_name' => $request->options[$i],
                     'attribute_id' => $addressData,
                 ]);
             }
-            
+
 
             return Response::json(array('status' => 'success', 'msg' => 'Attribute saved successfully.', 'url' => route('attributesLayout')));
         } else {
@@ -877,8 +934,8 @@ class UserController extends Controller
     }
 
     public function editAddressLayout($id)
-    { 
-        
+    {
+
         $theme = Theme::uses('backend')->layout('layout');
         //$customer = DB::table('tbl_customers')->where('id', $id)->first();
         $address = DB::table('tbl_addresses')->where('id', $id)->first();
@@ -888,10 +945,10 @@ class UserController extends Controller
     }
 
     public function editCustomerLayout($id)
-    { 
+    {
         $theme = Theme::uses('backend')->layout('layout');
         $customer = DB::table('tbl_customers')->where('id', $id)->first();
-        
+
         // $customerProfile = DB::table('tbl_customers')->where('tbl_customers.id', $id)
         // //->rightjoin('tbl_customers','tbl_customers.user_id','=','users.id')
         // ->rightjoin('tbl_addresses','tbl_addresses.customer_id','=','tbl_customers.id')
@@ -900,22 +957,29 @@ class UserController extends Controller
         // 'tbl_addresses.state','tbl_addresses.city','tbl_addresses.postal_code')
         // ->first();
         $customerProfile = DB::table('tbl_customers')->where('tbl_customers.id', $id)
-            ->leftjoin('tbl_businesses','tbl_businesses.customer_id','=','tbl_customers.id')
+            ->leftjoin('tbl_businesses', 'tbl_businesses.customer_id', '=', 'tbl_customers.id')
 
-            ->leftjoin('tbl_addresses','tbl_addresses.customer_id','=','tbl_customers.id')
-            ->leftjoin('tbl_customer_documents','tbl_customer_documents.customer_id','=','tbl_customers.id')
-            ->select('tbl_customers.id as cust_id','tbl_customers.*', 
-            'tbl_addresses.id as address_id', 'tbl_addresses.*', 'tbl_businesses.*', 'tbl_customer_documents.id as docs_id', 'tbl_customer_documents.*')
+            ->leftjoin('tbl_addresses', 'tbl_addresses.customer_id', '=', 'tbl_customers.id')
+            ->leftjoin('tbl_customer_documents', 'tbl_customer_documents.customer_id', '=', 'tbl_customers.id')
+            ->select(
+                'tbl_customers.id as cust_id',
+                'tbl_customers.*',
+                'tbl_addresses.id as address_id',
+                'tbl_addresses.*',
+                'tbl_businesses.*',
+                'tbl_customer_documents.id as docs_id',
+                'tbl_customer_documents.*'
+            )
             ->first();
 
-            
-        
+
+
         $user = DB::table('users')->where('id', $customerProfile->user_id)->first();
-        return $theme->scope('admin.customer_edit', compact('customer','customerProfile','user'))->render();
+        return $theme->scope('admin.customer_edit', compact('customer', 'customerProfile', 'user'))->render();
     }
 
     public function addAddress(Request $request)
-    { 
+    {
         //dd($request->all());
         $this->validate($request, [
             'f_name' => 'required|string|max:120',
@@ -926,7 +990,7 @@ class UserController extends Controller
             'city' => 'required',
             //'phone' => 'required|integer',
             'postal_code' => 'required|integer',
-            
+
         ], [
             'f_name.required' => 'First name is required.',
             'f_name.string' => 'First name should be string.',
@@ -934,7 +998,7 @@ class UserController extends Controller
 
             'street_address.required' => 'Street adrress is required.',
             'street_address.string' => 'Street adrress should be string.',
-            
+
 
             //'phone.required' => 'Phone number is required.',
             //'phone.integer' => 'Phone number should be number.',
@@ -951,7 +1015,7 @@ class UserController extends Controller
         ]);
 
         $checks = DB::table('tbl_addresses')->where('customer_id', $request->customer_id)->where('default_address', 1)->get();
-        if(count($checks)>0){
+        if (count($checks) > 0) {
             DB::table('tbl_addresses')->where('customer_id', $request->customer_id)->update([
                 'default_address' => 0,
             ]);
@@ -968,19 +1032,18 @@ class UserController extends Controller
             'state' => $request->state,
             'city' => $request->city,
             'postal_code' => $request->postal_code,
-            'default_address' => ($request->default_address)? 1:0,
+            'default_address' => ($request->default_address) ? 1 : 0,
         ]);
-        
+
         if ($addressData) {
             return Response::json(array('status' => 'success', 'msg' => 'Address saved successfully.', 'url' => route('addressListLayout', $request->customer_id)));
         } else {
             return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again', 'url' => route('addAddressLayout', $request->customer_id)));
         }
-        
     }
 
     public function updateAddress(Request $request)
-    { 
+    {
         //dd($request->all());
         $this->validate($request, [
             'f_name' => 'required|string|max:120',
@@ -991,7 +1054,7 @@ class UserController extends Controller
             'city' => 'required',
             //'phone' => 'required|integer',
             'postal_code' => 'required|integer',
-            
+
         ], [
             'f_name.required' => 'First name is required.',
             'f_name.string' => 'First name should be string.',
@@ -999,7 +1062,7 @@ class UserController extends Controller
 
             'street_address.required' => 'Street adrress is required.',
             'street_address.string' => 'Street adrress should be string.',
-            
+
 
             // 'phone.required' => 'Phone number is required.',
             // 'phone.integer' => 'Phone number should be number.',
@@ -1018,12 +1081,12 @@ class UserController extends Controller
         $checks = DB::table('tbl_addresses')->where('customer_id', $request->customer_id)
             ->where('default_address', 1)->get();
 
-        if(count($checks)>0 && $request->default_address==1){
+        if (count($checks) > 0 && $request->default_address == 1) {
             DB::table('tbl_addresses')->where('customer_id', $request->customer_id)->update([
                 'default_address' => 0,
             ]);
         }
-        
+
 
         $addressData = DB::table('tbl_addresses')->where('id', $request->address_id)->update([
             'customer_id' => $request->customer_id,
@@ -1037,19 +1100,18 @@ class UserController extends Controller
             'state' => $request->state,
             'city' => $request->city,
             'postal_code' => $request->postal_code,
-            'default_address' => ($request->default_address)? 1:0,
+            'default_address' => ($request->default_address) ? 1 : 0,
         ]);
-        
+
         if ($addressData) {
             return Response::json(array('status' => 'success', 'msg' => 'Address saved successfully.', 'url' => route('addressListLayout', $request->customer_id)));
         } else {
             return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again', 'url' => route('editAddressLayout', $request->address_id)));
         }
-        
     }
 
     public function addNewCustomer(Request $request)
-    { 
+    {
         //dd($request->all());
         $this->validate($request, [
             'f_name' => 'required|string|max:120',
@@ -1072,12 +1134,12 @@ class UserController extends Controller
             'l_name.string' => 'Last name should be string.',
             'l_name.max' => 'Last name should not be grater than 120 Character.',
             'dob.max' => 'Date of birth should not be grater than 15 Character.',
-            
+
             'gender.required' => 'Gender is required.',
             'email.required' => 'Email is required.',
             'email.string' => 'Email should be string.',
             'email.max' => 'Email should not be grater than 50 Character.',
-            
+
         ]);
         $user_id = Auth::user()->id;
         $customerData = DB::table('tbl_customers')->insertGetId([
@@ -1088,9 +1150,9 @@ class UserController extends Controller
             'dob' => $request->dob,
             'phone' => $request->phone,
             'customer_type' => $request->customer_type,
-            
+
         ]);
-        
+
         if ($customerData) {
             return Response::json(array('status' => 'success', 'msg' => 'Customer save successfully.', 'url' => route('customerListLayout')));
         } else {
@@ -1100,7 +1162,7 @@ class UserController extends Controller
     }
 
     public function updateCustomer(Request $request)
-    { 
+    {
         //dd($request->all());
         $this->validate($request, [
             'f_name' => 'required|string|max:120',
@@ -1123,12 +1185,12 @@ class UserController extends Controller
             'l_name.string' => 'Last name should be string.',
             'l_name.max' => 'Last name should not be grater than 120 Character.',
             'dob.max' => 'Date of birth should not be grater than 15 Character.',
-            
+
             'gender.required' => 'Gender is required.',
             'email.required' => 'Email is required.',
             'email.string' => 'Email should be string.',
             'email.max' => 'Email should not be grater than 50 Character.',
-            
+
         ]);
         $user_id = Auth::user()->id;
         $customerData = DB::table('tbl_customers')->where('id', $request->customer_id)->update([
@@ -1139,20 +1201,19 @@ class UserController extends Controller
             'dob' => $request->dob,
             'phone' => $request->phone,
             'customer_type' => $request->customer_type,
-            
+
         ]);
-        
+
         if ($customerData) {
             return Response::json(array('status' => 'success', 'msg' => 'Customer updated successfully.', 'url' => route('customerListLayout')));
         } else {
             return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again', 'url' => route('editCustomerLayout', $request->customer_id)));
         }
-        
     }
 
     public function deleteCustomer(Request $request)
     {
-       
+
         $customer = DB::table('tbl_customers')->where('id', $request->customer_id)->delete();
         if ($customer) {
             return Response::json(array('status' => 'success', 'msg' => 'Customer deleted successfully.', 'url' => route('customerListLayout')));
@@ -1162,58 +1223,56 @@ class UserController extends Controller
     }
 
     public function addNewCustomerLayout()
-    { 
+    {
         $theme = Theme::uses('backend')->layout('layout');
         $dataObjArr = ['data' => ''];
 
         return $theme->scope('admin.customer_add', $dataObjArr)->render();
     }
 
-    public function get_attributes(){
+    public function get_attributes()
+    {
         $attributes = get_attributes();
         $html = '<option value="" disabled selected>Choose atrribute</option>';
-        
-        foreach($attributes as $attribute){
-            
-            $html .= '<option value="'.$attribute['id'].'">'.$attribute['admin_name_lable'].'</option>';
+
+        foreach ($attributes as $attribute) {
+
+            $html .= '<option value="' . $attribute['id'] . '">' . $attribute['admin_name_lable'] . '</option>';
         }
         return $html;
-        
     }
 
-    public function getAttributeOptions(Request $request){
+    public function getAttributeOptions(Request $request)
+    {
         $options = get_attributes_option_by_attr_id($request->attr_id);
         // $html = '';
-        
+
         // foreach($options as $attribute){
         //     $html .= '<label class="">'.$attribute['attribute_option_name'].'</label>';
         //     $html .= '<input type="checkbox" name="option[]" value="'.$attribute['id'].'" class="" multiple/>';
-                                                
-            
+
+
         // }
         // return $html;
         $html = '<option value="" disabled selected>Choose option</option>';
-        
-        foreach($options as $attribute){
-            
-            $html .= '<option value="'.$attribute['id'].'">'.$attribute['attribute_option_name'].'</option>';
+
+        foreach ($options as $attribute) {
+
+            $html .= '<option value="' . $attribute['id'] . '">' . $attribute['attribute_option_name'] . '</option>';
         }
         return $html;
-        
     }
 
     public function itemEditLayout($item_id)
-    { 
+    {
         $theme = Theme::uses('backend')->layout('layout');
         $item = DB::table('tbl_items')->leftJoin('tbl_group', function ($join) {
             $join->on('tbl_items.group_id', '=', 'tbl_group.g_id');
-            
         })->leftJoin('tbl_brands', function ($brand) {
             $brand->on('tbl_items.brand_id', '=', 'tbl_brands.id');
-            
-        })->select('tbl_items.*','tbl_brands.name as brandName','tbl_group.g_id','tbl_group.g_name')
-        ->where('tbl_items.item_id', '=', $item_id)
-        ->first();
+        })->select('tbl_items.*', 'tbl_brands.name as brandName', 'tbl_group.g_id', 'tbl_group.g_name')
+            ->where('tbl_items.item_id', '=', $item_id)
+            ->first();
         //pr($item);
         //$item = json_decode(json_encode($item), true);
         $attrFamily = DB::table('tbl_attribute_families')->where('id', $item->attribute_family_id)->first();
@@ -1224,18 +1283,17 @@ class UserController extends Controller
         $attributeAndOptions = DB::table('tbl_item_attributes')->where('item_id', $item_id)->get();
         $attributeAndOptions = json_decode(json_encode($attributeAndOptions), true);
 
-        
+
 
         $itemImages = DB::table('tbl_items')->leftJoin('tbl_item_gallery', function ($join) {
             $join->on('tbl_items.item_id', '=', 'tbl_item_gallery.item_id');
-           
-        })->select('tbl_items.*','tbl_item_gallery.img_name','tbl_item_gallery.id','tbl_item_gallery.default')
-        ->where('tbl_items.item_id', '=', $item_id)
-        ->get();
+        })->select('tbl_items.*', 'tbl_item_gallery.img_name', 'tbl_item_gallery.id', 'tbl_item_gallery.default')
+            ->where('tbl_items.item_id', '=', $item_id)
+            ->get();
 
         $brands = DB::table('tbl_brands')->get();
 
-        return $theme->scope('admin.item_edit', compact('attributeAndOptions','brands','item','itemImages','attrFamilyGroups'))->render();
+        return $theme->scope('admin.item_edit', compact('attributeAndOptions', 'brands', 'item', 'itemImages', 'attrFamilyGroups'))->render();
     }
 
     public function saveGroupAttribute(Request $request)
@@ -1290,33 +1348,32 @@ class UserController extends Controller
     public function getTreeViewFrEdit(Request $request)
     {
         $item = DB::table('tbl_item_groups')->where('item_id', $request->itemId)->get();
-        
+
         $item = json_decode(json_encode($item), true);
         //echo $item['group_id'];exit;
         $dataObjArr = DB::table('tbl_group')->get();
         $folders_arr = array();
-        
+
         foreach ($dataObjArr as $key => $rowData) {
             $parentid = $rowData->grp_id;
             if ($parentid == '0') $parentid = "#";
             $selected = false;
             $opened = false;
-            if(count($item)>0){
-                for($n=0; $n<count($item); $n++){
+            if (count($item) > 0) {
+                for ($n = 0; $n < count($item); $n++) {
                     if ($rowData->g_id == $item[$n]['g_id']) {
                         $selected = true;
                         $opened = true;
                     }
                 }
             }
-            
+
             $folders_arr[] = array(
                 "id" => $rowData->g_id,
                 "parent" => $parentid,
                 "text" => $rowData->g_name,
                 "state" => array("selected" => $selected, "opened" => $opened)
             );
-            
         }
         return json_encode($folders_arr);
     }
@@ -1372,7 +1429,7 @@ class UserController extends Controller
             'state' => 'required',
             'city' => 'required',
             'postal_code' => 'required|integer',
-            
+
         ], [
             'f_name.required' => 'First name is required.',
             'f_name.string' => 'First name should be string.',
@@ -1386,7 +1443,7 @@ class UserController extends Controller
             'l_name.string' => 'Last name should be string.',
             'l_name.max' => 'Last name should not be grater than 120 Character.',
             //'dob.max' => 'Date of birth should not be grater than 15 Character.',
-            
+
             //'gender.required' => 'Gender is required.',
             'email.required' => 'Email is required.',
             'email.string' => 'Email should be string.',
@@ -1394,43 +1451,45 @@ class UserController extends Controller
 
             'street_address.required' => 'Street adrress is required.',
             'street_address.string' => 'Street adrress should be string.',
-            
+
             'postal_code.required' => 'Postal code is required.',
             'postal_code.integer' => 'Postal code should be number.',
             'country.required' => 'Country is required.',
             'state.required' => 'State is required.',
             'city.required' => 'City is required.',
-            
+
         ]);
         $query = 0;
-                $status = 'Pending';
-                $remark = '';
-                    $profile = 0;
-                    if($request->status == 1){
-                        $status = 'Approved';
-                        $profile = 1;
-                    }
-                    if($request->status == 2){
-                        $status = 'Rejected';
-                        $profile = 0;
-                        $remark = $request->remark;
-                    }
-                    
+        $status = 'Pending';
+        $remark = '';
+        $profile = 0;
+        if ($request->status == 1) {
+            $status = 'Approved';
+            $profile = 1;
+        }
+        if ($request->status == 2) {
+            $status = 'Rejected';
+            $profile = 0;
+            $remark = $request->remark;
+        }
+
         $customerData = DB::table('tbl_customers')->updateOrInsert(
             [
                 'user_id' => $request->customer_id,
-            ],[
-            'cutomer_fname' => $request->cutomer_fname,
-            'cutomer_lname' => $request->cutomer_lname,
-            'email' => $request->email,
-            //'gender' => $request->gender,
-            //'dob' => $request->dob,
-            'phone' => $request->mobile,
-            'status' => $request->status,
-            'remark' => $remark,
-            'customer_type' => $request->customer_type,
-            
-        ]);
+            ],
+            [
+                'cutomer_fname' => $request->cutomer_fname,
+                'cutomer_lname' => $request->cutomer_lname,
+                'email' => $request->email,
+                //'gender' => $request->gender,
+                //'dob' => $request->dob,
+                'phone' => $request->mobile,
+                'status' => $request->status,
+                'remark' => $remark,
+                'customer_type' => $request->customer_type,
+
+            ]
+        );
 
         if ($customerData) {
             $query = 1;
@@ -1442,27 +1501,30 @@ class UserController extends Controller
             [
                 'busines_user_id' => $request->customer_id,
                 'customer_id' => $customer->id,
-            ],[
-            'store_name' => $request->store_name,
-            'business_country' => $request->business_country,
-            'business_state' => $request->business_state,
-            'business_city' => $request->business_city,
-            'business_postal_code' => $request->business_postal_code,
-            //'parent_code' => $request->parent_code,
-        ]);
+            ],
+            [
+                'store_name' => $request->store_name,
+                'business_country' => $request->business_country,
+                'business_state' => $request->business_state,
+                'business_city' => $request->business_city,
+                'business_postal_code' => $request->business_postal_code,
+                //'parent_code' => $request->parent_code,
+            ]
+        );
 
         if ($businessData) {
             $query = 1;
         }
 
-        
+
 
         $addressData = DB::table('tbl_addresses')->updateOrInsert(
             [
                 'customer_id' => $customer->id,
                 'id' => $request->address_id,
                 'check_page' => 0,
-            ],[
+            ],
+            [
                 'f_name' => $request->f_name,
                 'l_name' => $request->l_name,
                 'customer_id' => $customer->id,
@@ -1474,78 +1536,78 @@ class UserController extends Controller
                 'state' => $request->state,
                 'city' => $request->city,
                 'postal_code' => $request->postal_code,
-           
-             ]);
 
-             if ($addressData) {
-            
-                $query = 1;
-            }
-         
-            //  if(!empty($request->addr2_fname) && !empty($request->addr2_lname) && !empty($request->addr2_street_address))
-            //  {
-            //      DB::table('tbl_addresses')->where('customer_id', $customer->id)
-            //         ->where('address_user_id', $request->customer_id)
-            //         ->where('id', '!=', $request->address_id)->delete();
+            ]
+        );
 
-            //     $address2Data = DB::table('tbl_addresses')->Insert(
-            //         // [
-            //         //     'customer_id' => $customer->id,
-            //         //     'id' => $request->address_id,
-            //         //     'default_address' => 0,
-            //         //     'check_page' => 0,
-            //         // ],
-            //         [
-            //             'f_name' => $request->addr2_fname,
-            //             'l_name' => $request->addr2_lname,
-            //             'customer_id' => $customer->id,
-            //             'address_user_id' => $request->customer_id,
-            //             'street_address' => $request->addr2_street_address,
-            //             // 'country' => $request->country,
-            //             // 'state' => $request->state,
-            //             // 'city' => $request->city,
-            //             // 'postal_code' => $request->postal_code,
-                   
-            //          ]);
-            //          if ($address2Data) {
-            
-            //             $query = 1;
-            //         }
-            //  }
+        if ($addressData) {
 
-             if(count($request->team_name) > 0 && count($request->team_mobile) > 0 && count($request->team_email) > 0)
-             {
-                $detTeams = DB::table('tbl_teams')->where('customer_id', $customer->id)
+            $query = 1;
+        }
+
+        //  if(!empty($request->addr2_fname) && !empty($request->addr2_lname) && !empty($request->addr2_street_address))
+        //  {
+        //      DB::table('tbl_addresses')->where('customer_id', $customer->id)
+        //         ->where('address_user_id', $request->customer_id)
+        //         ->where('id', '!=', $request->address_id)->delete();
+
+        //     $address2Data = DB::table('tbl_addresses')->Insert(
+        //         // [
+        //         //     'customer_id' => $customer->id,
+        //         //     'id' => $request->address_id,
+        //         //     'default_address' => 0,
+        //         //     'check_page' => 0,
+        //         // ],
+        //         [
+        //             'f_name' => $request->addr2_fname,
+        //             'l_name' => $request->addr2_lname,
+        //             'customer_id' => $customer->id,
+        //             'address_user_id' => $request->customer_id,
+        //             'street_address' => $request->addr2_street_address,
+        //             // 'country' => $request->country,
+        //             // 'state' => $request->state,
+        //             // 'city' => $request->city,
+        //             // 'postal_code' => $request->postal_code,
+
+        //          ]);
+        //          if ($address2Data) {
+
+        //             $query = 1;
+        //         }
+        //  }
+
+        if (count($request->team_name) > 0 && count($request->team_mobile) > 0 && count($request->team_email) > 0) {
+            $detTeams = DB::table('tbl_teams')->where('customer_id', $customer->id)
                 ->where('team_user_id', $request->customer_id)->delete();
-                for($n = 0; $n < count($request->team_name); $n++)
-                {
+            for ($n = 0; $n < count($request->team_name); $n++) {
 
                 //    echo  $request->team_name[$n];
                 //    pr($request->team_name);
-                    
 
-                    $teamData = DB::table('tbl_teams')->insert(
-                        [
-                            'customer_id' => $customer->id,
-                            'team_user_id' =>$request->customer_id,
-                            'team_name' => $request->team_name[$n],
-                            'team_mobile' => $request->team_mobile[$n],
-                            'team_email' => $request->team_email[$n],
-                            
-                        ]);
-                }
 
-                if ($teamData) {
-            
-                    $query = 1;
-                }
-             }
+                $teamData = DB::table('tbl_teams')->insert(
+                    [
+                        'customer_id' => $customer->id,
+                        'team_user_id' => $request->customer_id,
+                        'team_name' => $request->team_name[$n],
+                        'team_mobile' => $request->team_mobile[$n],
+                        'team_email' => $request->team_email[$n],
 
-             //Start code for documents
-             
-             //End code for documents
-        
-        if ($query ==1) {
+                    ]
+                );
+            }
+
+            if ($teamData) {
+
+                $query = 1;
+            }
+        }
+
+        //Start code for documents
+
+        //End code for documents
+
+        if ($query == 1) {
 
             // $user = User::find($request->customer_id);
             // $user->profile = 0;
@@ -1558,31 +1620,30 @@ class UserController extends Controller
             // $customer->profile = 0;
             // $customer->mobile = $request->mobile;
             // $customer->save();
-            
-        //     return Response::json(array('status' => 'success', 'msg' => 'Profile save successfully.', 'url' => route('customerProfile')));
-        // } else {
-        //     return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again'));
-        // }
+
+            //     return Response::json(array('status' => 'success', 'msg' => 'Profile save successfully.', 'url' => route('customerProfile')));
+            // } else {
+            //     return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again'));
+            // }
 
             $user = User::find($customer->user_id);
             $user->profile = $profile;
             $user->mobile = $request->mobile;
             $user->email = $request->email;
             $user->save();
-            
-            if($request->status == 1){
+
+            if ($request->status == 1) {
 
                 Mail::to($request->email)->send(new CustomerApproveMail($request->all()));
             }
-            if($request->status == 2){
+            if ($request->status == 2) {
 
                 Mail::to($request->email)->send(new CustomerRejectedMail($request->all()));
             }
-            return Response::json(array('status' => 'success', 'msg' => 'Customer '.$status, 'url' => route('customerListLayout')));
+            return Response::json(array('status' => 'success', 'msg' => 'Customer ' . $status, 'url' => route('customerListLayout')));
         } else {
             return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again', 'url' => route('editCustomerLayout', $request->customer_id)));
         }
-
     }
 
     // public function saveCustomerApproval(Request $request)
@@ -1599,7 +1660,7 @@ class UserController extends Controller
     //         'state' => 'required',
     //         'city' => 'required',
     //         'postal_code' => 'required|integer',
-            
+
     //     ], [
     //         'f_name.required' => 'First name is required.',
     //         'f_name.string' => 'First name should be string.',
@@ -1613,7 +1674,7 @@ class UserController extends Controller
     //         'l_name.string' => 'Last name should be string.',
     //         'l_name.max' => 'Last name should not be grater than 120 Character.',
     //         'dob.max' => 'Date of birth should not be grater than 15 Character.',
-            
+
     //         'gender.required' => 'Gender is required.',
     //         'email.required' => 'Email is required.',
     //         'email.string' => 'Email should be string.',
@@ -1621,13 +1682,13 @@ class UserController extends Controller
 
     //         'street_address.required' => 'Street adrress is required.',
     //         'street_address.string' => 'Street adrress should be string.',
-            
+
     //         'postal_code.required' => 'Postal code is required.',
     //         'postal_code.integer' => 'Postal code should be number.',
     //         'country.required' => 'Country is required.',
     //         'state.required' => 'State is required.',
     //         'city.required' => 'City is required.',
-            
+
     //     ]);
     //     $query = 0;
     //     $status = 'Pending';
@@ -1653,13 +1714,13 @@ class UserController extends Controller
     //         'status' => $request->status,
     //         'remark' => $remark,
     //         'customer_type' => $request->customer_type,
-            
+
     //     ]);
     //     if ($customerData || !$customerData) {
     //         $query = 1;
     //     }
     //     $customer = DB::table('tbl_customers')->where('id', $request->customer_id)->first();
-              
+
     //     $addressData = DB::table('tbl_addresses')->where('customer_id', $customer->id)->update(
     //        [
     //             'f_name' => $request->f_name,
@@ -1672,26 +1733,26 @@ class UserController extends Controller
     //             'state' => $request->state,
     //             'city' => $request->city,
     //             'postal_code' => $request->postal_code,
-           
+
     //          ]);
-         
+
     //     if ($addressData || !$addressData) {
-            
+
     //         $query = 1;
     //     }
-        
+
     //     if ($query ==1) {
 
-            
 
-            
+
+
 
     //         $user = User::find($customer->user_id);
     //         $user->profile = $profile;
     //         $user->mobile = $request->mobile;
     //         $user->email = $request->email;
     //         $user->save();
-            
+
     //         if($request->status == 1){
 
     //             Mail::to($request->email)->send(new CustomerApproveMail($request->all()));

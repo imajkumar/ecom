@@ -58,7 +58,7 @@ Route::post('/updateAddress', 'UserController@updateAddress')->name('updateAddre
 Route::post('/addAddress', 'UserController@addAddress')->name('addAddress');
 
 Route::get('/itemCategories', 'UserController@itemCategories')->name('itemCategories');
-Route::get('/add-categoryLayout', 'UserController@addCategoryLayout')->name('addCategoryLayout');
+Route::get('/add-category-layout', 'UserController@addCategoryLayout')->name('addCategoryLayout');
 Route::post('/addCategoryLayout', 'UserController@addCategory')->name('addCategory');
 
 Route::get('/add-new-customer', 'UserController@addNewCustomerLayout')->name('addNewCustomerLayout'); 
@@ -93,6 +93,12 @@ Route::post('/save-brand', 'UserController@saveBrand')->name('saveBrand');
 Route::get('/edit-brand/{id}', 'UserController@editBrandLayout')->name('editBrandLayout');
 Route::post('/update-brand/{id}', 'UserController@updateBrand')->name('updateBrand');
 Route::get('/delete-brand/{id}', 'UserController@deleteBrand')->name('deleteBrand');
+
+//ajax
+Route::post('/getAjaxAttributes', 'UserController@getAjaxAttributes')->name('getAjaxAttributes');
+Route::post('/saveItemCategory', 'UserController@saveItemCategory')->name('saveItemCategory');
+
+
 
 
 

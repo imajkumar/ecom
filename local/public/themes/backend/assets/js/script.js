@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    //alert("Ready!");
+    alert("Ready!");
 
 }, false);

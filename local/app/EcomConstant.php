@@ -19,4 +19,4 @@ define('ITEM_IMG_PATH','gallery' );
 
 define('BACKEND', BASE_URL.'assets/');
 
-define('WEB_TITLE', 'Bartanwaale.com');
+define('WEB_TITLE', '');

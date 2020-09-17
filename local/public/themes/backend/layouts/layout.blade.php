@@ -36,7 +36,7 @@ $customer = session()->get('customer');
 
 <head>
 	<meta charset="utf-8" />
-	<title>Bartanwale Admin | Dashboard</title>
+	<title> Dashboard</title>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
@@ -269,7 +269,8 @@ $customer = session()->get('customer');
 	<script src="{{ BACKEND.'plugins/parsleyjs/dist/parsley.min.js'}}"></script>
 	<script src="{{ BACKEND.'plugins/highlight.js/highlight.min.js'}}"></script>
 	<script src="{{ BACKEND.'js/demo/render.highlight.js'}}"></script>
-
+	<script src="../assets/js/demo/ui-modal-notification.demo.js" type="a67d5a0b424a7806d2c2de44-text/javascript"></script>
+	
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 	
@@ -278,6 +279,8 @@ $customer = session()->get('customer');
 <script src="https://rawgit.com/wasikuss/select2-multi-checkboxes/select2-3.5.x/select2.multi-checkboxes.js"></script>
 
 <script src="{{ BACKEND.'js/demo/profile.demo.js'}}"></script>
+<script src="{{ BACKEND.'js/appjs/ecom.js'}}"></script>
+
 
 <script type="text/javascript">
 	$(document).ready(function() {
