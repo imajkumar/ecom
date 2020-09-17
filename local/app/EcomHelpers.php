@@ -10,6 +10,21 @@ function getUnderGroup()
     $obj = app('App\EComGeneralSettings');
     return $obj->getUnderGroup(); 
 }
+function getItemCategory()
+{
+    $obj = app('App\EComGeneralSettings');
+    return $obj->getItemCategory(); 
+}
+
+function getCountry()
+{
+    $obj = app('App\EComGeneralSettings');
+    return $obj->getCountry(); 
+}
+
+
+
+
 
 function getItemAttributes()
 {

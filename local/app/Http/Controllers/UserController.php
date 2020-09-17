@@ -436,47 +436,22 @@ class UserController extends Controller
     public function saveItem(Request $request)
     {
         $this->validate($request, [
-            'item_name' => 'required|string|max:120',
-            'item_sku' => 'required|string|unique:tbl_items,item_sku',
-            'attribute_family_id' => 'required',
-            // 'group_id' => 'required|integer',
-            // 'brand_id' => 'required|integer',
-            // 'open_qty' => 'required|integer',
-            // 'min_qty' => 'required|integer',
+            'item_name' => 'required|string|max:255',
+            'itemCategory' => 'required'          
+           
         ], [
-            'attribute_family_id.required' => 'Attribute family is required.',
-            'item_name.required' => 'Item name is required.',
-            'item_name.string' => 'Item name should be string.',
-            'item_sku.required' => 'Item sku is required.',
-            'item_sku.string' => 'Item sku should be string.',
-            'item_sku.unique' => 'Item sku olready used.',
-            'item_name.max' => 'Item name Should be Minimum of 120 Character.',
-            // 'group_id.required' => 'Group field is required.',
-            // 'group_id.required' => 'Brand field is required.',
-            // 'open_qty.required' => 'Open quantity field is required.',
-            // 'open_qty.integer' => 'Open quantity field should be number.',
-            // 'min_qty.required' => 'Min quantity field is required.',
-            // 'min_qty.integer' => 'Min quantity field should be number.',
+           
+            'item_name.required' => 'Product name is required.',
+            'itemCategory.string' => 'Select Category',            
+           
         ]);
         $user_id = Auth::user()->id;
         $itemData = DB::table('tbl_items')->insertGetId([
-            'item_name' => $request->item_name,
-            'item_sku' => $request->item_sku,
-            'attribute_family_id' => $request->attribute_family_id,
-            // 'brand_id' => $request->brand_id,
-            // 'description' => $request->description,
-            // 'sale_price' => $request->sale_price,
-            // 'regular_price' => $request->regular_price,
-            // 'open_qty' => $request->open_qty,
-            // 'min_qty' => $request->min_qty,
-            // 'status' => $request->status
-        ]);
-        //dd($itemData);exit;
-        //$request->session()->flash('message', 'New Item added successfully.');
-        //$request->session()->flash('message-type', 'success');
-
+            'item_name' => $request->item_name,            
+            'cat_id' => $request->itemCategory           
+        ]);        
         if ($itemData) {
-            return Response::json(array('status' => 'success', 'msg' => 'New Item added successfully.', 'url' => route('itemEditLayout', $itemData)));
+            return Response::json(array('status' => 'success', 'msg' => 'Save successfully', 'url' => route('itemEditLayout', $itemData)));
         } else {
             return Response::json(array('status' => 'warning', 'msg' => 'Something is wrong try again'));
         }
@@ -1266,19 +1241,20 @@ class UserController extends Controller
     public function itemEditLayout($item_id)
     {
         $theme = Theme::uses('backend')->layout('layout');
-        $item = DB::table('tbl_items')->leftJoin('tbl_group', function ($join) {
-            $join->on('tbl_items.group_id', '=', 'tbl_group.g_id');
+
+        $item = DB::table('tbl_items')->leftJoin('tbl_item_category', function ($join) {
+            $join->on('tbl_items.cat_id', '=', 'tbl_item_category.id');
         })->leftJoin('tbl_brands', function ($brand) {
             $brand->on('tbl_items.brand_id', '=', 'tbl_brands.id');
-        })->select('tbl_items.*', 'tbl_brands.name as brandName', 'tbl_group.g_id', 'tbl_group.g_name')
+        })->select('tbl_items.*', 'tbl_brands.name as brandName', 'tbl_item_category.id', 'tbl_item_category.item_name')
             ->where('tbl_items.item_id', '=', $item_id)
             ->first();
         //pr($item);
         //$item = json_decode(json_encode($item), true);
-        $attrFamily = DB::table('tbl_attribute_families')->where('id', $item->attribute_family_id)->first();
+        
 
-        $attrFamilyGroups = DB::table('tbl_attribute_families_group')->where('attribute_family_id', $attrFamily->id)->get();
-        $attrFamilyGroups = json_decode(json_encode($attrFamilyGroups), true);
+        
+        
 
         $attributeAndOptions = DB::table('tbl_item_attributes')->where('item_id', $item_id)->get();
         $attributeAndOptions = json_decode(json_encode($attributeAndOptions), true);

@@ -21,6 +21,22 @@ class ECOMGeneralSettings extends Model
 
 
     }
+    public function getItemCategory()
+    {
+        $data = DB::table('tbl_item_category')->get();
+        return $data;
+
+
+    }
+    public function getCountry()
+    {
+        $data = DB::table('countries')->limit(10)->get();
+        return $data;
+
+
+    }
+    
+    
     public function getItemAttributes()
     {
         $data = DB::table('tbl_attribute')->get();

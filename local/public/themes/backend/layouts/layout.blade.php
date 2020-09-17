@@ -268,6 +268,8 @@ $customer = session()->get('customer');
 	<script src="{{ BACKEND.'js/ecom-backend.js'}}"></script>
 	<script src="{{ BACKEND.'plugins/parsleyjs/dist/parsley.min.js'}}"></script>
 	<script src="{{ BACKEND.'plugins/highlight.js/highlight.min.js'}}"></script>
+	<script src="{{ BACKEND.'plugins/ckeditor/ckeditor.js'}}"></script>
+	
 	<script src="{{ BACKEND.'js/demo/render.highlight.js'}}"></script>
 	<script src="../assets/js/demo/ui-modal-notification.demo.js" type="a67d5a0b424a7806d2c2de44-text/javascript"></script>
 	
@@ -277,9 +279,10 @@ $customer = session()->get('customer');
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.css" rel="stylesheet" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.js"></script>
 <script src="https://rawgit.com/wasikuss/select2-multi-checkboxes/select2-3.5.x/select2.multi-checkboxes.js"></script>
-
-<script src="{{ BACKEND.'js/demo/profile.demo.js'}}"></script>
 <script src="{{ BACKEND.'js/appjs/ecom.js'}}"></script>
+
+<!-- <script src="{{ BACKEND.'js/demo/profile.demo.js'}}"></script> -->
+
 
 
 <script type="text/javascript">
