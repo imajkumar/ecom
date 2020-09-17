@@ -90,11 +90,35 @@ $customer = session()->get('customer');
 			margin-right: 10px;
 		}
 	</style>
+	
+    <style>
+        .modal {
+            display:    none;
+            position:   fixed;
+            z-index:    1000;
+            top:        0;
+            left:       0;
+            height:     100%;
+            width:      100%;
+            background: rgba( 255, 255, 255, .8 ) 
+                        url("{{ BACKEND.'img/coming-soon/ajax-loader1.gif'}}") 
+                        50% 50% 
+                        no-repeat;
+        }
 
+        body.loading .modal {
+            overflow: hidden;   
+        }
+
+        body.loading .modal {
+            display: block;
+        }
+    </style>
 
 </head>
 
 <body>
+	<div class="modal"><!-- Place at bottom of page --></div>
 	<!-- begin #page-loader -->
 	<div id="page-loader" class="fade show">
 		<span class="spinner"></span>
@@ -311,6 +335,10 @@ $customer = session()->get('customer');
 </script> --}}
 
 	<!-- ================== END PAGE LEVEL JS ================== -->
+	
+    <script src="{{ BACKEND.'plugins/countdown/jquery.plugin.min.js'}}"></script>
+	<script src="{{ BACKEND.'plugins/countdown/jquery.countdown.min.js'}}"></script>
+	<script src="{{ BACKEND.'js/demo/coming-soon.demo.js'}}"></script>
 </body>
 
 </html>

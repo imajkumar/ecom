@@ -109,7 +109,9 @@ Route::group(['prefix'=>'customer'], function(){
 });
 
 Route::post('/saveCustomerProfileDetails', 'CustomerController@saveCustomerProfileDetails')->name('saveCustomerProfileDetails');
+Route::post('/updateCustomerProfileDetails', 'CustomerController@updateCustomerProfileDetails')->name('updateCustomerProfileDetails');
 Route::get('/addresses', 'CustomerController@addresses')->name('addresses');
+
 Route::post('/saveProfilePic', 'CustomerController@saveProfilePic')->name('saveProfilePic');
 Route::get('/customer-profile', 'CustomerController@customerProfile')->name('customerProfile');
 

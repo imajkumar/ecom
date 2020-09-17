@@ -72,11 +72,16 @@
                                         {{-- <td>{{$customer->dob}}</td> --}}
                                         <td>
                                             @if($customer->status == 1)
-                                            <span class="badge badge-md badge-success">Approved</span>
+                                                <span class="badge badge-md badge-success">Approved</span>
+
                                             @elseif($customer->status == 0)
-                                            <span class="badge badge-md badge-danger">Pending</span>
+                                                <span class="badge badge-md badge-danger">Pending</span>
+
+                                            @elseif($customer->status == 2)
+                                                <span class="badge badge-md badge-danger">Rejected</span>
+
                                             @else
-                                            <span class="badge badge-md badge-danger">Rejected</span>
+                                                <span class="badge badge-md badge-danger">Updated</span>
                                             @endif
                                         </td>
                                         <td>

@@ -98,6 +98,13 @@ function get_addresses_by_user_id($user_id)
     return $customerAddresses;
 }
 
+function get_businesses_by_user_id($user_id, $customer_id)
+{
+    $customerAddresses = DB::table('tbl_businesses')->where('address_user_id', $user_id)->get();
+    
+    return $customerAddresses;
+}
+
 function get_teams_by_customer_id($customer_id)
 {
     $customerTeams = DB::table('tbl_teams')->where('customer_id', $customer_id)->get();

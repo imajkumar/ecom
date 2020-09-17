@@ -72,14 +72,7 @@
 					
 					
 					
-					<li class="active">
-						<a href="{{route('customerProfile')}}">
-							
-							<i class="icon-user"></i>
-							<span>MY PROFILE </span>
-						</a>
-						
-					</li>
+					
 
 		{{-- Start code for menu show when pfofile is completed --}}
 					<?php 
@@ -88,6 +81,14 @@
 						{
 
 					?>
+					<li class="active">
+						<a href="{{route('customerProfile')}}">
+							
+							<i class="icon-user"></i>
+							<span>MY PROFILE </span>
+						</a>
+						
+					</li>
 					<li class="has-sub">
 						<a href="javascript:;">
 							<b class="caret"></b>
@@ -146,14 +147,15 @@
 						
 					</li>
 
-					<li class="has-sub">
-					<a href="{{route('addresses')}}">
+					{{-- <li class="has-sub">
+						<a href="{{route('addresses')}}">
 							
 							<i class="fas fa-lg fa-fw m-r-10 fa-address-book"></i>
 							<span>ADDRESSES </span>
 						</a>
 						
-					</li>
+					</li> --}}
+					
 
 					
 					
